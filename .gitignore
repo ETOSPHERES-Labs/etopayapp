@@ -1,0 +1,146 @@
+# ------------------------------
+# Miscellaneous
+# ------------------------------
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+*.tmp
+*.temp
+
+# ------------------------------
+# Flutter / Dart / Pub
+# ------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+generated_plugin_registrant.dart
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Symbolication
+app.*.symbols
+
+# Obfuscation
+app.*.map.json
+
+# ------------------------------
+# Android
+# ------------------------------
+android/.gradle/
+android/.idea/
+android/local.properties
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/key.properties
+
+# Gradle
+.gradle/
+**/gradlew
+**/gradlew.bat
+**/gradle-wrapper.jar
+**/gradle-wrapper.properties
+
+# ------------------------------
+# iOS
+# ------------------------------
+ios/.generated/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/App.framework
+ios/Flutter/engine/
+ios/Flutter/ephemeral/
+ios/Runner.xcworkspace/
+ios/Pods/
+ios/Podfile.lock
+ios/Runner/GeneratedPluginRegistrant.*
+
+# Xcode
+*.xcodeproj/*
+*.xcworkspace/
+*.xcuserstate
+*.xcuserdata/
+*.xcuserdatad/
+*.moved-aside
+DerivedData/
+.idea/
+
+# ------------------------------
+# macOS
+# ------------------------------
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/Podfile.lock
+macos/Runner.xcworkspace/
+
+# ------------------------------
+# Linux
+# ------------------------------
+linux/flutter/ephemeral/
+linux/CMakeFiles/
+linux/build/
+
+# ------------------------------
+# Windows
+# ------------------------------
+windows/flutter/ephemeral/
+windows/CMakeFiles/
+windows/build/
+
+# ------------------------------
+# Web
+# ------------------------------
+web/generated/
+
+# ------------------------------
+# IDEs and Editors
+# ------------------------------
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Android Studio (also uses .idea)
+.android/
+
+# ------------------------------
+# CI/CD
+# ------------------------------
+coverage/
+*.lcov
+test_outputs/
+
+# Firebase
+.firebase/
+
+# fastlane (iOS/Android deployment)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# ------------------------------
+# Others
+# ------------------------------
+*.orig
+*.bak
+*.rej
