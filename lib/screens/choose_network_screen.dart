@@ -7,29 +7,32 @@ class ChooseNetworkScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+        body: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.arrow_back),
-                Padding(padding: EdgeInsets.only(left: 8)),
-                Text('Back'),
+                TextButton(
+                  style: TextButton.styleFrom(foregroundColor: Colors.black),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.arrow_back),
+                      SizedBox(width: 8),
+                      Text('Back'),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: ImageCardListWidget(
+                  svgAssetPath: 'assets/images/choose_network_bg.svg',
+                  textData: 'Choose Network',
+                  showCheckbox: false,
+                )),
               ],
-            ),
-          ),
-          Expanded(
-              child: ImageCardListWidget(
-            svgAssetPath: 'assets/images/choose_network_bg.svg',
-            textData: 'Choose Network',
-            showCheckbox: false,
-          )),
-        ],
-      ),
-    );
+            )));
   }
 }
