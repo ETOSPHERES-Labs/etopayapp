@@ -1,4 +1,4 @@
-import 'package:eto_pay/screens/recovery_phrase_screen.dart';
+import 'package:eto_pay/screens/password_setup_screen.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +41,8 @@ class CreateProfileScreen extends StatelessWidget {
                     icon: Icons.folder_outlined,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const RecoveryPhraseScreen(),
+                        builder: (context) =>
+                            PasswordSetupScreen(network: network),
                       ),
                     ),
                   ),

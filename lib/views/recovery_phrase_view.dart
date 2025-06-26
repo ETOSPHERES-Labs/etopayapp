@@ -3,6 +3,8 @@ import 'package:eto_pay/view_models/recovery_phrase_view_model.dart';
 import 'package:eto_pay/widgets/conditional_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:eto_pay/screens/recovery_phrase_verification_screen.dart';
+import 'package:eto_pay/core/colors.dart';
 
 class RecoveryPhraseView extends StatelessWidget {
   const RecoveryPhraseView({super.key});
@@ -24,6 +26,7 @@ class RecoveryPhraseView extends StatelessWidget {
         const SizedBox(height: 8),
         const Text(
           'Please download the recovery kit and write down the words in the exact order shown below',
+          style: TextStyle(color: AppColors.subtext),
         ),
         const SizedBox(height: 24),
         Expanded(
@@ -31,9 +34,9 @@ class RecoveryPhraseView extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  childAspectRatio: 2.5,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 180,
+                  childAspectRatio: 3,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                 ),
@@ -88,11 +91,13 @@ class RecoveryPhraseView extends StatelessWidget {
         const SizedBox(height: 24),
         const Text(
           'Keep these words confidential, secure and never share it with anyone',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style:
+              TextStyle(fontWeight: FontWeight.bold, color: AppColors.subtext),
         ),
         const SizedBox(height: 8),
         const Text(
           'A written backup is important because computer failures can cause data corruption',
+          style: TextStyle(color: AppColors.subtext),
         ),
         const SizedBox(height: 24),
         ConditionalButton(
@@ -105,7 +110,17 @@ class RecoveryPhraseView extends StatelessWidget {
         const SizedBox(height: 16),
         ConditionalButton(
           isActive: model.isRevealed,
-          onPressed: () {},
+          onPressed: () {
+            if (model.isRevealed) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => RecoveryPhraseVerificationScreen(
+                    recoveryPhrase: model.recoveryPhrase,
+                  ),
+                ),
+              );
+            }
+          },
           text: 'Continue',
         ),
       ],
