@@ -42,3 +42,24 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // ... other dependencies ...
+    implementation 'com.etospheres.etopay:etopaysdk:0.16.0'
+    natives 'com.etospheres.etopay:etopaysdk:0.16.0:natives-android'
+}
+
+def natives = configurations.create("natives")
+
+task unzipNatives(type: Copy) {
+    from(zipTree(natives.singleFile)) {
+        include "android/**"
+        eachFile { fileCopyDetails ->
+            fileCopyDetails.path = fileCopyDetails.path.replaceFirst(/^android\//, "")
+        }
+        includeEmptyDirs = false
+    }
+    into "src/main/jniLibs"
+}
+
+preBuild.dependsOn unzipNatives

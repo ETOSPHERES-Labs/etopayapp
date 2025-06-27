@@ -34,5 +34,10 @@
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
+  <script type="module">
+    import init, { ETOPaySdk } from '/node_modules/@etospheres/etopay-sdk-wasm-web/etopay_sdk_wasm.js';
+    window.ETOPaySdk = ETOPaySdk;
+    window.etopayInit = init;
+  </script>
 </body>
 </html>
