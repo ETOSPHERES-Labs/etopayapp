@@ -1,4 +1,5 @@
 import 'package:eto_pay/screens/create_profile_screen.dart';
+import 'package:eto_pay/screens/import_existing_wallet_screen.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,10 @@ class WalletOptionsScreen extends StatelessWidget {
                     title: 'Import an existing wallet',
                     subtitle: 'Import your existing wallet securely',
                     icon: Icons.download_for_offline_outlined,
-                    onTap: () {},
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          ImportExistingWalletScreen(network: network),
+                    )),
                   )
                 ],
               ),

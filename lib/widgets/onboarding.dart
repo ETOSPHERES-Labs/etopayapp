@@ -48,7 +48,7 @@ class ImageCardListWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SvgPicture.asset(
+          if (svgAssetPath != "") SvgPicture.asset(
             svgAssetPath,
             height: 374,
             fit: BoxFit.contain,

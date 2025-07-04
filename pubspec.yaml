@@ -41,6 +41,7 @@ dependencies:
   provider: ^6.1.5
   local_auth: ^2.3.0
   shared_preferences: ^2.2.2
+  textfield_tags: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
     - assets/images/onboarding_bg_1.svg
     - assets/images/choose_network_bg.svg
     - assets/images/create_wallet_bg.svg
+    - assets/images/import_existing_wallet.svg
     - assets/images/create_password.svg
     - assets/images/setup_pin.svg
     - assets/images/phrase_verification.svg
