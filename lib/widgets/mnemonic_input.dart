@@ -35,51 +35,6 @@ class _MnemonicInputState extends State<MnemonicInput> {
     return _phrases.length >= 24;
   }
 
-//   final List<String> _bip39Words = [
-//     "apple",
-//     "banana",
-//     "cat",
-//     "dog",
-//     "elephant",
-//     "fish",
-//     "grape",
-//     "hat",
-//     "hat2",
-//     "ice",
-//     "ice1",
-//     "ice2",
-//     "ice3",
-//     "ice4",
-//     "ice5",
-//     "ice6",
-//     "ice7",
-//     "juice",
-//     "juice",
-//     "kite",
-//     "lion",
-//     "monkey",
-//     "nose",
-//     "orange",
-//     "pig",
-//     "queen",
-//     "rabbit",
-//     "sun",
-//     "top",
-//     "top1",
-//     "top2",
-//     "top3",
-//     "top3a",
-//     "top3b",
-//     "top3c",
-//     "tree",
-//     "umbrella",
-//     "violin",
-//     "wolf",
-//     "xylophone",
-//     "yoyo",
-//     "zebra",
-//   ];
-
   void _onTapOutsideHandler() {
     if (!widget.tapNotifier.value) {
       return;
