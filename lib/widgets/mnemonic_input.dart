@@ -214,18 +214,30 @@ class _MnemonicInputState extends State<MnemonicInput> {
     super.dispose();
   }
 
+  double _computeNumberOfRows(double widgetWidth) {
+    if (widgetWidth >= 800) {
+        return 4;
+    } else if (widgetWidth >= 600) {
+        return 3;
+    } else if (widgetWidth >= 400) {
+        return 2;
+    }
+
+    return 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      double widgetLeftRightPadding = 13.0 + 13.0; // [<-13->widget<-13->]
-      double spacingBetweenChips =
-          18; // sum: chip <-6-> chip <-6-> chip <-6-> chip
-      double spacingBetweenChip =
-          spacingBetweenChips / 3; // chip <-6-> chip <-x-> chip <-x-> chip
 
-      double oneFourthWidth = max(
+      double widgetLeftRightPadding = 13.0 + 13.0; // [<-13->widget<-13->]
+      double numberOfRows = _computeNumberOfRows(constraints.maxWidth);
+      double spacingBetweenChip = 6;
+      double spacingBetweenChips = (numberOfRows  - 1) * spacingBetweenChip; // sum: chip <-6-> chip <-6-> chip <-6-> chip
+
+      double chipWidth = max(
         (constraints.maxWidth - widgetLeftRightPadding - spacingBetweenChips) /
-            4,
+            numberOfRows,
         50,
       );
 
@@ -254,7 +266,7 @@ class _MnemonicInputState extends State<MnemonicInput> {
                     _editingPhraseIndex == phrase.key
                         ? Padding(
                             padding: EdgeInsets.only(
-                              right: (phrase.key + 1) % 4 == 0
+                              right: (phrase.key + 1) % numberOfRows == 0
                                   ? 0
                                   : spacingBetweenChip,
                             ),
@@ -266,8 +278,8 @@ class _MnemonicInputState extends State<MnemonicInput> {
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(style: BorderStyle.none)),
                               constraints: BoxConstraints(
-                                minWidth: oneFourthWidth,
-                                maxWidth: oneFourthWidth,
+                                minWidth: chipWidth,
+                                maxWidth: chipWidth,
                                 minHeight: 34,
                                 maxHeight: 34,
                               ),
@@ -303,7 +315,7 @@ class _MnemonicInputState extends State<MnemonicInput> {
                             },
                             child: Padding(
                               padding: EdgeInsets.only(
-                                right: (phrase.key + 1) % 4 == 0
+                                right: (phrase.key + 1) % numberOfRows == 0
                                     ? 0
                                     : spacingBetweenChip,
                               ),
@@ -311,8 +323,8 @@ class _MnemonicInputState extends State<MnemonicInput> {
                                 constraints: BoxConstraints(
                                   minHeight: 34,
                                   maxHeight: 34,
-                                  minWidth: oneFourthWidth,
-                                  maxWidth: oneFourthWidth,
+                                  minWidth: chipWidth,
+                                  maxWidth: chipWidth,
                                 ),
                                 child: Container(
                                   width: double.infinity,
@@ -364,8 +376,8 @@ class _MnemonicInputState extends State<MnemonicInput> {
                         constraints: BoxConstraints(
                           minHeight: 34,
                           maxHeight: 34,
-                          minWidth: oneFourthWidth,
-                          maxWidth: oneFourthWidth,
+                          minWidth: chipWidth,
+                          maxWidth: chipWidth,
                         ),
                         child: SizedBox(
                           width: double.infinity,
