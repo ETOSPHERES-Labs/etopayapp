@@ -41,7 +41,6 @@ dependencies:
   provider: ^6.1.5
   local_auth: ^2.3.0
   shared_preferences: ^2.2.2
-  textfield_tags: ^3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 // import 'dart:developer' as developer;
+import 'dart:math';
 
 class MnemonicInput extends StatefulWidget {
   final ValueNotifier<bool> tapNotifier;
-  const MnemonicInput({super.key, required this.tapNotifier});
+  final List<String> wordList;
+  const MnemonicInput(
+      {super.key, required this.tapNotifier, required this.wordList});
 
   @override
   State<MnemonicInput> createState() => _MnemonicInputState();
@@ -28,51 +31,54 @@ class _MnemonicInputState extends State<MnemonicInput> {
 
   // Storage
   final List<String> _phrases = [];
+  bool _hasReachedLimit() {
+    return _phrases.length >= 24;
+  }
 
-  final List<String> _bip39Words = [
-    "apple",
-    "banana",
-    "cat",
-    "dog",
-    "elephant",
-    "fish",
-    "grape",
-    "hat",
-    "hat2",
-    "ice",
-    "ice1",
-    "ice2",
-    "ice3",
-    "ice4",
-    "ice5",
-    "ice6",
-    "ice7",
-    "juice",
-    "juice",
-    "kite",
-    "lion",
-    "monkey",
-    "nose",
-    "orange",
-    "pig",
-    "queen",
-    "rabbit",
-    "sun",
-    "top",
-    "top1",
-    "top2",
-    "top3",
-    "top3a",
-    "top3b",
-    "top3c",
-    "tree",
-    "umbrella",
-    "violin",
-    "wolf",
-    "xylophone",
-    "yoyo",
-    "zebra",
-  ];
+//   final List<String> _bip39Words = [
+//     "apple",
+//     "banana",
+//     "cat",
+//     "dog",
+//     "elephant",
+//     "fish",
+//     "grape",
+//     "hat",
+//     "hat2",
+//     "ice",
+//     "ice1",
+//     "ice2",
+//     "ice3",
+//     "ice4",
+//     "ice5",
+//     "ice6",
+//     "ice7",
+//     "juice",
+//     "juice",
+//     "kite",
+//     "lion",
+//     "monkey",
+//     "nose",
+//     "orange",
+//     "pig",
+//     "queen",
+//     "rabbit",
+//     "sun",
+//     "top",
+//     "top1",
+//     "top2",
+//     "top3",
+//     "top3a",
+//     "top3b",
+//     "top3c",
+//     "tree",
+//     "umbrella",
+//     "violin",
+//     "wolf",
+//     "xylophone",
+//     "yoyo",
+//     "zebra",
+//   ];
 
   void _onTapOutsideHandler() {
     if (!widget.tapNotifier.value) {
@@ -96,8 +102,10 @@ class _MnemonicInputState extends State<MnemonicInput> {
 
   void _showAutocomplete(String phrase) {
     if (phrase.isNotEmpty) {
-      final filteredSuggestions =
-          _bip39Words.where((word) => word.startsWith(phrase)).take(5).toList();
+      final filteredSuggestions = widget.wordList
+          .where((word) => word.startsWith(phrase))
+          .take(5)
+          .toList();
       setState(() {
         _suggestions = filteredSuggestions;
       });
@@ -117,6 +125,7 @@ class _MnemonicInputState extends State<MnemonicInput> {
       _submitText(suggestion);
     }
 
+    _updateAutocomplete();
     _setFocusOnEnterPhraseInput();
   }
 
@@ -124,8 +133,22 @@ class _MnemonicInputState extends State<MnemonicInput> {
     // ' ' space triggers "submit"
     if (value.endsWith(' ')) {
       _submitText(value);
+      _updateAutocomplete();
+      _setFocusOnEnterPhraseInput();
     } else {
-      _updateAutocomplete(value.trim());
+      final newWords = value
+          .trim()
+          .split(RegExp(r'\s+'))
+          .where((w) => w.isNotEmpty)
+          .toList();
+      // user pasted multiple words
+      if (newWords.length > 1) {
+        _submitText(value);
+        _updateAutocomplete();
+        _setFocusOnEnterPhraseInput();
+      } else {
+        _updateAutocomplete(value.trim());
+      }
     }
   }
 
@@ -133,6 +156,7 @@ class _MnemonicInputState extends State<MnemonicInput> {
     // ' ' space triggers "submit"
     if (value.endsWith(' ')) {
       _updateText(value);
+      _updateAutocomplete();
       _setFocusOnEnterPhraseInput();
     } else {
       _updateAutocomplete(value.trim());
@@ -141,6 +165,7 @@ class _MnemonicInputState extends State<MnemonicInput> {
 
   void _onCommitEnterPhraseHandler(String value) {
     _submitText(value);
+    _updateAutocomplete();
     _setFocusOnEnterPhraseInput();
   }
 
@@ -149,7 +174,10 @@ class _MnemonicInputState extends State<MnemonicInput> {
         chunk.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty).toList();
 
     setState(() {
-      _phrases.addAll(newWords);
+      final remainingSlots = 24 - _phrases.length;
+      if (remainingSlots > 0) {
+        _phrases.addAll(newWords.take(remainingSlots));
+      }
     });
 
     _controllerInputEnterPhrase.clear();
@@ -188,6 +216,9 @@ class _MnemonicInputState extends State<MnemonicInput> {
         });
       }
     }
+
+    _updateAutocomplete();
+    _setFocusOnEnterPhraseInput();
   }
 
   @override
@@ -230,111 +261,197 @@ class _MnemonicInputState extends State<MnemonicInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (var phrase in _phrases.asMap().entries)
-              _editingPhraseIndex == phrase.key
-                  ? Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      constraints:
-                          const BoxConstraints(minWidth: 40, maxWidth: 120),
-                      child: IntrinsicWidth(
-                        child: TextField(
-                          autofocus: true,
-                          controller: _controllerInputEditPhrase,
-                          focusNode: _focusNodeInputEditPhrase,
-                          onChanged: _onInputChangeEditPhraseHandler,
-                          onSubmitted: (_) {
-                            _commitPendingEdit();
-                          },
-                          style: const TextStyle(fontSize: 14),
-                          decoration: const InputDecoration(
-                            isCollapsed: true,
-                            border: InputBorder.none,
-                            hintText: "Edit phrase...",
+    return LayoutBuilder(builder: (context, constraints) {
+      double widgetLeftRightPadding = 13.0 + 13.0; // [<-13->widget<-13->]
+      double spacingBetweenChips =
+          18; // sum: chip <-6-> chip <-6-> chip <-6-> chip
+      double spacingBetweenChip =
+          spacingBetweenChips / 3; // chip <-6-> chip <-x-> chip <-x-> chip
+
+      double oneFourthWidth = max(
+        (constraints.maxWidth - widgetLeftRightPadding - spacingBetweenChips) /
+            4,
+        50,
+      );
+
+      return Container(
+          width: double.infinity,
+          padding: EdgeInsets.only(top: 16, bottom: 16, left: 13, right: 13),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.25),
+                blurRadius: 6,
+                offset: Offset(0, 0),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                spacing: 0,
+                runSpacing: 16,
+                children: [
+                  for (var phrase in _phrases.asMap().entries)
+                    _editingPhraseIndex == phrase.key
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                              right: (phrase.key + 1) % 4 == 0
+                                  ? 0
+                                  : spacingBetweenChip,
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 2),
+                              decoration: BoxDecoration(
+                                  color: Colors.blue.shade100,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(style: BorderStyle.none)),
+                              constraints: BoxConstraints(
+                                minWidth: oneFourthWidth,
+                                maxWidth: oneFourthWidth,
+                                minHeight: 34,
+                                maxHeight: 34,
+                              ),
+                              child: IntrinsicWidth(
+                                child: TextField(
+                                  autofocus: true,
+                                  controller: _controllerInputEditPhrase,
+                                  focusNode: _focusNodeInputEditPhrase,
+                                  onChanged: _onInputChangeEditPhraseHandler,
+                                  onSubmitted: (_) {
+                                    _commitPendingEdit();
+                                  },
+                                  textAlign: TextAlign.center,
+                                  textAlignVertical: TextAlignVertical.center,
+                                  style: const TextStyle(fontSize: 14),
+                                  decoration: const InputDecoration(
+                                    isCollapsed: true,
+                                    // contentPadding: const EdgeInsets.symmetric(
+                                    // horizontal: 12, vertical: 8),
+                                    border: InputBorder.none,
+                                    hintText: "Edit phrase...",
+                                  ),
+                                ),
+                              ),
+                            ))
+                        : GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _editingPhraseIndex = phrase.key;
+                                _controllerInputEditPhrase.text = phrase.value;
+                              });
+                              _setFocusOnEditPhraseInput();
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                right: (phrase.key + 1) % 4 == 0
+                                    ? 0
+                                    : spacingBetweenChip,
+                              ),
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: 34,
+                                  maxHeight: 34,
+                                  minWidth: oneFourthWidth,
+                                  maxWidth: oneFourthWidth,
+                                ),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: widget.wordList.contains(
+                                            phrase.value.toLowerCase())
+                                        ? Colors.grey.shade200
+                                        : Colors.red.shade100,
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "${phrase.key + 1}. ${phrase.value}",
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          softWrap: false,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: widget.wordList.contains(
+                                                    phrase.value.toLowerCase())
+                                                ? null
+                                                : Colors.red.shade900,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _phrases.remove(phrase.value);
+                                          });
+                                          _setFocusOnEnterPhraseInput();
+                                        },
+                                        child:
+                                            const Icon(Icons.close, size: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )),
+                  if (!_hasReachedLimit())
+                    ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 34,
+                          maxHeight: 34,
+                          minWidth: oneFourthWidth,
+                          maxWidth: oneFourthWidth,
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: IntrinsicWidth(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: TextField(
+                                controller: _controllerInputEnterPhrase,
+                                focusNode: _focusNodeInputEnterPhrase,
+                                onChanged: _onInputChangeEnterPhraseHandler,
+                                onSubmitted: _onCommitEnterPhraseHandler,
+                                textInputAction: TextInputAction.done,
+                                textAlign:
+                                    _controllerInputEnterPhrase.text.isEmpty
+                                        ? TextAlign.left
+                                        : TextAlign.center,
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  isCollapsed: true,
+                                  border: InputBorder.none,
+                                  hintText: "Add phrase...",
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _editingPhraseIndex = phrase.key;
-                          _controllerInputEditPhrase.text = phrase.value;
-                        });
-
-                        _setFocusOnEditPhraseInput();
-                      },
-                      child: Chip(
-                        label: Text(phrase.value),
-                        deleteIcon: const Icon(Icons.close, size: 18),
-                        onDeleted: () {
-                          setState(() {
-                            _phrases.remove(phrase.value);
-                          });
-
-                          _setFocusOnEnterPhraseInput();
-                        },
-                        backgroundColor:
-                            _bip39Words.contains(phrase.value.toLowerCase())
-                                ? null
-                                : Colors.red.shade100,
-                        labelStyle: TextStyle(
-                          color:
-                              _bip39Words.contains(phrase.value.toLowerCase())
-                                  ? null
-                                  : Colors.red.shade900,
-                        ),
-                      ),
-                    ),
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: 40,
-                maxWidth: 120,
+                        )),
+                ],
               ),
-              child: IntrinsicWidth(
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: TextField(
-                    controller: _controllerInputEnterPhrase,
-                    focusNode: _focusNodeInputEnterPhrase,
-                    onChanged: _onInputChangeEnterPhraseHandler,
-                    onSubmitted: _onCommitEnterPhraseHandler,
-                    textInputAction: TextInputAction.done,
-                    style: const TextStyle(fontSize: 14),
-                    decoration: const InputDecoration(
-                      isCollapsed: true,
-                      border: InputBorder.none,
-                      hintText: "Add phrase...",
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        if (_suggestions.isNotEmpty)
-          AutocompleteDropdown(
-            suggestions: _suggestions,
-            onTapHandler: _onTapAutocompleteHandler,
-          )
-      ],
-    );
+              if (_suggestions.isNotEmpty)
+                AutocompleteDropdown(
+                  suggestions: _suggestions,
+                  onTapHandler: _onTapAutocompleteHandler,
+                )
+            ],
+          ));
+    });
   }
 }
 
@@ -350,8 +467,9 @@ class AutocompleteDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
     return Container(
-      margin: const EdgeInsets.only(top: 4),
+      margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.grey.shade100,
@@ -360,17 +478,22 @@ class AutocompleteDropdown extends StatelessWidget {
       ),
       constraints: const BoxConstraints(maxHeight: 160),
       child: Scrollbar(
-        controller: ScrollController(),
+        controller: scrollController,
         thumbVisibility: true,
         child: ListView.builder(
-          controller: ScrollController(),
+          controller: scrollController,
           shrinkWrap: true,
           itemCount: suggestions.length,
           itemBuilder: (context, index) {
             final suggestion = suggestions[index];
             return ListTile(
               dense: true,
-              title: Text(suggestion),
+              title: Text(
+                suggestion,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                maxLines: 1,
+              ),
               onTap: () {
                 onTapHandler(suggestion);
               },

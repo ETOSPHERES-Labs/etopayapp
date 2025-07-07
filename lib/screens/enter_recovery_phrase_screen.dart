@@ -1,9 +1,8 @@
+import 'package:eto_pay/core/bip39_word_list.dart';
 import 'package:eto_pay/core/text_styles.dart';
 import 'package:eto_pay/widgets/mnemonic_input.dart';
 import 'package:flutter/material.dart';
 import 'package:eto_pay/core/colors.dart';
-import 'package:textfield_tags/textfield_tags.dart';
-import 'dart:developer' as developer;
 
 class EnterRecoveryPhraseScreen extends StatefulWidget {
   const EnterRecoveryPhraseScreen({super.key, required this.network});
@@ -19,11 +18,9 @@ class _EnterRecoveryPhraseScreen extends State<EnterRecoveryPhraseScreen> {
 
   // bool _isContinueButtonEnabled = false;
   // String _mnemonic = "";
-  final _tagController = TextfieldTagsController();
 
   @override
   void dispose() {
-    _tagController.dispose();
     _tapNotifier.dispose();
     super.dispose();
   }
@@ -67,9 +64,9 @@ class _EnterRecoveryPhraseScreen extends State<EnterRecoveryPhraseScreen> {
           ),
           const SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(0.0),
             child: SingleChildScrollView(
-              child: MnemonicInput(tapNotifier: _tapNotifier),
+              child: MnemonicInput(tapNotifier: _tapNotifier, wordList: WORDLIST),
             ),
           )
         ]),
