@@ -2,7 +2,6 @@ import 'package:eto_pay/view_models/recovery_phrase_view_model.dart';
 import 'package:eto_pay/views/recovery_phrase_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eto_pay/screens/choose_network_screen.dart';
 
 class RecoveryPhraseScreen extends StatelessWidget {
   const RecoveryPhraseScreen({super.key});
