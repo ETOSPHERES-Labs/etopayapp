@@ -6,7 +6,7 @@ import '../services/etopay_sdk_bridge.dart';
 import 'package:flutter/foundation.dart';
 // Add these imports for web support
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
+import 'package:web/web.dart' as web;
 import 'package:http/http.dart' as http;
 import 'package:eto_pay/screens/choose_network_screen.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
@@ -14,15 +14,14 @@ import 'package:go_router/go_router.dart';
 import 'package:eto_pay/screens/terms_and_conditions_screen.dart';
 import 'package:eto_pay/env.dart'; // Add this import for config
 
-const String AUTH_DOMAIN =
+const String authDomain =
     'https://auth-etopay-demo.etospheres.com/realms/6f2f6c69393f40369647f9fed8dd65ee';
-const String CLIENT_ID = 'builtin-client';
-const String REDIRECT_URI = kIsWeb
-    ? 'http://localhost:59636' // or your deployed web URL
+const String clientID = 'builtin-client';
+const String redirectURI = kIsWeb
+    ? 'http://localhost:59287' // or your deployed web URL
     : 'com.etospheres.etopay:/oauthredirect';
-const String AUTHORIZATION_ENDPOINT =
-    '$AUTH_DOMAIN/protocol/openid-connect/auth';
-const String TOKEN_ENDPOINT = '$AUTH_DOMAIN/protocol/openid-connect/token';
+const String authorizationEndpoint = '$authDomain/protocol/openid-connect/auth';
+const String tokenEndpoint = '$authDomain/protocol/openid-connect/token';
 
 final FlutterAppAuth appAuth = FlutterAppAuth();
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -35,7 +34,6 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  String? _mnemonic;
   String? _error;
   String? _username;
   String? _accessToken;
@@ -56,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.initState();
     _initializeSdk();
     if (kIsWeb) {
-      final uri = Uri.parse(html.window.location.href);
+      final uri = Uri.parse(web.window.location.href);
       final code = uri.queryParameters['code'];
       if (code != null) {
         _exchangeCodeForToken(code);
@@ -82,13 +80,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _exchangeCodeForToken(String code) async {
     try {
       final response = await http.post(
-        Uri.parse(TOKEN_ENDPOINT),
+        Uri.parse(tokenEndpoint),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {
           'grant_type': 'authorization_code',
           'code': code,
-          'redirect_uri': REDIRECT_URI,
-          'client_id': CLIENT_ID,
+          'redirect_uri': redirectURI,
+          'client_id': clientID,
         },
       );
       if (response.statusCode != 200) {
@@ -109,7 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         _username = username;
       });
       // Call ETOPay SDK bridge for user creation and initialization
-      if (username != null && accessToken != null) {
+      if (accessToken != null) {
         await EtopaySdkBridge.createNewUser(username);
         await EtopaySdkBridge.initializeUser(username);
       }
@@ -124,11 +122,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   void _removeCodeFromUrl() {
     if (kIsWeb) {
-      final uri = Uri.parse(html.window.location.href);
+      final uri = Uri.parse(web.window.location.href);
       final params = Map<String, String>.from(uri.queryParameters);
       params.remove('code');
       final newUri = uri.replace(queryParameters: params);
-      html.window.history.replaceState(null, '', newUri.toString());
+      web.window.history.replaceState(null, '', newUri.toString());
     }
   }
 
@@ -141,8 +139,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     if (kIsWeb) {
       final url =
-          '$AUTHORIZATION_ENDPOINT?client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&response_type=code&scope=openid%20profile%20email';
-      html.window.location.href = url;
+          '$authorizationEndpoint?client_id=$clientID&redirect_uri=$redirectURI&response_type=code&scope=openid%20profile%20email';
+      web.window.location.href = url;
       return;
     }
 
@@ -150,13 +148,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       final AuthorizationTokenResponse? result =
           await appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
-          CLIENT_ID,
-          REDIRECT_URI,
-          issuer: AUTH_DOMAIN,
+          clientID,
+          redirectURI,
+          issuer: authDomain,
           scopes: ['openid', 'profile', 'email'],
           serviceConfiguration: AuthorizationServiceConfiguration(
-            authorizationEndpoint: AUTHORIZATION_ENDPOINT,
-            tokenEndpoint: TOKEN_ENDPOINT,
+            authorizationEndpoint: authorizationEndpoint,
+            tokenEndpoint: tokenEndpoint,
           ),
         ),
       );
@@ -174,7 +172,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         _username = username;
       });
       // Call ETOPay SDK bridge for user creation and initialization
-      if (username != null && result.accessToken != null) {
+      if (result.accessToken != null) {
         await EtopaySdkBridge.createNewUser(username);
         await EtopaySdkBridge.initializeUser(username);
       }
@@ -227,12 +225,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onPressed: _authenticate,
               child: const Text('Login with ETOPay'),
             ),
-            if (_mnemonic != null) ...[
-              const SizedBox(height: 16),
-              const Text('Mnemonic:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(_mnemonic!),
-            ],
             if (_error != null) ...[
               const SizedBox(height: 16),
               Text('Error: $_error', style: const TextStyle(color: Colors.red)),

@@ -1,5 +1,5 @@
 @JS()
-library etopay_sdk_bridge_web;
+library;
 
 import 'dart:js_util';
 import 'package:js/js.dart';

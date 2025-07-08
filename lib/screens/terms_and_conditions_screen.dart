@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:go_router/go_router.dart';
-import 'choose_network_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TermsAndConditionsScreen extends StatefulWidget {
