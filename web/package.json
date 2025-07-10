@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@etospheres/etopay-sdk-wasm-web": "^0.16.0"
+  }
+}

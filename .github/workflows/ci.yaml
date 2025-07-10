@@ -1,0 +1,72 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [main, "release/*"]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.6"
+      - run: flutter pub get
+      - run: flutter analyze
+
+  dependency_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.6"
+      - run: flutter pub get
+      - run: flutter pub outdated || true
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.6"
+      - run: flutter pub get
+      - run: flutter pub publish --dry-run || true
+      - run: flutter pub deps --style=compact
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.6"
+      - run: flutter pub get
+      - run: flutter test
+
+  build:
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.6"
+      - run: flutter pub get
+      - run: flutter build apk --debug
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [lint, dependency_check, audit, test, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.32.6"
+      - run: echo "Publishing... (add your publish steps here)"

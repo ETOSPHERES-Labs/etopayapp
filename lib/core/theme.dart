@@ -7,3 +7,7 @@ final ThemeData appTheme = ThemeData(
     bodyLarge: TextStyle(fontSize: 16),
   ),
 );
+
+class AppTheme {
+  static const Color inputFieldBackground = Color(0xFFF5F5F5);
+}
