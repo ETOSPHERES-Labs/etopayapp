@@ -65,3 +65,15 @@ Please see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 ## 📝 License
 
 This project is licensed under the AGPL-3.0 License. See [LICENSE](LICENSE) for details.
+
+# AI/Agent Integration
+
+This repository is designed to work closely with AI assistants, agents, and automation servers (e.g., MCP).
+
+- See [AGENTS.md](./AGENTS.md) for agent development guidelines
+- Example prompts for agents: [PROMPTS.md](./PROMPTS.md)
+- Available tools and commands: [ai_tools.yaml](./ai_tools.yaml)
+- MCP/AI orchestration config: [.mcp.yaml](./.mcp.yaml)
+- Use the [AI Task Request](.github/ISSUE_TEMPLATE/ai_task.md) template for agent-driven tasks
+
+All agent-generated code and PRs are subject to human review and must follow the project’s style and security guidelines.
