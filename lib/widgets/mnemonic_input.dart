@@ -31,8 +31,8 @@ class _MnemonicInputState extends State<MnemonicInput> {
 
   // Storage
   final List<String> _phrases = [];
-  bool _hasReachedLimit() {
-    return _phrases.length >= 24;
+  bool _hasReachedLimit(int numberOfWords) {
+    return _phrases.length >= numberOfWords;
   }
 
   void _onTapOutsideHandler() {
@@ -193,6 +193,7 @@ class _MnemonicInputState extends State<MnemonicInput> {
       if (_focusNodeInputEnterPhrase.hasFocus) {
         _commitPendingEdit();
         _updateAutocomplete(_controllerInputEnterPhrase.text.trim());
+        _focusNodeInputEditPhrase.requestFocus();
       }
     });
 
@@ -214,32 +215,96 @@ class _MnemonicInputState extends State<MnemonicInput> {
     super.dispose();
   }
 
-  double _computeNumberOfRows(double widgetWidth) {
+  int _computeNumberOfChips(double widgetWidth) {
     if (widgetWidth >= 800) {
-        return 4;
+      return 4;
     } else if (widgetWidth >= 600) {
-        return 3;
+      return 3;
     } else if (widgetWidth >= 400) {
-        return 2;
+      return 2;
     }
 
     return 1;
   }
 
+  /*
+    Input:
+         1  2  3
+        [4] 5  6
+         7  8  9
+
+        position = 4
+        columnsPerRow = 3
+
+        position + columnsPerRow - (position % columnsPerRow) = last cell position in row
+        4 + 3 - (4 % 3) = 6
+        
+        so last position in row is 6
+        
+         1  2  3
+        [4] 5 >6<
+         <----->
+         7  8  9
+    */
+  double _getRowIndexForPosition(int position, int columnsPerRow) {
+    return (columnsPerRow + position - (position % columnsPerRow)) /
+        columnsPerRow;
+  }
+
+  bool _isItemInLastRow(int position, int tableSize, int columnsPerRow) {
+    int totalRows = (tableSize / columnsPerRow).ceil();
+    int itemRow = (position / columnsPerRow).floor();
+    return itemRow == totalRows - 1;
+  }
+
+  bool shouldDrawEditAutocompleteHere(int position, int drawPosition) {
+    return position == drawPosition;
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
+      double widgetsLeftRightPadding = 13.0 + 13.0; // [<-13->widget<-13->]
+      int numberOfChips = _computeNumberOfChips(constraints.maxWidth);
+      int chipsPadding = 6;
+      int spacingBetweenChips = (numberOfChips - 1) *
+          chipsPadding; // sum: chip <-6-> chip <-6-> chip <-6-> chip
 
-      double widgetLeftRightPadding = 13.0 + 13.0; // [<-13->widget<-13->]
-      double numberOfRows = _computeNumberOfRows(constraints.maxWidth);
-      double spacingBetweenChip = 6;
-      double spacingBetweenChips = (numberOfRows  - 1) * spacingBetweenChip; // sum: chip <-6-> chip <-6-> chip <-6-> chip
-
-      double chipWidth = max(
-        (constraints.maxWidth - widgetLeftRightPadding - spacingBetweenChips) /
-            numberOfRows,
+      double singleChipWidth = max(
+        (constraints.maxWidth - widgetsLeftRightPadding - spacingBetweenChips) /
+            numberOfChips,
         50,
       );
+
+      int cellIndexForDrawingAutocompleteForEditPhrase = -1;
+      bool drawAutocompleteForEditPhraseAfterEnterPhraseInput = false;
+      bool showAutocompleteForEditPhrase =
+          _editingPhraseIndex != null && _suggestions.isNotEmpty;
+
+      bool showAutocompleteForNewPhrase =
+          _editingPhraseIndex == null && _suggestions.isNotEmpty;
+
+      // calculations for autocomplete box for editing
+      if (showAutocompleteForEditPhrase) {
+        int rowIndex = showAutocompleteForEditPhrase
+            ? _getRowIndexForPosition(_editingPhraseIndex!, numberOfChips)
+                .toInt()
+            : 0;
+
+        int lastCellPositionInRow = rowIndex * numberOfChips;
+        bool lastCellElementExists = lastCellPositionInRow <= _phrases.length;
+
+        cellIndexForDrawingAutocompleteForEditPhrase =
+            lastCellElementExists ? lastCellPositionInRow : _phrases.length;
+
+        cellIndexForDrawingAutocompleteForEditPhrase =
+            cellIndexForDrawingAutocompleteForEditPhrase - 1; // zero indexed
+
+        drawAutocompleteForEditPhraseAfterEnterPhraseInput = _isItemInLastRow(
+                _editingPhraseIndex!, _phrases.length, numberOfChips) &&
+            _phrases.length > lastCellPositionInRow - numberOfChips &&
+            _phrases.length != lastCellPositionInRow;
+      }
 
       return Container(
           width: double.infinity,
@@ -262,122 +327,134 @@ class _MnemonicInputState extends State<MnemonicInput> {
                 spacing: 0,
                 runSpacing: 16,
                 children: [
-                  for (var phrase in _phrases.asMap().entries)
-                    _editingPhraseIndex == phrase.key
-                        ? Padding(
-                            padding: EdgeInsets.only(
-                              right: (phrase.key + 1) % numberOfRows == 0
-                                  ? 0
-                                  : spacingBetweenChip,
-                            ),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 2),
-                              decoration: BoxDecoration(
-                                  color: Colors.blue.shade100,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(style: BorderStyle.none)),
-                              constraints: BoxConstraints(
-                                minWidth: chipWidth,
-                                maxWidth: chipWidth,
-                                minHeight: 34,
-                                maxHeight: 34,
-                              ),
-                              child: IntrinsicWidth(
-                                child: TextField(
-                                  autofocus: true,
-                                  controller: _controllerInputEditPhrase,
-                                  focusNode: _focusNodeInputEditPhrase,
-                                  onChanged: _onInputChangeEditPhraseHandler,
-                                  onSubmitted: (_) {
-                                    _commitPendingEdit();
-                                  },
-                                  textAlign: TextAlign.center,
-                                  textAlignVertical: TextAlignVertical.center,
-                                  style: const TextStyle(fontSize: 14),
-                                  decoration: const InputDecoration(
-                                    isCollapsed: true,
-                                    // contentPadding: const EdgeInsets.symmetric(
-                                    // horizontal: 12, vertical: 8),
-                                    border: InputBorder.none,
-                                    hintText: "Edit phrase...",
-                                  ),
-                                ),
-                              ),
-                            ))
-                        : GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _editingPhraseIndex = phrase.key;
-                                _controllerInputEditPhrase.text = phrase.value;
-                              });
-                              _setFocusOnEditPhraseInput();
-                            },
-                            child: Padding(
+                  for (var phrase in _phrases.asMap().entries) ...[
+                    if (_editingPhraseIndex == phrase.key)
+                      Column(
+                        children: [
+                          Padding(
                               padding: EdgeInsets.only(
-                                right: (phrase.key + 1) % numberOfRows == 0
+                                right: (phrase.key + 1) % numberOfChips == 0
                                     ? 0
-                                    : spacingBetweenChip,
+                                    : chipsPadding.toDouble(),
                               ),
-                              child: ConstrainedBox(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 2),
+                                decoration: BoxDecoration(
+                                    color: Colors.blue.shade100,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border:
+                                        Border.all(style: BorderStyle.none)),
                                 constraints: BoxConstraints(
+                                  minWidth: singleChipWidth,
+                                  maxWidth: singleChipWidth,
                                   minHeight: 34,
                                   maxHeight: 34,
-                                  minWidth: chipWidth,
-                                  maxWidth: chipWidth,
                                 ),
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: widget.wordList.contains(
-                                            phrase.value.toLowerCase())
-                                        ? Colors.grey.shade200
-                                        : Colors.red.shade100,
-                                    borderRadius: BorderRadius.circular(16),
+                                child: IntrinsicWidth(
+                                  child: TextField(
+                                    autofocus: true,
+                                    controller: _controllerInputEditPhrase,
+                                    focusNode: _focusNodeInputEditPhrase,
+                                    onChanged: _onInputChangeEditPhraseHandler,
+                                    onSubmitted: (_) {
+                                      _commitPendingEdit();
+                                    },
+                                    textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      isCollapsed: true,
+                                      border: InputBorder.none,
+                                      hintText: "Edit phrase...",
+                                    ),
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "${phrase.key + 1}. ${phrase.value}",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          softWrap: false,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: widget.wordList.contains(
-                                                    phrase.value.toLowerCase())
-                                                ? null
-                                                : Colors.red.shade900,
-                                          ),
+                                ),
+                              )),
+                        ],
+                      ),
+                    if (_editingPhraseIndex != phrase.key)
+                      GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _editingPhraseIndex = phrase.key;
+                              _controllerInputEditPhrase.text = phrase.value;
+                            });
+                            _setFocusOnEditPhraseInput();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: (phrase.key + 1) % numberOfChips == 0
+                                  ? 0
+                                  : chipsPadding.toDouble(),
+                            ),
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minHeight: 34,
+                                maxHeight: 34,
+                                minWidth: singleChipWidth,
+                                maxWidth: singleChipWidth,
+                              ),
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: widget.wordList
+                                          .contains(phrase.value.toLowerCase())
+                                      ? Colors.grey.shade200
+                                      : Colors.red.shade100,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "${phrase.key + 1}. ${phrase.value}",
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        softWrap: false,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: widget.wordList.contains(
+                                                  phrase.value.toLowerCase())
+                                              ? null
+                                              : Colors.red.shade900,
                                         ),
                                       ),
-                                      const SizedBox(width: 4),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _phrases.remove(phrase.value);
-                                          });
-                                          _setFocusOnEnterPhraseInput();
-                                        },
-                                        child:
-                                            const Icon(Icons.close, size: 20),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _phrases.remove(phrase.value);
+                                        });
+                                        _setFocusOnEnterPhraseInput();
+                                      },
+                                      child: const Icon(Icons.close, size: 20),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )),
-                  if (!_hasReachedLimit())
+                            ),
+                          )),
+                    if (showAutocompleteForEditPhrase &&
+                        !drawAutocompleteForEditPhraseAfterEnterPhraseInput &&
+                        shouldDrawEditAutocompleteHere(
+                            phrase.key, cellIndexForDrawingAutocompleteForEditPhrase))
+                      AutocompleteDropdown(
+                        suggestions: _suggestions,
+                        onTapHandler: _onTapAutocompleteHandler,
+                      ),
+                  ],
+                  if (!_hasReachedLimit(24))
                     ConstrainedBox(
                         constraints: BoxConstraints(
                           minHeight: 34,
                           maxHeight: 34,
-                          minWidth: chipWidth,
-                          maxWidth: chipWidth,
+                          minWidth: singleChipWidth,
+                          maxWidth: singleChipWidth,
                         ),
                         child: SizedBox(
                           width: double.infinity,
@@ -409,9 +486,15 @@ class _MnemonicInputState extends State<MnemonicInput> {
                             ),
                           ),
                         )),
+                  if (showAutocompleteForEditPhrase &&
+                      drawAutocompleteForEditPhraseAfterEnterPhraseInput)
+                    AutocompleteDropdown(
+                      suggestions: _suggestions,
+                      onTapHandler: _onTapAutocompleteHandler,
+                    )
                 ],
               ),
-              if (_suggestions.isNotEmpty)
+              if (showAutocompleteForNewPhrase)
                 AutocompleteDropdown(
                   suggestions: _suggestions,
                   onTapHandler: _onTapAutocompleteHandler,
