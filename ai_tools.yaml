@@ -1,0 +1,42 @@
+# ai_tools.yaml - Manifest of Available Tools for AI Agents
+
+tools:
+  - name: flutter_test
+    description: Run all unit and widget tests
+    command: flutter test
+
+  - name: flutter_analyze
+    description: Run static analysis and linter
+    command: flutter analyze
+
+  - name: flutter_run
+    description: Start development server on a connected device or emulator
+    command: flutter run
+
+  - name: flutter_run_web
+    description: Start development web server on Chrome
+    command: flutter run -d chrome --web-port=3000
+
+  - name: flutter_build_apk
+    description: Build Android APK (debug/release)
+    command: flutter build apk
+
+  - name: flutter_build_ios
+    description: Build iOS app (requires macOS)
+    command: flutter build ios
+
+  - name: dart_format
+    description: Format all Dart code
+    command: dart format .
+
+  - name: dart_fix
+    description: Apply automated Dart fixes
+    command: dart fix --apply
+
+  - name: pub_outdated
+    description: Check for outdated dependencies
+    command: dart pub outdated
+
+  - name: pub_upgrade
+    description: Upgrade all dependencies
+    command: dart pub upgrade 
