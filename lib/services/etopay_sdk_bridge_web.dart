@@ -1,7 +1,4 @@
-@JS()
 library;
-
-import 'dart:js_util';
 import 'package:js/js.dart';
 
 @JS('etopayInit')

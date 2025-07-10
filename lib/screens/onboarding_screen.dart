@@ -7,12 +7,9 @@ import 'package:flutter/foundation.dart';
 // Add these imports for web support
 // ignore: avoid_web_libraries_in_flutter
 import 'package:web/web.dart' as web;
-import 'package:http/http.dart' as http;
-import 'package:eto_pay/screens/choose_network_screen.dart';
-import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:go_router/go_router.dart';
-import 'package:eto_pay/screens/terms_and_conditions_screen.dart';
 import 'package:eto_pay/env.dart'; // Add this import for config
+import 'package:http/http.dart' as http;
 
 const String authDomain =
     'https://auth-etopay-demo.etospheres.com/realms/6f2f6c69393f40369647f9fed8dd65ee';
@@ -36,13 +33,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   String? _error;
   String? _username;
-  String? _accessToken;
   bool _sdkReady = false;
-
-  void _navigateToChooseNetwork() {
-    if (!mounted) return;
-    context.go('/choose-network');
-  }
 
   void _navigateToTermsAndConditions() {
     if (!mounted) return;
@@ -103,11 +94,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       }
       final username = _parseUsernameFromIdToken(idToken);
       setState(() {
-        _accessToken = accessToken;
         _username = username;
       });
       // Call ETOPay SDK bridge for user creation and initialization
-      if (accessToken != null) {
+      if (_username != null) {
         await EtopaySdkBridge.createNewUser(username);
         await EtopaySdkBridge.initializeUser(username);
       }
@@ -133,7 +123,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _authenticate() async {
     setState(() {
       _error = null;
-      _accessToken = null;
       _username = null;
     });
 
@@ -168,7 +157,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       final username = _parseUsernameFromIdToken(idToken);
 
       setState(() {
-        _accessToken = result.accessToken;
         _username = username;
       });
       // Call ETOPay SDK bridge for user creation and initialization

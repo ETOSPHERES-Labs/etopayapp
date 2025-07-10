@@ -1,5 +1,6 @@
-import 'dart:js_util';
+// ignore_for_file: deprecated_member_use, avoid_web_libraries_in_flutter
 import 'etopay_sdk_bridge_web.dart';
+import 'dart:js_util';
 
 class EtopaySdkBridge {
   static ETOPaySdk? _sdk;
