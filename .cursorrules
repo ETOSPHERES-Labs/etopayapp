@@ -1,0 +1,171 @@
+# .cursorrules for Flutter/Dart project
+
+[ignore]
+# Ignore build artifacts and IDE files
+build/
+.dart_tool/
+.packages
+pubspec.lock
+.idea/
+.vscode/
+*.iml
+
+# Ignore platform-specific build outputs
+android/.gradle/
+android/app/build/
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Runner.xcodeproj/
+macos/Flutter/ephemeral/
+macos/Runner.xcworkspace/
+macos/Runner.xcodeproj/
+linux/flutter/ephemeral/
+linux/build/
+windows/flutter/ephemeral/
+windows/build/
+
+# Ignore test outputs
+coverage/
+
+# Ignore user secrets or local config
+.env
+
+[settings]
+# Set preferred language for code suggestions
+language = dart
+
+# Exclude generated files from code navigation
+exclude_generated = true
+
+## 🧑‍💻 Development Guidelines
+
+This project follows **Flutter** best practices and is structured for modularity, scalability, and clear separation of concerns, inspired by feature-based architecture.
+
+Use these guidelines and coding standards to ensure consistency across the codebase:
+
+---
+
+### 🔧 Code Style and Structure
+
+- Write concise, expressive, and idiomatic **Dart**
+- Use **functional programming** patterns where possible (prefer pure functions, minimize side effects)
+- Prefer **composition** over inheritance, and modularization over duplication
+- Organize each feature with:
+  - `core/` → shared styles, colors, themes, utilities
+  - `models/` → data models and entities
+  - `router/` → app routing and navigation
+  - `screens/` → UI screens and pages
+  - `services/` → platform bridges, SDK integrations, business logic
+  - `view_models/` → state management and business logic for views
+  - `views/` → UI components and widgets for specific features
+  - `widgets/` → reusable UI widgets
+- Keep files focused and avoid large monolithic files
+- Place platform-specific or integration code (e.g., SDK bridges) in `services/`
+
+---
+
+### 🧠 Naming Conventions
+
+- Use `snake_case` for **files** and **directories** (e.g. `choose_network_screen.dart`)
+- Use **PascalCase** for class names and **camelCase** for variables and methods
+- Use descriptive names with auxiliary verbs (e.g. `isLoading`, `hasError`, `canSubmit`)
+- Use **named exports** (no default exports)
+
+---
+
+### 📐 Dart Usage
+
+- Use `class` for models and business logic, but prefer stateless functions for helpers
+- Use `typedef` for function types
+- Use null safety and type annotations everywhere
+- Avoid deprecated APIs; migrate to new ones as soon as feasible
+- Types live in `models/` or are colocated with usage
+
+---
+
+### 🏗️ Feature Architecture
+
+- Keep widget and business logic inside the relevant feature folder
+- If reusable between many features (e.g. `User`, `Network`), move logic to `models/` or `services/`
+- Use `view_models/` for state management (Provider, Riverpod, Bloc, etc.)
+- Use `services/` for SDK bridges and platform integration
+
+---
+
+### 🔌 SDK Integration (Bridge Pattern)
+
+- Use bridge classes in `services/` (e.g., `etopay_sdk_bridge.dart`, `etopay_sdk_bridge_web.dart`) to interact with the ETOPay SDK
+- For **mobile (Android/iOS)**: use the Dart bridge directly; ensure any platform channels are handled in the bridge
+- For **web**: use the web bridge and JS interop as implemented in `etopay_sdk_bridge_web.dart`
+- Keep platform-specific logic isolated; use conditional imports if needed
+- Document any integration steps or platform requirements in the bridge files
+
+---
+
+### 🧪 Error Handling & Validation
+
+- Use early returns & guard clauses
+- Prefer `try/catch` for async error handling
+- Display user-friendly errors via dialogs, snackbars, or banners
+- Write unit and widget tests for critical logic and UI
+
+---
+
+### 💅 UI & Styling
+
+- Use **Flutters Material** or **Cupertino** widgets for consistent UI
+- Design theme:
+  - Minimal, professional, and slightly playful
+  - Inspired by modern mobile design (e.g., Apple, Google)
+  - Emphasize visuals: badges, progress bars, illustrations
+  - Use icons, subtle borders, and hover/tap feedback
+  - Avoid heavy drop shadows; prefer light borders and soft effects
+- Animations:
+  - Elegant and performant (use `Animated*` widgets, `AnimatedBuilder`, or `flutter_animate`)
+  - Use `AnimatedSwitcher`, `Hero`, and implicit animations for transitions
+- UX Principles:
+  - Clear hierarchy
+  - Responsive: no overflow, no overlap
+  - All buttons and interactive elements should provide feedback
+  - Use `ThemeData` for consistent theming
+
+---
+
+### 🧱 Rendering & Performance
+
+- Favor stateless widgets and const constructors where possible
+- Use `ListView.builder`, `GridView.builder` for large lists
+- Use `FutureBuilder`/`StreamBuilder` for async data
+- Optimize images and assets (SVGs, compressed PNGs)
+- Use lazy loading for heavy widgets
+
+---
+
+### 🔍 Data, Forms, Actions
+
+- Use Provider, Riverpod, or Bloc for state management
+- Use `Form`, `TextFormField`, and validation logic for forms
+- All actions should:
+  - Have clear input validation
+  - Model expected errors
+  - Return typed output
+- Use `shared_preferences` or secure storage for persistence
+
+---
+
+### 🧭 Routing & Navigation
+
+- All routes defined in `router/`
+- Use `GoRouter` or `Navigator 2.0` for navigation
+- Use named routes and constants for paths
+- Keep navigation logic out of UI widgets
+
+---
+
+### 📚 References
+
+- [Effective Dart](https://dart.dev/guides/language/effective-dart)
+- [Flutter Style Guide](https://docs.flutter.dev/development/tools/analysis)
+- [Provider](https://pub.dev/packages/provider)
+- [Riverpod](https://riverpod.dev/)
+- [Bloc](https://bloclibrary.dev/#/) 
