@@ -239,12 +239,11 @@ class _MnemonicInputState extends State<MnemonicInput> {
         position + columnsPerRow - (position % columnsPerRow) = last cell position in row
         4 + 3 - (4 % 3) = 6
         
-        so last position in row is 6
+        last position in row is 6 so index is 2
         
-         1  2  3
-        [4] 5 >6<
-         <----->
-         7  8  9
+         1  2  3    <---- row index 1
+        [4] 5 >6<   <---- row index 2
+         7  8  9    <---- row index 3
     */
   double _getRowIndexForPosition(int position, int columnsPerRow) {
     return (columnsPerRow + position - (position % columnsPerRow)) /
@@ -257,7 +256,7 @@ class _MnemonicInputState extends State<MnemonicInput> {
     return itemRow == totalRows - 1;
   }
 
-  bool shouldDrawEditAutocompleteHere(int position, int drawPosition) {
+  bool shouldDrawEditPhraseAutocompleteHere(int position, int drawPosition) {
     return position == drawPosition;
   }
 
@@ -276,17 +275,17 @@ class _MnemonicInputState extends State<MnemonicInput> {
         50,
       );
 
-      int cellIndexForDrawingAutocompleteForEditPhrase = -1;
-      bool drawAutocompleteForEditPhraseAfterEnterPhraseInput = false;
-      bool showAutocompleteForEditPhrase =
+      int editPhraseAutocompleteCellIndex = -1;
+      bool drawEditPhraseAutocompleteAfterEnterPhraseInput = false;
+      bool showEditPhraseAutocomplete =
           _editingPhraseIndex != null && _suggestions.isNotEmpty;
 
-      bool showAutocompleteForNewPhrase =
+      bool showEnterPhraseAutocomplete =
           _editingPhraseIndex == null && _suggestions.isNotEmpty;
 
       // calculations for autocomplete box for editing
-      if (showAutocompleteForEditPhrase) {
-        int rowIndex = showAutocompleteForEditPhrase
+      if (showEditPhraseAutocomplete) {
+        int rowIndex = showEditPhraseAutocomplete
             ? _getRowIndexForPosition(_editingPhraseIndex!, numberOfChips)
                 .toInt()
             : 0;
@@ -294,13 +293,13 @@ class _MnemonicInputState extends State<MnemonicInput> {
         int lastCellPositionInRow = rowIndex * numberOfChips;
         bool lastCellElementExists = lastCellPositionInRow <= _phrases.length;
 
-        cellIndexForDrawingAutocompleteForEditPhrase =
+        editPhraseAutocompleteCellIndex =
             lastCellElementExists ? lastCellPositionInRow : _phrases.length;
 
-        cellIndexForDrawingAutocompleteForEditPhrase =
-            cellIndexForDrawingAutocompleteForEditPhrase - 1; // zero indexed
+        editPhraseAutocompleteCellIndex =
+            editPhraseAutocompleteCellIndex - 1; // zero indexed
 
-        drawAutocompleteForEditPhraseAfterEnterPhraseInput = _isItemInLastRow(
+        drawEditPhraseAutocompleteAfterEnterPhraseInput = _isItemInLastRow(
                 _editingPhraseIndex!, _phrases.length, numberOfChips) &&
             _phrases.length > lastCellPositionInRow - numberOfChips &&
             _phrases.length != lastCellPositionInRow;
@@ -439,10 +438,10 @@ class _MnemonicInputState extends State<MnemonicInput> {
                               ),
                             ),
                           )),
-                    if (showAutocompleteForEditPhrase &&
-                        !drawAutocompleteForEditPhraseAfterEnterPhraseInput &&
-                        shouldDrawEditAutocompleteHere(
-                            phrase.key, cellIndexForDrawingAutocompleteForEditPhrase))
+                    if (showEditPhraseAutocomplete &&
+                        !drawEditPhraseAutocompleteAfterEnterPhraseInput &&
+                        shouldDrawEditPhraseAutocompleteHere(
+                            phrase.key, editPhraseAutocompleteCellIndex))
                       AutocompleteDropdown(
                         suggestions: _suggestions,
                         onTapHandler: _onTapAutocompleteHandler,
@@ -486,15 +485,15 @@ class _MnemonicInputState extends State<MnemonicInput> {
                             ),
                           ),
                         )),
-                  if (showAutocompleteForEditPhrase &&
-                      drawAutocompleteForEditPhraseAfterEnterPhraseInput)
+                  if (showEditPhraseAutocomplete &&
+                      drawEditPhraseAutocompleteAfterEnterPhraseInput)
                     AutocompleteDropdown(
                       suggestions: _suggestions,
                       onTapHandler: _onTapAutocompleteHandler,
                     )
                 ],
               ),
-              if (showAutocompleteForNewPhrase)
+              if (showEnterPhraseAutocomplete)
                 AutocompleteDropdown(
                   suggestions: _suggestions,
                   onTapHandler: _onTapAutocompleteHandler,
