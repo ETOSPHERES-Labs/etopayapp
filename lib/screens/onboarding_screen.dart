@@ -15,7 +15,7 @@ const String authDomain =
     'https://auth-etopay-demo.etospheres.com/realms/6f2f6c69393f40369647f9fed8dd65ee';
 const String clientID = 'builtin-client';
 const String redirectURI = kIsWeb
-    ? 'http://localhost:59287' // or your deployed web URL
+    ? 'http://localhost:3000' // or your deployed web URL
     : 'com.etospheres.etopay:/oauthredirect';
 const String authorizationEndpoint = '$authDomain/protocol/openid-connect/auth';
 const String tokenEndpoint = '$authDomain/protocol/openid-connect/token';
