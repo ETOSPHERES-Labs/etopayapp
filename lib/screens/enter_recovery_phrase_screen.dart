@@ -87,7 +87,7 @@ class _EnterRecoveryPhraseScreen extends State<EnterRecoveryPhraseScreen> {
                       MnemonicInput(
                         tapNotifier: _tapNotifier,
                         mnemonicPhraseStateHandler: _setContinueButtonState,
-                        wordList: WORDLIST,
+                        wordList: bip39WordListEn,
                       ),
                       const SizedBox(height: 40),
                     ],
