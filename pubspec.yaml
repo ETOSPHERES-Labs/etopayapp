@@ -75,6 +75,7 @@ flutter:
     - assets/images/create_password.svg
     - assets/images/setup_pin.svg
     - assets/images/phrase_verification.svg
+    - assets/images/import_existing_wallet.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
