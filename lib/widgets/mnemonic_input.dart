@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-// import 'dart:developer' as developer;
 import 'dart:math';
 
 class MnemonicInput extends StatefulWidget {
   final ValueNotifier<bool> tapNotifier;
+  final void Function(bool) mnemonicPhraseStateHandler;
   final List<String> wordList;
   const MnemonicInput(
-      {super.key, required this.tapNotifier, required this.wordList});
+      {super.key,
+      required this.tapNotifier,
+      required this.wordList,
+      required this.mnemonicPhraseStateHandler});
 
   @override
   State<MnemonicInput> createState() => _MnemonicInputState();
@@ -304,6 +307,18 @@ class _MnemonicInputState extends State<MnemonicInput> {
             _phrases.length > lastCellPositionInRow - numberOfChips &&
             _phrases.length != lastCellPositionInRow;
       }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_phrases.length == 24) {
+          bool ok = _phrases.every(
+            (p) => widget.wordList.contains(p.toLowerCase()),
+          );
+
+          widget.mnemonicPhraseStateHandler(ok);
+        } else {
+          widget.mnemonicPhraseStateHandler(false);
+        }
+      });
 
       return Container(
           width: double.infinity,
