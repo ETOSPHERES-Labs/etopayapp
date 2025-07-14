@@ -1,5 +1,5 @@
 import 'package:eto_pay/screens/create_profile_screen.dart';
-import 'package:eto_pay/screens/import_existing_wallet_screen.dart';
+import 'package:eto_pay/screens/restore_profile_screen.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
 

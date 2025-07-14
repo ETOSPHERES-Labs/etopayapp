@@ -44,6 +44,7 @@ dependencies:
   web: ^0.5.0
   http: ^1.2.1
   js: ^0.6.7
+  file_picker: ^6.1.1
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,8 @@ flutter:
     - assets/images/setup_pin.svg
     - assets/images/phrase_verification.svg
     - assets/images/import_existing_wallet.svg
+    - assets/images/drag_and_drop_icon.svg
+    - assets/images/upload_your_backup_file_import_file.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
