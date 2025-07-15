@@ -63,8 +63,6 @@ class _DashedBorderPainter extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
 
-    final path = Path();
-
     // Helper to draw dashed lines on a single edge
     void drawDashedLine(Offset start, Offset end) {
       double dx = end.dx - start.dx;
