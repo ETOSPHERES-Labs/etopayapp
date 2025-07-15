@@ -49,8 +49,6 @@ class _UploadRecoveryFileImportFileScreen
 
   @override
   Widget build(BuildContext context) {
-    print("FILE NAME:");
-    print(widget.fileName);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Column(
