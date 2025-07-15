@@ -1,3 +1,4 @@
+import 'package:eto_pay/widgets/conditional_button.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +41,12 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
   final TextEditingController nodeController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool _isContinueButtonEnabled = false;
+void _setContinueButtonState(bool isValid) {
+    setState(() {
+      _isContinueButtonEnabled = isValid;
+    });
+  }
 
   final InputDecoration defaultDecoration = InputDecoration(
     contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
@@ -73,6 +80,8 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
     nodeController.text = network['node'] ?? '';
     usernameController.text = network['username'] ?? '';
     passwordController.text = network['password'] ?? '';
+
+      _setContinueButtonState(coinController.text.isNotEmpty);
   }
 
   Widget _buildTextField(
@@ -138,46 +147,52 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
                         child: ImageCardListWidget(
                           svgAssetPath: 'assets/images/choose_network_bg.svg',
                           subtitle: 'Connect to a custom network',
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: 53,
-                            child: DropdownButtonFormField<Map<String, String>>(
-                              decoration: activeDecoration()
-                                  .copyWith(labelText: 'Network'),
-                              value: selectedNetwork,
-                              style: textStyle(true),
-                              items: networks.map((network) {
-                                return DropdownMenuItem(
-                                  value: network,
-                                  child: Text(network['name']!),
-                                );
-                              }).toList(),
-                              onChanged: (network) {
-                                setState(() {
-                                  selectedNetwork = network;
-                                  if (network != null) {
-                                    _updateControllers(network);
-                                  }
-                                });
-                              },
-                            ),
+                          footer: ConditionalButton(
+                            isActive: _isContinueButtonEnabled,
+                            onPressed: () {},
+                            text: 'Continue',
                           ),
-                          const SizedBox(height: 12),
-                          _buildTextField(
-                              'Coin type', coinController, isNetworkSelected),
-                          const SizedBox(height: 12),
-                          _buildTextField('Node address', nodeController,
-                              isNetworkSelected),
-                          const SizedBox(height: 12),
-                          _buildTextField('Username (optional)',
-                              usernameController, isNetworkSelected),
-                          const SizedBox(height: 12),
-                          _buildTextField('Password (optional)',
-                              passwordController, isNetworkSelected),
-                        ],
+                          contentBeforeFooter: Column(
+                            children: [
+                              SizedBox(
+                                height: 53,
+                                child: DropdownButtonFormField<
+                                    Map<String, String>>(
+                                  decoration: activeDecoration()
+                                      .copyWith(labelText: 'Network'),
+                                  value: selectedNetwork,
+                                  style: textStyle(true),
+                                  items: networks.map((network) {
+                                    return DropdownMenuItem(
+                                      value: network,
+                                      child: Text(network['name']!),
+                                    );
+                                  }).toList(),
+                                  onChanged: (network) {
+                                    setState(() {
+                                      selectedNetwork = network;
+                                      if (network != null) {
+                                        _updateControllers(network);
+                                      }
+                                    });
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              _buildTextField('Coin type', coinController,
+                                  isNetworkSelected),
+                              const SizedBox(height: 12),
+                              _buildTextField('Node address', nodeController,
+                                  isNetworkSelected),
+                              const SizedBox(height: 12),
+                              _buildTextField('Username (optional)',
+                                  usernameController, isNetworkSelected),
+                              const SizedBox(height: 12),
+                              _buildTextField('Password (optional)',
+                                  passwordController, isNetworkSelected),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
