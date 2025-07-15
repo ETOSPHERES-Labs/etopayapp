@@ -41,8 +41,10 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
   final TextEditingController nodeController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  
   bool _isContinueButtonEnabled = false;
-void _setContinueButtonState(bool isValid) {
+
+  void _setContinueButtonState(bool isValid) {
     setState(() {
       _isContinueButtonEnabled = isValid;
     });
@@ -81,7 +83,7 @@ void _setContinueButtonState(bool isValid) {
     usernameController.text = network['username'] ?? '';
     passwordController.text = network['password'] ?? '';
 
-      _setContinueButtonState(coinController.text.isNotEmpty);
+    _setContinueButtonState(coinController.text.isNotEmpty);
   }
 
   Widget _buildTextField(
