@@ -17,21 +17,21 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
       'coin': 'ETH',
       'node': 'https://mainnet.infura.io/v3/...',
       'username': 'eth_user',
-      'password': 'eth_pass'
+      'something': 'eth_pass'
     },
     {
       'name': 'Bitcoin',
       'coin': 'BTC',
       'node': 'https://btcnode.org',
       'username': 'btc_user',
-      'password': 'btc_pass'
+      'something': 'btc_pass'
     },
     {
       'name': 'Polygon',
       'coin': 'MATIC',
       'node': 'https://polygon-rpc.com',
       'username': '',
-      'password': ''
+      'something': ''
     },
   ];
 
@@ -40,7 +40,7 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
   final TextEditingController coinController = TextEditingController();
   final TextEditingController nodeController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController somethingController = TextEditingController();
   
   bool _isContinueButtonEnabled = false;
 
@@ -81,7 +81,7 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
     coinController.text = network['coin'] ?? '';
     nodeController.text = network['node'] ?? '';
     usernameController.text = network['username'] ?? '';
-    passwordController.text = network['password'] ?? '';
+    somethingController.text = network['something'] ?? '';
 
     _setContinueButtonState(coinController.text.isNotEmpty);
   }
@@ -110,7 +110,7 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
     coinController.dispose();
     nodeController.dispose();
     usernameController.dispose();
-    passwordController.dispose();
+    somethingController.dispose();
     super.dispose();
   }
 
@@ -190,8 +190,8 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
                               _buildTextField('Username (optional)',
                                   usernameController, isNetworkSelected),
                               const SizedBox(height: 12),
-                              _buildTextField('Password (optional)',
-                                  passwordController, isNetworkSelected),
+                              _buildTextField('something (optional)',
+                                  somethingController, isNetworkSelected),
                             ],
                           ),
                         ),
