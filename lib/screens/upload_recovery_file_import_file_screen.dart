@@ -22,8 +22,8 @@ class _UploadRecoveryFileImportFileScreen
     extends State<UploadRecoveryFileImportFileScreen> {
   static const double _continueButtonHeight = 64;
   bool _isContinueButtonEnabled = false;
-  final _controller1 = TextEditingController();
-  bool _obscure1 = true;
+  final _pinController = TextEditingController();
+  bool _obscureState = true;
 
   void _setContinueButtonState(bool isValid) {
     setState(() {
@@ -34,16 +34,16 @@ class _UploadRecoveryFileImportFileScreen
   @override
   void initState() {
     super.initState();
-    _controller1.addListener(_updateContinueButton);
+    _pinController.addListener(_updateContinueButton);
   }
 
   void _updateContinueButton() {
-    _setContinueButtonState(_controller1.text.isNotEmpty);
+    _setContinueButtonState(_pinController.text.isNotEmpty);
   }
 
   @override
   void dispose() {
-    _controller1.dispose();
+    _pinController.dispose();
     super.dispose();
   }
 
@@ -102,8 +102,8 @@ class _UploadRecoveryFileImportFileScreen
                   ),
                   const SizedBox(height: 24),
                   TextField(
-                    controller: _controller1,
-                    obscureText: _obscure1,
+                    controller: _pinController,
+                    obscureText: _obscureState,
                     keyboardType: widget.isPin
                         ? TextInputType.number
                         : TextInputType.text,
@@ -124,10 +124,10 @@ class _UploadRecoveryFileImportFileScreen
                       ),
                       prefixIcon: const Icon(Icons.lock_outline, size: 20),
                       suffixIcon: IconButton(
-                        icon: Icon(_obscure1
+                        icon: Icon(_obscureState
                             ? Icons.visibility_off
                             : Icons.visibility),
-                        onPressed: () => setState(() => _obscure1 = !_obscure1),
+                        onPressed: () => setState(() => _obscureState = !_obscureState),
                       ),
                     ),
                   )
@@ -146,7 +146,7 @@ class _UploadRecoveryFileImportFileScreen
                 ConditionalButton(
                   isActive: _isContinueButtonEnabled,
                   onPressed: () {
-                    // Akcja przycisku continue
+                    // continue
                   },
                   text: 'Continue',
                 ),
