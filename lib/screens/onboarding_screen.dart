@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'package:web/web.dart' as web;
 import 'package:go_router/go_router.dart';
-import 'package:eto_pay/env.dart'; // Add this import for config
+import 'package:eto_pay/env.example.dart'; // Add this import for config
 import 'package:http/http.dart' as http;
 
 const String authDomain =
