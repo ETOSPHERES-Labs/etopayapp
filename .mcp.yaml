@@ -1,0 +1,25 @@
+# .mcp.yaml - MCP/AI Orchestration Config
+
+allowed_commands:
+  - flutter run
+  - flutter test
+  - flutter analyze
+  - flutter build apk
+  - flutter build ios
+  - flutter pub get
+  - dart format .
+  - dart fix --apply
+  - dart pub outdated
+  - dart pub upgrade
+
+agent_permissions:
+  can_edit_code: true
+  can_create_pr: true
+  can_update_docs: true
+  can_run_tests: true
+  can_modify_ci: true
+
+review_required:
+  - all_code_changes
+  - new_dependencies
+  - workflow_updates 

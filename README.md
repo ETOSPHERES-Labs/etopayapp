@@ -1,13 +1,13 @@
 # ETOPay White-Label App
 
-[![Build Status](https://github.com/ETOSPHERES-Labs/etopay-sdk/actions/workflows/ci.yaml/badge.svg)](https://github.com/ETOSPHERES-Labs/etopay-sdk/actions)
+[![Build Status](https://https://github.com/ETOSPHERES-Labs/etopayapp/actions/workflows/ci.yaml/badge.svg)](https://https://github.com/ETOSPHERES-Labs/etopayapp/actions)
 [![License: AGPL v3](https://img.shields.io/github/license/ETOSPHERES-Labs/etopay-sdk)](LICENSE)
-[![Latest Release](https://img.shields.io/github/v/release/ETOSPHERES-Labs/etopay-sdk)](https://github.com/ETOSPHERES-Labs/etopay-sdk/releases)
+[![Latest Release](https://img.shields.io/github/v/release/ETOSPHERES-Labs/etopay-sdk)](https://https://github.com/ETOSPHERES-Labs/etopayapp/releases)
 [![Docs](https://img.shields.io/badge/docs-etospheres.com-blue)](https://docs.etospheres.com)
-[![Stars](https://img.shields.io/github/stars/ETOSPHERES-Labs/etopay-sdk?style=social)](https://github.com/ETOSPHERES-Labs/etopay-sdk/stargazers)
-[![Forks](https://img.shields.io/github/forks/ETOSPHERES-Labs/etopay-sdk?style=social)](https://github.com/ETOSPHERES-Labs/etopay-sdk/network/members)
+[![Stars](https://img.shields.io/github/stars/ETOSPHERES-Labs/etopay-sdk?style=social)](https://https://github.com/ETOSPHERES-Labs/etopayapp/stargazers)
+[![Forks](https://img.shields.io/github/forks/ETOSPHERES-Labs/etopay-sdk?style=social)](https://https://github.com/ETOSPHERES-Labs/etopayapp/network/members)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Issues](https://img.shields.io/github/issues/ETOSPHERES-Labs/etopay-sdk)](https://github.com/ETOSPHERES-Labs/etopay-sdk/issues)
+[![Issues](https://img.shields.io/github/issues/ETOSPHERES-Labs/etopay-sdk)](https://https://github.com/ETOSPHERES-Labs/etopayapp/issues)
 
 ---
 
@@ -65,3 +65,15 @@ Please see [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 ## 📝 License
 
 This project is licensed under the AGPL-3.0 License. See [LICENSE](LICENSE) for details.
+
+# AI/Agent Integration
+
+This repository is designed to work closely with AI assistants, agents, and automation servers (e.g., MCP).
+
+- See [AGENTS.md](./AGENTS.md) for agent development guidelines
+- Example prompts for agents: [PROMPTS.md](./PROMPTS.md)
+- Available tools and commands: [ai_tools.yaml](./ai_tools.yaml)
+- MCP/AI orchestration config: [.mcp.yaml](./.mcp.yaml)
+- Use the [AI Task Request](.github/ISSUE_TEMPLATE/ai_task.md) template for agent-driven tasks
+
+All agent-generated code and PRs are subject to human review and must follow the project’s style and security guidelines.
