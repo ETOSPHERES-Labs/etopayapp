@@ -27,6 +27,7 @@ class ImageCardListWidget extends StatelessWidget {
   final ValueChanged<bool?>? onCheckboxChanged;
   final String checkboxLabel;
   final Widget? footer;
+  final Widget? contentBeforeFooter;
 
   const ImageCardListWidget({
     super.key,
@@ -39,6 +40,7 @@ class ImageCardListWidget extends StatelessWidget {
     this.onCheckboxChanged,
     this.checkboxLabel = 'Accept terms',
     this.footer,
+    this.contentBeforeFooter,
   });
 
   @override
@@ -139,6 +141,10 @@ class ImageCardListWidget extends StatelessWidget {
                 ),
               ],
             ),
+          ],
+          if (contentBeforeFooter != null) ...[
+            const SizedBox(height: 16),
+            contentBeforeFooter!,
           ],
           if (footer != null) footer!,
         ],

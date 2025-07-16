@@ -1,3 +1,4 @@
+import 'package:eto_pay/screens/choose_custom_network_screen.dart';
 import 'package:eto_pay/screens/wallet_options_screen.dart';
 import 'package:eto_pay/widgets/conditional_button.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
@@ -64,9 +65,7 @@ class ChooseNetworkScreen extends StatelessWidget {
                         icon: Icons.account_balance_wallet_outlined,
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const WalletOptionsScreen(
-                              network: 'ERC20-based',
-                            ),
+                            builder: (context) => const ChooseCustomNetworkScreen(),
                           ),
                         ),
                       ),
