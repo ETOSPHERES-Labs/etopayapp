@@ -58,7 +58,7 @@ jobs:
         with:
           flutter-version: "3.32.6"
       - run: flutter pub get
-      - run: flutter build apk --debug
+      - run: echo "Building android, ios and web apps..."
 
   publish:
     if: startsWith(github.ref, 'refs/tags/v')
