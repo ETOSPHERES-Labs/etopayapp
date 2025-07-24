@@ -4,60 +4,39 @@ import 'package:eto_pay/widgets/continue_button.dart';
 import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 
-class KycVerificationStep0Screen extends ConsumerStatefulWidget {
+class KycVerificationStep0Screen extends ConsumerWidget {
   const KycVerificationStep0Screen({super.key});
 
-  @override
-  ConsumerState<KycVerificationStep0Screen> createState() =>
-      _KycVerificationStep0Screen();
-}
-
-class _KycVerificationStep0Screen
-    extends ConsumerState<KycVerificationStep0Screen> {
-  // Kyc Form Provider data: nationality
-  Country? _nationality;
-  void _updateNationality(Country nationality) {
-    setState(() {
-      _nationality = nationality;
-    });
-    final current = ref.read(kycFormProvider);
-    ref.read(kycFormProvider.notifier).state = current.copyWith(
-      nationality: nationality.name,
-    );
-  }
-
-  // Kyc Form Provider data: verification method
-  String _verificationMethod = 'Postident';
-  void _updateVerificationMethod(String verificationMethod) {
-    setState(() {
-      _verificationMethod = verificationMethod;
-    });
-    final current = ref.read(kycFormProvider);
-    ref.read(kycFormProvider.notifier).state = current.copyWith(
-      verificationMethod: _verificationMethod,
-    );
-  }
-
-  // Continue button state
-  bool _continueButtonEnabled = false;
-  void _setContinueButtonState(bool isValid) {
-    setState(() {
-      _continueButtonEnabled = isValid;
-    });
-  }
-
-  // Verification methods
-  final List<Map<String, String>> _verificationMethods = [
+  static const List<Map<String, String>> _verificationMethods = [
     {'name': 'Postident', 'iconPath': 'assets/icons/icon_postident.svg'},
     {'name': 'Viviswap', 'iconPath': 'assets/icons/icon_viviswap.svg'},
   ];
 
+  Country? findCountryByName(String? name) {
+    if (name == null) return null;
+    try {
+      return euCountries.firstWhere(
+        (country) => country.name.toLowerCase() == name.toLowerCase(),
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final form = ref.watch(kycFormProvider);
+    final notifier = ref.read(kycFormProvider.notifier);
+
+    // Domyślna metoda w providerze powinna być ustawiona na 'Postident', ale zabezpieczamy się też tutaj:
+    final currentVerificationMethod = form.verificationMethod ?? 'Postident';
+
+    final selectedCountry = findCountryByName(form.nationality);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -67,7 +46,7 @@ class _KycVerificationStep0Screen
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -87,6 +66,7 @@ class _KycVerificationStep0Screen
                         ],
                       ),
                     ),
+                    const SizedBox(height: 20),
                     ImageCardListWidget(
                       svgAssetPath: 'assets/images/verify_kyc.svg',
                       textData: 'Let’s verify your KYC',
@@ -105,10 +85,11 @@ class _KycVerificationStep0Screen
                           const SizedBox(height: 8),
                           CountryDropdown(
                             countries: euCountries,
-                            selectedCountry: _nationality,
+                            selectedCountry: selectedCountry,
                             onChanged: (value) {
-                              _updateNationality(value!);
-                              _setContinueButtonState(true);
+                              if (value != null) {
+                                notifier.updateNationality(value.name);
+                              }
                             },
                           ),
                           const SizedBox(height: 16),
@@ -122,12 +103,13 @@ class _KycVerificationStep0Screen
                           const SizedBox(height: 8),
                           Column(
                             children: _verificationMethods.map((method) {
-                              final bool isSelected =
-                                  _verificationMethod == method['name'];
+                              final isSelected =
+                                  currentVerificationMethod == method['name'];
 
                               return GestureDetector(
                                 onTap: () {
-                                  _updateVerificationMethod(method['name']!);
+                                  notifier.updateVerificationMethod(
+                                      method['name']!);
                                 },
                                 child: Container(
                                   margin: const EdgeInsets.only(bottom: 6),
@@ -185,12 +167,13 @@ class _KycVerificationStep0Screen
               ),
             ),
             ContinueButtonWidget(
-              isEnabled: _continueButtonEnabled,
+              isEnabled:
+                  form.nationality != null && form.nationality!.isNotEmpty,
               text: 'Proceed',
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => KycVerificationStep1Screen(),
+                    builder: (context) => const KycVerificationStep1Screen(),
                   ),
                 );
               },

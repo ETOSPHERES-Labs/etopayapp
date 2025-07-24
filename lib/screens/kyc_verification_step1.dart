@@ -1,80 +1,16 @@
+import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_step2.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
+import 'package:eto_pay/widgets/custom_wide_input_field.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:eto_pay/providers/kyc_form_provider.dart';
 
-class KycVerificationStep1Screen extends ConsumerStatefulWidget {
+class KycVerificationStep1Screen extends ConsumerWidget {
   const KycVerificationStep1Screen({super.key});
-
-  @override
-  ConsumerState<KycVerificationStep1Screen> createState() =>
-      _KycVerificationStep1Screen();
-}
-
-class _KycVerificationStep1Screen
-    extends ConsumerState<KycVerificationStep1Screen> {
-  bool _termsAccepted = false;
-
-  // Continue button state
-  bool _continueButtonEnabled = false;
-  void _setContinueButtonState(bool isValid) {
-    setState(() {
-      _continueButtonEnabled = isValid;
-    });
-  }
-
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _emailController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _firstNameController.addListener(_validateInputs);
-    _lastNameController.addListener(_validateInputs);
-    _emailController.addListener(_validateInputs);
-  }
-
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _emailController.dispose();
-
-    super.dispose();
-  }
-
-  void _validateInputs() {
-    final firstName = _firstNameController.text.trim();
-    final lastName = _lastNameController.text.trim();
-    final email = _emailController.text.trim();
-
-    // Update Kyc Form Provider data
-    final current = ref.read(kycFormProvider);
-    ref.read(kycFormProvider.notifier).state = current.copyWith(
-      firstName: firstName,
-      lastName: lastName,
-      email: email
-    );
-
-    final isEnabled = firstName.isNotEmpty &&
-        lastName.isNotEmpty &&
-        _isValidEmail(email) &&
-        _termsAccepted;
-
-    _setContinueButtonState(isEnabled);
-  }
-
-  bool _isValidEmail(String email) {
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    return emailRegex.hasMatch(email);
-  }
 
   void _launchTermsUrl() async {
     const url = 'https://viviswap.com/terms';
@@ -85,7 +21,10 @@ class _KycVerificationStep1Screen
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final form = ref.watch(kycFormProvider);
+    final notifier = ref.read(kycFormProvider.notifier);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -102,9 +41,7 @@ class _KycVerificationStep1Screen
                     TextButton(
                       style:
                           TextButton.styleFrom(foregroundColor: Colors.black),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                      onPressed: () => Navigator.of(context).pop(),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -115,7 +52,7 @@ class _KycVerificationStep1Screen
                       ),
                     ),
                     const SizedBox(height: 20),
-                    StepProgressBar(currentStep: 1), 
+                    StepProgressBar(currentStep: 1),
                     const SizedBox(height: 20),
                     const Text(
                       "Step 1/4",
@@ -159,35 +96,32 @@ class _KycVerificationStep1Screen
                       ),
                     ),
                     const SizedBox(height: 100),
-                    _CustomInputField(
+                    CustomInputField(
                       label: 'First name',
-                      controller: _firstNameController,
+                      value: form.firstName ?? "",
+                      onChanged: notifier.updateFirstName,
                     ),
                     const SizedBox(height: 16),
-                    _CustomInputField(
+                    CustomInputField(
                       label: 'Last name',
-                      controller: _lastNameController,
+                      value: form.lastName ?? "",
+                      onChanged: notifier.updateLastName,
                     ),
                     const SizedBox(height: 16),
-                    _CustomInputField(
-                      label: 'Email ID',
-                      controller: _emailController,
+                    CustomInputField(
+                      label: 'Email',
+                      value: form.email ?? "",
+                      onChanged: notifier.updateEmail,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 24),
-
-                    // Checkbox z linkiem
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Checkbox(
-                          value: _termsAccepted,
-                          onChanged: (value) {
-                            setState(() {
-                              _termsAccepted = value ?? false;
-                            });
-                            _validateInputs();
-                          },
+                          value: form.termsAccepted ?? false,
+                          onChanged: (value) =>
+                              notifier.updateTermsAccepted(value ?? false),
                         ),
                         Expanded(
                           child: Padding(
@@ -225,68 +159,20 @@ class _KycVerificationStep1Screen
               ),
             ),
             ContinueButtonWidget(
-              isEnabled: _continueButtonEnabled,
+              isEnabled: form.isStep1Valid,
               text: 'Proceed',
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        KycVerificationStep2Screen(),
-                  ),
-                );
-              },
+              onPressed: form.isStep1Valid
+                  ? () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const KycVerificationStep2Screen(),
+                        ),
+                      );
+                    }
+                  : () {},
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CustomInputField extends StatefulWidget {
-  final String label;
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-
-  const _CustomInputField({
-    required this.label,
-    required this.controller,
-    this.keyboardType = TextInputType.text,
-  });
-
-  @override
-  State<_CustomInputField> createState() => _CustomInputFieldState();
-}
-
-class _CustomInputFieldState extends State<_CustomInputField> {
-  bool _isFocused = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Focus(
-      onFocusChange: (focused) {
-        setState(() {
-          _isFocused = focused;
-        });
-      },
-      child: TextField(
-        controller: widget.controller,
-        keyboardType: widget.keyboardType,
-        style: const TextStyle(color: Colors.black),
-        decoration: InputDecoration(
-          hintText: widget.label,
-          filled: true,
-          fillColor: _isFocused ? Colors.white : const Color(0xFFF5F5F5),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6),
-            borderSide: const BorderSide(color: Color(0xFFF5F5F5)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6),
-            borderSide: const BorderSide(color: Color(0xFFF5F5F5)),
-          ),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
     );

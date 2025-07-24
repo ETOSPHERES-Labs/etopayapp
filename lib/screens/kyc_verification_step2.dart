@@ -1,73 +1,48 @@
+import 'package:eto_pay/screens/kyc_verification_step1.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:eto_pay/core/eu_countries.dart';
+import 'package:eto_pay/models/kyc_form_model.dart';
+import 'package:eto_pay/providers/kyc_form_provider.dart';
+import 'package:eto_pay/screens/kyc_verification_step2_driving_license.dart';
 import 'package:eto_pay/screens/kyc_verification_step2_id_card.dart';
+import 'package:eto_pay/screens/kyc_verification_step2_passport.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
 import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
 import 'package:eto_pay/widgets/wide_button_with_icon_and_arrow.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:eto_pay/providers/kyc_form_provider.dart';
 
-class KycVerificationStep2Screen extends ConsumerStatefulWidget {
+class KycVerificationStep2Screen extends ConsumerWidget {
   const KycVerificationStep2Screen({super.key});
 
-  @override
-  ConsumerState<KycVerificationStep2Screen> createState() =>
-      _KycVerificationStep2Screen();
-}
-
-class _KycVerificationStep2Screen
-    extends ConsumerState<KycVerificationStep2Screen> {
-  
-  // Kyc Form Provider data: verification method
-  Country? _idVerificationDocumentIssuer;
-  void _updateIdVerificationDocumentIssuer(Country issuer) {
-    setState(() {
-      _idVerificationDocumentIssuer = issuer;
-      _continueButtonEnabled = true;
-    });
-    
-    final current = ref.read(kycFormProvider);
-    ref.read(kycFormProvider.notifier).state = current.copyWith(
-      idVerificationDocumentIssuer: issuer.name,
-    );
+  void _navigateToScreen(BuildContext context, Widget screen) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => screen));
   }
 
-  // Continue button state
-  bool _continueButtonEnabled = false;
-
-  @override
-  void initState() {
-    super.initState();
+  bool _isContinueEnabled(KycForm form) {
+    return form.idVerificationDocumentIssuer?.isNotEmpty == true;
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final form = ref.watch(kycFormProvider);
+    final notifier = ref.read(kycFormProvider.notifier);
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        top: true,
-        bottom: true,
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      style:
-                          TextButton.styleFrom(foregroundColor: Colors.black),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                      style: TextButton.styleFrom(foregroundColor: Colors.black),
+                      onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => KycVerificationStep1Screen())),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -82,10 +57,7 @@ class _KycVerificationStep2Screen
                     const SizedBox(height: 20),
                     const Text(
                       "Step 2/4",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -95,13 +67,10 @@ class _KycVerificationStep2Screen
                           width: 20,
                           height: 20,
                         ),
-                        SizedBox(width: 8),
-                        Text(
+                        const SizedBox(width: 8),
+                        const Text(
                           "2. ID Verification",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ],
                     ),
@@ -109,7 +78,6 @@ class _KycVerificationStep2Screen
                     const Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
                       style: TextStyle(
-                        fontWeight: FontWeight.normal,
                         fontSize: 16,
                         color: Color(0xFF747474),
                       ),
@@ -123,50 +91,52 @@ class _KycVerificationStep2Screen
                     ),
                     const SizedBox(height: 100),
                     const Text(
-                      "Select document issues country",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      "Select document issuing country",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     CountryDropdown(
                       countries: euCountries,
-                      selectedCountry: _idVerificationDocumentIssuer,
-                      onChanged: (value) {
-                        _updateIdVerificationDocumentIssuer(value!);
+                      selectedCountry: form.idVerificationDocumentIssuer != null
+                          ? findCountryByName(form.idVerificationDocumentIssuer!)
+                          : null,
+                      onChanged: (country) {
+                        if (country != null) {
+                          notifier.updateIssuer(country.name);
+                        }
                       },
                     ),
                     const SizedBox(height: 16),
                     const Text(
                       "Select document type",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     WideButtonWithIconAndArrow(
                       label: 'ID card',
                       icon: Icons.credit_card,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              KycVerificationStep2IdCardScreen(),
-                        ),
+                      onPressed: () => _navigateToScreen(
+                        context,
+                        const KycVerificationStep2IdCardScreen(),
                       ),
                     ),
                     const SizedBox(height: 16),
                     WideButtonWithIconAndArrow(
                       label: 'Driving license',
                       icon: Icons.drive_eta,
-                      onPressed: () {},
+                      onPressed: () => _navigateToScreen(
+                        context,
+                        const KycVerificationStep2DrivingLicenseScreen(),
+                      ),
                     ),
                     const SizedBox(height: 16),
                     WideButtonWithIconAndArrow(
                       label: 'Passport',
                       icon: Icons.document_scanner,
-                      onPressed: () {},
+                      onPressed: () => _navigateToScreen(
+                        context,
+                        const KycVerificationStep2PassportScreen(),
+                      ),
                     ),
                     const SizedBox(height: 24),
                   ],
@@ -174,9 +144,13 @@ class _KycVerificationStep2Screen
               ),
             ),
             ContinueButtonWidget(
-              isEnabled: _continueButtonEnabled,
+              isEnabled: _isContinueEnabled(form),
               text: 'Proceed',
-              onPressed: () {},
+              onPressed: _isContinueEnabled(form)
+                  ? () {
+                      // Przejdź do kolejnego kroku
+                    }
+                  : () {},
             ),
           ],
         ),

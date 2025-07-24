@@ -1,41 +1,20 @@
+import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_step3_upload_photo.dart';
+import 'package:eto_pay/screens/kyc_verification_step4.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
-import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
 import 'package:eto_pay/widgets/wide_button_with_icon_and_arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class KycVerificationStep3Screen extends ConsumerStatefulWidget {
+class KycVerificationStep3Screen extends ConsumerWidget {
   const KycVerificationStep3Screen({super.key});
 
   @override
-  ConsumerState<KycVerificationStep3Screen> createState() =>
-      _KycVerificationStep3Screen();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final form = ref.watch(kycFormProvider);
 
-class _KycVerificationStep3Screen
-    extends ConsumerState<KycVerificationStep3Screen> {
-
-  // Continue button state
-  // todo: if photo is there -> continue = true
-  bool _continueButtonEnabled = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  Country? selectedCountry;
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -52,9 +31,7 @@ class _KycVerificationStep3Screen
                     TextButton(
                       style:
                           TextButton.styleFrom(foregroundColor: Colors.black),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                      onPressed: () => Navigator.of(context).pop(),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -82,8 +59,8 @@ class _KycVerificationStep3Screen
                           width: 20,
                           height: 20,
                         ),
-                        SizedBox(width: 8),
-                        Text(
+                        const SizedBox(width: 8),
+                        const Text(
                           "3.Selfie or photo verification",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -123,7 +100,9 @@ class _KycVerificationStep3Screen
                     WideButtonWithIconAndArrow(
                       label: 'Take a selfie of yourself',
                       icon: Icons.add_a_photo_outlined,
-                      onPressed: () {},
+                      onPressed: () {
+                        // todo
+                      },
                     ),
                     const SizedBox(height: 24),
                   ],
@@ -131,9 +110,16 @@ class _KycVerificationStep3Screen
               ),
             ),
             ContinueButtonWidget(
-              isEnabled: _continueButtonEnabled,
-              text: 'Procced',
-              onPressed: () {},
+              isEnabled: form.isStep3Valid,
+              text: 'Proceed',
+              onPressed: form.isStep3Valid
+                  ? () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => const KycVerificationStep4Screen()),
+                      );
+                    }
+                  : () {},
             ),
           ],
         ),
