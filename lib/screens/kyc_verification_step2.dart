@@ -148,13 +148,9 @@ class KycVerificationStep2Screen extends ConsumerWidget {
               ),
             ),
             ContinueButtonWidget(
-              isEnabled: form.isStep2DrivingLicenseValid ||
-                  form.isStep2IdCardValid ||
-                  form.isStep2PassportValid,
+              isEnabled: form.isStep2Valid,
               text: 'Proceed',
-              onPressed: form.isStep2DrivingLicenseValid ||
-                      form.isStep2IdCardValid ||
-                      form.isStep2PassportValid
+              onPressed: form.isStep2Valid
                   ? () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

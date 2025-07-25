@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:eto_pay/core/eu_countries.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
-import 'package:eto_pay/screens/kyc_verification_step3.dart';
+import 'package:eto_pay/screens/kyc_verification_step2.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
 import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/image_upload_card.dart';
@@ -146,12 +146,12 @@ class KycVerificationStep2IdCardScreen extends ConsumerWidget {
             ),
             ContinueButtonWidget(
               isEnabled: form.isStep2IdCardValid,
-              text: 'Next',
+              text: 'Submit',
               onPressed: form.isStep2IdCardValid
                   ? () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (_) => const KycVerificationStep3Screen()),
+                            builder: (_) => const KycVerificationStep2Screen()),
                       );
                     }
                   : () {},

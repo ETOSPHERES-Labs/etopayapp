@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:eto_pay/core/eu_countries.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
-import 'package:eto_pay/screens/kyc_verification_step3.dart';
+import 'package:eto_pay/screens/kyc_verification_step2.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
 import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/image_upload_card.dart';
@@ -26,6 +26,7 @@ class KycVerificationStep2PassportScreen extends ConsumerWidget {
     required Uint8List? webBytes,
     required File? phoneFile,
   }) {
+    print(webBytes);
     final notifier = ref.read(kycFormProvider.notifier);
     notifier.updatePassportImage(
       isFront: isFront,
@@ -142,11 +143,11 @@ class KycVerificationStep2PassportScreen extends ConsumerWidget {
             ),
             ContinueButtonWidget(
               isEnabled: form.isStep2PassportValid,
-              text: 'Next',
+              text: 'Submit',
               onPressed: form.isStep2PassportValid
                   ? () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const KycVerificationStep3Screen()),
+                        MaterialPageRoute(builder: (_) => const KycVerificationStep2Screen()),
                       );
                     }
                   : () {},

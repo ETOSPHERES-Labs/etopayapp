@@ -104,10 +104,28 @@ class KycForm {
     }
   }
 
+  bool _isEmptyOrComplete(VerificationDocument? doc) {
+    if (doc == null) return true;
+    if (kIsWeb) {
+      return ((doc.front?.web != null) && (doc.back?.web != null) || (doc.front?.web == null) && (doc.back?.web == null));
+    } else {
+      return ((doc.front?.phone != null) && (doc.back?.phone != null) || (doc.front?.phone == null) && (doc.back?.phone == null));
+    }
+  }
+
   bool get isStep2IdCardValid => isIssuerSet && _isDocumentComplete(idCard);
   bool get isStep2PassportValid => isIssuerSet && _isDocumentComplete(passport);
   bool get isStep2DrivingLicenseValid =>
       isIssuerSet && _isDocumentComplete(drivingLicense);
+
+  bool get isStep2Valid =>
+  isIssuerSet &&
+      (isStep2DrivingLicenseValid ||
+          isStep2PassportValid ||
+          isStep2IdCardValid) &&
+      (_isEmptyOrComplete(idCard) &&
+          _isEmptyOrComplete(passport) &&
+          _isEmptyOrComplete(drivingLicense));
 
   bool get isStep3Valid =>
       idVerificationDocumentIssuer != null && selfie != null;
@@ -126,8 +144,6 @@ class KycForm {
   }
 
   bool get isStep4Valid {
-    return isStep0Valid && isStep1Valid && 
-      (isStep2DrivingLicenseValid || isStep2PassportValid || isStep2IdCardValid) &&
-      isStep3Valid;
+    return isStep0Valid && isStep1Valid && isStep2Valid && isStep3Valid;
   }
 }
