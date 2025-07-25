@@ -141,7 +141,7 @@ class _ImageUploadCardState extends State<ImageUploadCard> {
                     onTap: _removeImage,
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withAlpha(128),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(

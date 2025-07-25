@@ -1,4 +1,5 @@
 import 'package:eto_pay/widgets/country_dropdown.dart';
+// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
 final List<Country> euCountries = [
