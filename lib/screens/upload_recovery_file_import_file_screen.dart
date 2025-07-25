@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:eto_pay/core/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:eto_pay/core/text_styles.dart';
@@ -143,9 +142,7 @@ class _UploadRecoveryFileImportFileScreen
               children: [
                 ConditionalButton(
                   isActive: _isContinueButtonEnabled,
-                  onPressed: () {
-                    // continue
-                  },
+                  onPressed: () {},
                   text: 'Continue',
                 ),
               ],

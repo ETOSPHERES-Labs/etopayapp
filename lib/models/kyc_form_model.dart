@@ -96,7 +96,7 @@ class KycForm {
       idVerificationDocumentIssuer != null &&
       idVerificationDocumentIssuer!.isNotEmpty;
 
-  bool isDocumentComplete(VerificationDocument? doc) {
+  bool _isDocumentComplete(VerificationDocument? doc) {
     if (doc == null) return false;
     if (kIsWeb) {
       return (doc.front?.web != null) && (doc.back?.web != null);
@@ -105,10 +105,10 @@ class KycForm {
     }
   }
 
-  bool get isStep2IdCardValid => isIssuerSet && isDocumentComplete(idCard);
-  bool get isStep2PassportValid => isIssuerSet && isDocumentComplete(passport);
+  bool get isStep2IdCardValid => isIssuerSet && _isDocumentComplete(idCard);
+  bool get isStep2PassportValid => isIssuerSet && _isDocumentComplete(passport);
   bool get isStep2DrivingLicenseValid =>
-      isIssuerSet && isDocumentComplete(drivingLicense);
+      isIssuerSet && _isDocumentComplete(drivingLicense);
 
   bool get isStep3Valid =>
       idVerificationDocumentIssuer != null && selfie != null;
@@ -125,11 +125,10 @@ class KycForm {
   bool get isStep0Valid {
     return nationality != null && nationality!.isNotEmpty;
   }
+
   bool get isStep4Valid {
-    final isEmailValid = RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(email ?? '');
-    return (firstName?.isNotEmpty ?? false) &&
-           (lastName?.isNotEmpty ?? false) &&
-           (email?.isNotEmpty ?? false) &&
-           isEmailValid;
+    return isStep0Valid && isStep1Valid && 
+      (isStep2DrivingLicenseValid || isStep2PassportValid || isStep2IdCardValid) &&
+      isStep3Valid;
   }
 }

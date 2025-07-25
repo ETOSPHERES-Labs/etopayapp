@@ -1,9 +1,9 @@
 import 'package:eto_pay/screens/kyc_verification_step1.dart';
+import 'package:eto_pay/screens/kyc_verification_step3.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:eto_pay/core/eu_countries.dart';
-import 'package:eto_pay/models/kyc_form_model.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_step2_driving_license.dart';
 import 'package:eto_pay/screens/kyc_verification_step2_id_card.dart';
@@ -18,10 +18,6 @@ class KycVerificationStep2Screen extends ConsumerWidget {
 
   void _navigateToScreen(BuildContext context, Widget screen) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => screen));
-  }
-
-  bool _isContinueEnabled(KycForm form) {
-    return form.idVerificationDocumentIssuer?.isNotEmpty == true;
   }
 
   @override
@@ -41,8 +37,11 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      style: TextButton.styleFrom(foregroundColor: Colors.black),
-                      onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => KycVerificationStep1Screen())),
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.black),
+                      onPressed: () => Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (_) => KycVerificationStep1Screen())),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -57,7 +56,8 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     const Text(
                       "Step 2/4",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -70,7 +70,8 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                         const SizedBox(width: 8),
                         const Text(
                           "2. ID Verification",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ],
                     ),
@@ -92,13 +93,15 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                     const SizedBox(height: 100),
                     const Text(
                       "Select document issuing country",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     CountryDropdown(
                       countries: euCountries,
                       selectedCountry: form.idVerificationDocumentIssuer != null
-                          ? findCountryByName(form.idVerificationDocumentIssuer!)
+                          ? findCountryByName(
+                              form.idVerificationDocumentIssuer!)
                           : null,
                       onChanged: (country) {
                         if (country != null) {
@@ -109,7 +112,8 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     const Text(
                       "Select document type",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     WideButtonWithIconAndArrow(
@@ -144,11 +148,18 @@ class KycVerificationStep2Screen extends ConsumerWidget {
               ),
             ),
             ContinueButtonWidget(
-              isEnabled: _isContinueEnabled(form),
+              isEnabled: form.isStep2DrivingLicenseValid ||
+                  form.isStep2IdCardValid ||
+                  form.isStep2PassportValid,
               text: 'Proceed',
-              onPressed: _isContinueEnabled(form)
+              onPressed: form.isStep2DrivingLicenseValid ||
+                      form.isStep2IdCardValid ||
+                      form.isStep2PassportValid
                   ? () {
-                      // Przejdź do kolejnego kroku
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => const KycVerificationStep3Screen()),
+                      );
                     }
                   : () {},
             ),

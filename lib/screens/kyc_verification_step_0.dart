@@ -32,9 +32,7 @@ class KycVerificationStep0Screen extends ConsumerWidget {
     final form = ref.watch(kycFormProvider);
     final notifier = ref.read(kycFormProvider.notifier);
 
-    // Domyślna metoda w providerze powinna być ustawiona na 'Postident', ale zabezpieczamy się też tutaj:
     final currentVerificationMethod = form.verificationMethod ?? 'Postident';
-
     final selectedCountry = findCountryByName(form.nationality);
 
     return Scaffold(
@@ -69,7 +67,7 @@ class KycVerificationStep0Screen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     ImageCardListWidget(
                       svgAssetPath: 'assets/images/verify_kyc.svg',
-                      textData: 'Let’s verify your KYC',
+                      textData: 'Let\'s verify your KYC',
                       subtitle:
                           'Lorem ipsum dolor sit amet consectetur. Placerat nisi id mattis volutpat sit justo.',
                       contentBeforeFooter: Column(
