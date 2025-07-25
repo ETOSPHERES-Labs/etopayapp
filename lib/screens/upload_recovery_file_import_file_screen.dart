@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:eto_pay/core/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:eto_pay/core/text_styles.dart';
-import 'package:eto_pay/widgets/conditional_button.dart';
+import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class UploadRecoveryFileImportFileScreen extends StatefulWidget {
@@ -140,7 +140,7 @@ class _UploadRecoveryFileImportFileScreen
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ConditionalButton(
+                ConditionalSingleButton(
                   isActive: _isContinueButtonEnabled,
                   onPressed: () {},
                   text: 'Continue',

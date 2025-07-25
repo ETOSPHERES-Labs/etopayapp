@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ConditionalButton extends StatelessWidget {
+class ConditionalSingleButton extends StatelessWidget {
   final bool isActive;
   final VoidCallback onPressed;
   final String text;
 
-  const ConditionalButton({
+  const ConditionalSingleButton({
     super.key,
     required this.isActive,
     required this.onPressed,

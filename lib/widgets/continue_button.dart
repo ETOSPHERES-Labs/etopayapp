@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:eto_pay/widgets/conditional_button.dart';
+import 'package:eto_pay/widgets/conditional_button.single.dart';
 
 class ContinueButtonWidget extends StatelessWidget {
   final bool isEnabled;
@@ -15,17 +15,17 @@ class ContinueButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double _continueButtonHeight = 64;
+    const double continueButtonHeight = 64;
 
     return Container(
-      height: _continueButtonHeight,
+      height: continueButtonHeight,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ConditionalButton(
+          ConditionalSingleButton(
             isActive: isEnabled,
             onPressed: onPressed,
             text: text,

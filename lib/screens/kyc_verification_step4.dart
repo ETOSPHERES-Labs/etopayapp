@@ -1,6 +1,7 @@
-import 'package:eto_pay/screens/kyc_verification_step2.dart';
-import 'package:eto_pay/widgets/continue_button.dart';
+import 'package:eto_pay/screens/kyc_verification_step5.dart';
+import 'package:eto_pay/widgets/conditional_button.double.dart';
 import 'package:eto_pay/widgets/custom_wide_input_field.dart';
+import 'package:eto_pay/widgets/document_preview_row.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,7 +30,8 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      style: TextButton.styleFrom(foregroundColor: Colors.black),
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.black),
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
@@ -43,7 +45,9 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     StepProgressBar(currentStep: 4),
                     const SizedBox(height: 20),
-                    const Text("Step 4/4", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    const Text("Step 4/4",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
                     const SizedBox(height: 20),
                     Row(
                       children: [
@@ -55,7 +59,8 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                         const SizedBox(width: 8),
                         const Text(
                           "1. Personal information",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ],
                     ),
@@ -83,22 +88,88 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                       keyboardType: TextInputType.emailAddress,
                       onChanged: notifier.updateEmail,
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 36),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/icon_face_id.svg',
+                          width: 20,
+                          height: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          "2. ID verification",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
+                      style: TextStyle(fontSize: 16, color: Color(0xFF747474)),
+                    ),
+                    const SizedBox(height: 16),
+                    if (form.idCard != null)
+                      DocumentPhotoListPreview(
+                          title: "ID Card",
+                          photos: [form.idCard?.front, form.idCard?.back]),
+                    if (form.passport != null)
+                      DocumentPhotoListPreview(
+                          title: "Passport",
+                          photos: [form.passport?.front, form.passport?.back]),
+                    if (form.drivingLicense != null)
+                      DocumentPhotoListPreview(
+                          title: "Driving License",
+                          photos: [
+                            form.drivingLicense?.front,
+                            form.drivingLicense?.back
+                          ]),
+                    const SizedBox(height: 36),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/icon_selfie.svg',
+                          width: 20,
+                          height: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          "3. Selfie or photo verification",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
+                      style: TextStyle(fontSize: 16, color: Color(0xFF747474)),
+                    ),
+                    const SizedBox(height: 16),
+                    if (form.selfie != null)
+                      DocumentPhotoListPreview(
+                          title: "", photos: [form.selfie]),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
             ),
-            ContinueButtonWidget(
-              isEnabled: form.isStep4Valid,
-              text: 'Proceed',
-              onPressed: () {
+            ContinueButtonDoubleWidget(
+              isLeftEnabled: true,
+              isRightEnabled: form.isStep4Valid,
+              leftText: 'Edit',
+              rightText: 'Submit',
+              onLeftPressed: () {
+                Navigator.of(context).pop();
+              },
+              onRightPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const KycVerificationStep2Screen(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const KycVerificationStep5Screen()),
                 );
               },
             ),
+
           ],
         ),
       ),
