@@ -1,6 +1,6 @@
 import 'package:eto_pay/core/bip39_word_list.dart';
 import 'package:eto_pay/core/text_styles.dart';
-import 'package:eto_pay/widgets/conditional_button.dart';
+import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:eto_pay/widgets/mnemonic_input.dart';
 import 'package:flutter/material.dart';
 import 'package:eto_pay/core/colors.dart';
@@ -102,7 +102,7 @@ class _EnterRecoveryPhraseScreen extends State<EnterRecoveryPhraseScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ConditionalButton(
+                      ConditionalSingleButton(
                         isActive: _isContinueButtonEnabled,
                         onPressed: () {},
                         text: 'Continue',

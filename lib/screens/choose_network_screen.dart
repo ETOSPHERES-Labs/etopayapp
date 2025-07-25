@@ -1,6 +1,7 @@
 import 'package:eto_pay/screens/choose_custom_network_screen.dart';
+import 'package:eto_pay/screens/kyc_verification_step_0.dart';
 import 'package:eto_pay/screens/wallet_options_screen.dart';
-import 'package:eto_pay/widgets/conditional_button.dart';
+import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
 
@@ -85,9 +86,17 @@ class ChooseNetworkScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 24),
-                        ConditionalButton(
+                        ConditionalSingleButton(
                           isActive: true,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                               builder: (context) => const KycVerificationStep0Screen(
+                                ),
+                              )
+                            );
+                            
+                          },
                           text: 'Guest',
                         )
                       ],

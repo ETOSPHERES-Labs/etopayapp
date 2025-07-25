@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:eto_pay/view_models/recovery_phrase_view_model.dart';
-import 'package:eto_pay/widgets/conditional_button.dart';
+import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eto_pay/screens/recovery_phrase_verification_screen.dart';
@@ -80,7 +80,7 @@ class RecoveryPhraseView extends StatelessWidget {
                   ),
                 ),
               if (!model.isRevealed)
-                ConditionalButton(
+                ConditionalSingleButton(
                   isActive: true,
                   onPressed: () => model.reveal(),
                   text: 'Reveal recovery phrase',
@@ -100,7 +100,7 @@ class RecoveryPhraseView extends StatelessWidget {
           style: TextStyle(color: AppColors.subtext),
         ),
         const SizedBox(height: 24),
-        ConditionalButton(
+        ConditionalSingleButton(
           isActive: true,
           onPressed: () {
             // TODO: Implement PDF download
@@ -108,7 +108,7 @@ class RecoveryPhraseView extends StatelessWidget {
           text: 'Save Recovery kit template',
         ),
         const SizedBox(height: 16),
-        ConditionalButton(
+        ConditionalSingleButton(
           isActive: model.isRevealed,
           onPressed: () {
             if (model.isRevealed) {
