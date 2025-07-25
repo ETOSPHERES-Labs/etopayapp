@@ -26,7 +26,6 @@ class KycVerificationStep2PassportScreen extends ConsumerWidget {
     required Uint8List? webBytes,
     required File? phoneFile,
   }) {
-    print(webBytes);
     final notifier = ref.read(kycFormProvider.notifier);
     notifier.updatePassportImage(
       isFront: isFront,
