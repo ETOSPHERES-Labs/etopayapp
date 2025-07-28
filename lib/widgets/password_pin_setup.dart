@@ -1,6 +1,6 @@
 import 'package:eto_pay/core/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/widgets/conditional_button.dart';
+import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:eto_pay/core/theme.dart';
 import 'package:local_auth/local_auth.dart';
@@ -230,7 +230,7 @@ class _PasswordPinSetupWidgetState extends State<PasswordPinSetupWidget> {
                 ),
               ),
             const SizedBox(height: 24),
-            ConditionalButton(
+            ConditionalSingleButton(
               isActive: _valid,
               onPressed: _valid ? widget.onContinue : () {},
               text: 'Continue',

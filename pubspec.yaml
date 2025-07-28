@@ -45,6 +45,8 @@ dependencies:
   http: ^1.2.1
   js: ^0.6.7
   file_picker: ^6.1.1
+  url_launcher: ^6.2.5
+  flutter_riverpod: ^2.5.1
 
 dev_dependencies:
   flutter_test:
@@ -70,15 +72,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/onboarding_bg_1.svg
-    - assets/images/choose_network_bg.svg
-    - assets/images/create_wallet_bg.svg
-    - assets/images/create_password.svg
-    - assets/images/setup_pin.svg
-    - assets/images/phrase_verification.svg
-    - assets/images/import_existing_wallet.svg
-    - assets/images/drag_and_drop_icon.svg
-    - assets/images/upload_your_backup_file_import_file.svg
+    - assets/images/
+    - assets/icons/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

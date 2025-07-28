@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:eto_pay/view_models/recovery_phrase_verification_view_model.dart';
-import 'package:eto_pay/widgets/conditional_button.dart';
+import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eto_pay/core/colors.dart';
@@ -142,7 +142,7 @@ class _VerificationView extends StatelessWidget {
                     title: Text(currentOptions[i]),
                   )),
           const SizedBox(height: 16),
-          ConditionalButton(
+          ConditionalSingleButton(
             isActive: model.canProceed,
             onPressed: () {
               if (!model.canProceed) return;
@@ -202,7 +202,7 @@ class _VerificationSuccessScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 32),
-                ConditionalButton(
+                ConditionalSingleButton(
                   isActive: true,
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
