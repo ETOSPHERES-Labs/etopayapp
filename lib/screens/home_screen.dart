@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import '../view_models/lock_screen_view_model.dart';
@@ -18,19 +19,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final LocalAuthentication auth = LocalAuthentication();
   final TextEditingController _pinController = TextEditingController();
+  final FocusNode _pinFocusNode = FocusNode();
+  final FocusNode _rawKeyboardFocus = FocusNode();
   bool _isAuthenticating = false;
   String? _error;
   bool _biometricAvailable = false;
-  FocusNode _pinFocusNode = FocusNode();
   bool _pinFieldFocused = false;
   bool _showCursor = true;
   Timer? _cursorTimer;
+
+  String _previousText = ''; 
 
   @override
   void initState() {
     super.initState();
     _checkBiometrics();
-    _pinController.text = ''; // Start empty, but use 444444 for test validation
+    _pinController.text = '';
+    _previousText = '';
     _pinFocusNode.addListener(_handlePinFocus);
   }
 
@@ -101,7 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onPinSubmit() {
-    // TODO: Replace with real PIN check logic
     if (_pinController.text == '444444') {
       _onUnlockSuccess();
     } else {
@@ -109,6 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
         _error = 'Incorrect PIN';
       });
     }
+  }
+
+  void _handleKeyEvent(RawKeyEvent event) {
   }
 
   @override
@@ -125,9 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Profile picture
                       CircleAvatar(
-                        radius: 100, // 200x200 diameter
+                        radius: 100,
                         backgroundColor: Colors.grey.shade200,
                         child: SvgPicture.asset(
                           model.profileImage,
@@ -135,14 +141,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 200,
                         ),
                       ),
-                      const SizedBox(height: 32), // More space after profile image
-                      // Username
+                      const SizedBox(height: 32),
                       Text(
                         model.username,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
-                      const SizedBox(height: 40), // More space after username
-                      // Remove the lock icon and fix PIN input
+                      const SizedBox(height: 40),
                       GestureDetector(
                         onTap: () {
                           FocusScope.of(context).requestFocus(_pinFocusNode);
@@ -154,8 +158,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: List.generate(6, (index) {
                               bool hasDigit = _pinController.text.length > index;
-                              bool isCursor =
-                                  _pinFieldFocused && !_isAuthenticating && _pinController.text.length == index && _showCursor && _pinController.text.length < 6;
+                              bool isCursor = _pinFieldFocused &&
+                                  !_isAuthenticating &&
+                                  _pinController.text.length == index &&
+                                  _showCursor &&
+                                  _pinController.text.length < 6;
                               if (hasDigit) {
                                 return Container(
                                   width: 16,
@@ -190,31 +197,41 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 24), // More space after PIN entry
-                      SizedBox(
-                        width: 0,
-                        height: 0,
-                        child: TextField(
-                          focusNode: _pinFocusNode,
-                          controller: _pinController,
-                          keyboardType: TextInputType.number,
-                          maxLength: 6,
-                          autofocus: true,
-                          enableInteractiveSelection: false,
-                          showCursor: false,
-                          style: const TextStyle(color: Colors.transparent),
-                          cursorColor: Colors.transparent,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            counterText: '',
-                            contentPadding: EdgeInsets.zero,
+                      const SizedBox(height: 24),
+
+                      RawKeyboardListener(
+                        focusNode: _rawKeyboardFocus,
+                        onKey: _handleKeyEvent,
+                        child: SizedBox(
+                          width: 0,
+                          height: 0,
+                          child: TextField(
+                            focusNode: _pinFocusNode,
+                            controller: _pinController,
+                            keyboardType: TextInputType.number,
+                            maxLength: 6,
+                            autofocus: true,
+                            enableInteractiveSelection: false,
+                            showCursor: false,
+                            style: const TextStyle(color: Colors.transparent),
+                            cursorColor: Colors.transparent,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              counterText: '',
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                            onChanged: (text) {
+                              setState(() {
+                                _previousText = text;
+                              });
+                            },
+                            onSubmitted: (_) => _onPinSubmit(),
+                            enabled: !_isAuthenticating,
+                            obscureText: true,
                           ),
-                          onChanged: (_) => setState(() {}),
-                          onSubmitted: (_) => _onPinSubmit(),
-                          enabled: !_isAuthenticating,
-                          obscureText: true,
                         ),
                       ),
+
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: _isAuthenticating ? null : _onPinSubmit,
@@ -223,7 +240,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           maximumSize: const Size(108, 39),
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -242,12 +260,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (_biometricAvailable) ...[
                         Text(
                           'Or use fingerprint',
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(color: Colors.black),
                         ),
                         const SizedBox(height: 12),
                         IconButton(
                           icon: const Icon(Icons.fingerprint, size: 40),
-                          onPressed: _isAuthenticating ? null : _authenticateWithBiometrics,
+                          onPressed: _isAuthenticating
+                              ? null
+                              : _authenticateWithBiometrics,
                         ),
                       ],
                     ],
@@ -265,7 +288,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _pinController.dispose();
     _pinFocusNode.dispose();
+    _rawKeyboardFocus.dispose();
     _cursorTimer?.cancel();
     super.dispose();
   }
-} 
+}
