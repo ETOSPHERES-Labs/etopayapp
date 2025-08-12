@@ -100,7 +100,7 @@ class _UnlockScreenState extends State<UnlockScreen> {
 
   void _onUnlockSuccess() {
     if (!mounted) return;
-    context.go('/main-home');
+    context.go('/home-shell');
   }
 
   @override
