@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MainHomeHeaderViewModel extends ChangeNotifier {
-  String _profileImage = 'assets/images/onboarding_bg_1.svg'; // Placeholder
+  String _profileImage = 'assets/images/avatar.png'; // Placeholder
   bool _profileVerified = true;
   String _selectedNetwork = 'Base';
   final List<String> _networks = ['Base', 'Ethereum', 'IOTA'];

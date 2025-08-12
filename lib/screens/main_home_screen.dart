@@ -52,16 +52,16 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // Profile picture with green tick
                           Stack(
                             children: [
                               CircleAvatar(
                                 radius: 22,
                                 backgroundColor: Colors.white,
-                                child: SvgPicture.asset(
+                                child: Image.asset(
                                   model.profileImage,
                                   width: 36,
                                   height: 36,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                               if (model.profileVerified)

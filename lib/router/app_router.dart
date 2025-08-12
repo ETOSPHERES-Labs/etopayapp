@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/choose_network_screen.dart';
 import '../screens/terms_and_conditions_screen.dart';
-import '../screens/home_screen.dart';
+import '../screens/unlock_screen.dart';
 import '../screens/main_home_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -10,7 +10,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       name: 'home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const UnlockScreen(),
     ),
     GoRoute(
       path: '/terms',
