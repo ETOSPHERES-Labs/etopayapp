@@ -13,7 +13,7 @@ class SinusoidalNotchedShape extends NotchedShape {
     final right = host.right;
 
     const double waveWidth = 170; 
-    const double waveHeight = 25; 
+    const double waveHeight = 24; 
     final double waveCenterX = host.center.dx;
 
     final double startX = waveCenterX - waveWidth / 2;
@@ -29,8 +29,8 @@ class SinusoidalNotchedShape extends NotchedShape {
       double t = i / steps; 
       double x = startX + (endX - startX) * t;
       double localX = t * 2 * pi - pi;
-      double y = top + waveHeight * sin(localX + pi - pi / 2);
-      path.lineTo(x, y + 25);
+      double y = top + waveHeight * sin(localX + pi - pi / 2) ;
+      path.lineTo(x, y + 24);
     }
 
     path.lineTo(right, top);
@@ -41,3 +41,39 @@ class SinusoidalNotchedShape extends NotchedShape {
     return path;
   }
 }
+
+
+// class SinusoidalShadowPainter extends CustomPainter {
+//   final double waveWidth;
+//   final double waveHeight;
+
+//   SinusoidalShadowPainter({this.waveWidth = 170, this.waveHeight = 24});
+
+//   @override
+//   void paint(Canvas canvas, Size size) {
+//     final path = Path();
+//     final top = 0.0;
+//     final centerX = size.width / 2;
+//     final startX = centerX - waveWidth / 2;
+//     final endX = centerX + waveWidth / 2;
+
+//     path.moveTo(startX, top);
+
+//     const int steps = 90;
+//     for (int i = 0; i <= steps; i++) {
+//       final t = i / steps;
+//       final x = startX + (endX - startX) * t;
+//       final localX = t * 2 * pi - pi;
+//       final y = top + waveHeight * sin(localX + pi - pi / 2);
+//       path.lineTo(x, y);
+//     }
+
+//     path.lineTo(endX, top);
+//     path.close();
+
+//     canvas.drawShadow(path, Colors.black.withOpacity(0.3), 4.0, false);
+//   }
+
+//   @override
+//   bool shouldRepaint(CustomPainter oldDelegate) => false;
+// }
