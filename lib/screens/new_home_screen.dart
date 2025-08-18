@@ -1,5 +1,4 @@
-import 'package:eto_pay/widgets/custom_notched_share.dart';
-import 'package:eto_pay/widgets/rounded_notched_share.dart';
+import 'package:eto_pay/widgets/home_shell/rounded_notched_shape_with_shadow_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -41,6 +40,36 @@ class _HomeShellScreenState extends State<HomeShellScreen> {
     );
   }
 
+  Widget _buildNavItem({
+    required IconData icon,
+    required String label,
+    required int index,
+  }) {
+    final isSelected = _selectedIndex == index;
+
+    return InkWell(
+      onTap: () => _onItemTapped(index),
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: isSelected ? Colors.blue : Colors.grey),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: isSelected ? Colors.blue : Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,42 +97,56 @@ class _HomeShellScreenState extends State<HomeShellScreen> {
       bottomNavigationBar: Stack(
         alignment: Alignment.bottomCenter,
         children: [
+          Transform.translate(
+            offset: Offset(0, -0),
+            child: CustomPaint(
+              size: Size(MediaQuery.of(context).size.width, 77),
+              painter: RoundedNotchedShapeWithShadowPainter(
+                host: Rect.fromLTWH(
+                  0,
+                  0,
+                  MediaQuery.of(context).size.width,
+                  80,
+                ),
+                guest: Rect.fromCircle(
+                  center: Offset(
+                    MediaQuery.of(context).size.width / 2,
+                    0,
+                  ),
+                  radius: 53,
+                ),
+              ),
+            ),
+          ),
           BottomAppBar(
-            shape: const RoundedNotchedShape(),
-            elevation: 8,
+            shape: null,
+            elevation: 0,
+            color: Colors.transparent,
             child: SizedBox(
               height: 60,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.home,
-                      color: _selectedIndex == 0 ? Colors.blue : Colors.grey,
-                    ),
-                    onPressed: () => _onItemTapped(0),
+                  _buildNavItem(
+                    icon: Icons.home_outlined,
+                    label: 'Home',
+                    index: 0,
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.search,
-                      color: _selectedIndex == 1 ? Colors.blue : Colors.grey,
-                    ),
-                    onPressed: () => _onItemTapped(1),
+                  _buildNavItem(
+                    icon: Icons.swap_vert,
+                    label: 'Swap',
+                    index: 1,
                   ),
-                  const SizedBox(width: 48),
-                  IconButton(
-                    icon: Icon(
-                      Icons.notifications,
-                      color: _selectedIndex == 2 ? Colors.blue : Colors.grey,
-                    ),
-                    onPressed: () => _onItemTapped(2),
+                  const SizedBox(width: 48), // miejsce na FAB
+                  _buildNavItem(
+                    icon: Icons.history,
+                    label: 'History',
+                    index: 2,
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.person,
-                      color: _selectedIndex == 3 ? Colors.blue : Colors.grey,
-                    ),
-                    onPressed: () => _onItemTapped(3),
+                  _buildNavItem(
+                    icon: Icons.gavel_outlined,
+                    label: 'Govt',
+                    index: 3,
                   ),
                 ],
               ),
