@@ -1,3 +1,4 @@
+import 'package:eto_pay/screens/home_shell/homepage_shell_screen.dart';
 import 'package:eto_pay/widgets/home_shell/rounded_notched_shape_with_shadow_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +14,7 @@ class _HomeShellScreenState extends State<HomeShellScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
-    Center(child: Text('Ekran 1')),
+    HomePageShellScreen(),
     Center(child: Text('Ekran 2')),
     Center(child: Text('Ekran 3')),
     Center(child: Text('Ekran 4')),
