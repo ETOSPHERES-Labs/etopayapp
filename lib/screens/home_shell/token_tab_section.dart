@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class TokenTabSection extends StatefulWidget {
   const TokenTabSection({super.key});
@@ -13,24 +14,36 @@ class _TokenTabSectionState extends State<TokenTabSection>
 
   final List<Map<String, dynamic>> _tokens = [
     {
-      'icon': Icons.currency_bitcoin,
-      'name': 'Bitcoin',
-      'price': '€ 27,500',
-      'amount': '0.015 BTC',
+      'icon': SvgPicture.asset(
+        "assets/icons/icon_eth.svg",
+        width: 20,
+        height: 20,
+      ),
+      'name': 'Ethereum',
+      'price': '€ 1.234,7',
+      'amount': '2.6348 ETH',
       'change': 4.07,
     },
     {
-      'icon': Icons.currency_lira,
-      'name': 'Ethereum',
-      'price': '€ 1,650',
-      'amount': '1.2 ETH',
+      'icon': SvgPicture.asset(
+        "assets/icons/icon_binance.svg",
+        width: 20,
+        height: 20,
+      ),
+      'name': 'Binance',
+      'price': '€ 1.034,7',
+      'amount': '3.2348 BNB',
       'change': -2.15,
     },
     {
-      'icon': Icons.currency_yuan,
-      'name': 'Solana',
-      'price': '€ 95',
-      'amount': '12.5 SOL',
+      'icon': SvgPicture.asset(
+        "assets/icons/icon_razer.svg",
+        width: 20,
+        height: 20,
+      ),
+      'name': 'Razer',
+      'price': '€ 2.234,7',
+      'amount': '4.1368 RRR',
       'change': 1.23,
     },
   ];
@@ -50,7 +63,8 @@ class _TokenTabSectionState extends State<TokenTabSection>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 24, left: 20, right: 20, bottom: 32),
+      padding:
+          const EdgeInsets.only(top: 24, left: 20, right: 20, bottom: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -70,12 +84,12 @@ class _TokenTabSectionState extends State<TokenTabSection>
             ],
           ),
           const SizedBox(height: 12),
-          SizedBox(
-            height: 200, 
+          Expanded(
             child: TabBarView(
               controller: _tabController,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
-                _buildTokenList(),
+                _buildTokenListWithBackground(),
                 const Center(child: Text('NFTs (empty)')),
                 const Center(child: Text('ERC20 (empty)')),
               ],
@@ -86,34 +100,37 @@ class _TokenTabSectionState extends State<TokenTabSection>
     );
   }
 
-  Widget _buildTokenList() {
+  Widget _buildTokenListWithBackground() {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF0F0F0),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      child: _buildTokenListInner(),
+    );
+  }
+
+  Widget _buildTokenListInner() {
     return ListView.separated(
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: _tokens.length,
       separatorBuilder: (_, __) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0),
-        child: Align(
-          alignment: Alignment.center,
-          child: FractionallySizedBox(
-            widthFactor: 1,
-            child: Container(
-              height: 1,
-              color: Colors.grey[300],
-            ),
-          ),
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Container(
+          height: 1,
+          color: Colors.grey[300],
         ),
       ),
       itemBuilder: (context, index) {
         final token = _tokens[index];
         final isPositive = token['change'] >= 0;
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF0F0F0),
-            borderRadius: BorderRadius.circular(6),
-          ),
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: Row(
             children: [
-              Icon(token['icon'], size: 32, color: Colors.grey[800]),
+              token['icon'],
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -141,7 +158,7 @@ class _TokenTabSectionState extends State<TokenTabSection>
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '${token['amount']}',
+                    token['amount'],
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,

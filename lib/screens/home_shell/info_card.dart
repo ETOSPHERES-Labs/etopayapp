@@ -6,23 +6,23 @@ class InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity, // dopasuj do szerokości ekranu
+      width: double.infinity, 
       height: 125,
-      margin: const EdgeInsets.symmetric(horizontal: 20), // z Figma: left 20
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(0xFFC1E3FF), // #C1E3FF
+            Color(0xFFC1E3FF), 
             Colors.white,
           ],
         ),
         borderRadius: BorderRadius.circular(6),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x66000000), // #00000040
+            color: Color(0x66000000), 
             blurRadius: 6,
             offset: Offset(0, 0),
           ),
@@ -60,13 +60,11 @@ class InfoCard extends StatelessWidget {
               const SizedBox(width: 13),
               Icon(
                 Icons.remove_red_eye_outlined,
-                size: 20,
-                color: Colors.grey[700],
+                size: 28,
+                color: const Color.fromARGB(255, 0, 0, 0),
               ),
             ],
           ),
-
-          // 🔽 Trzeci wiersz z ikoną po lewej
           Row(
             children: [
               const Icon(Icons.euro, size: 18, color: Color(0xFF747474)),

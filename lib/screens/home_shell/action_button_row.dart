@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ActionButtonsRow extends StatelessWidget {
   const ActionButtonsRow({super.key});
@@ -10,7 +11,6 @@ class ActionButtonsRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 🔹 Tytuł nad przyciskami
           const Text(
             'Buying & Selling Funds',
             style: TextStyle(
@@ -23,29 +23,41 @@ class ActionButtonsRow extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-
-          // 🔘 3 przyciski w jednym wierszu
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              _ActionButton(
-                icon: Icons.euro,
-                label: 'Buy',
-                color: Color(0xFF028032),
-              ),
-              const SizedBox(width: 16),
-              _ActionButton(
-                icon: Icons.stacked_bar_chart_outlined,
-                label: 'Sell',
-                color: Color(0xFFB20F00),
-              ),
-              const SizedBox(width: 16),
-              _ActionButton(
-                icon: Icons.account_balance_wallet_outlined,
-                label: 'Bridge',
-                color: Color(0xFF005CA9),
-              ),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _ActionButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/icon_euro.svg',
+                    width: 22,
+                    height: 22,
+                  ),
+                  label: 'Buy',
+                  color: const Color(0xFF028032),
+                ),
+                const SizedBox(width: 16),
+                _ActionButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/icon_cash.svg',
+                    width: 22,
+                    height: 22,
+                  ),
+                  label: 'Sell',
+                  color: const Color(0xFFB20F00),
+                ),
+                const SizedBox(width: 16),
+                _ActionButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/icon_bridge.svg',
+                    width: 22,
+                    height: 22,
+                  ),
+                  label: 'Bridge',
+                  color: const Color(0xFF005CA9),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -54,7 +66,7 @@ class ActionButtonsRow extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
-  final IconData icon;
+  final SvgPicture icon;
   final String label;
   final Color color;
 
@@ -67,12 +79,10 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 111,
-      height: 36,
+      width: 130,
+      height: 42,
       child: ElevatedButton(
-        onPressed: () {
-          // obsługa kliknięcia
-        },
+        onPressed: () {},
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -85,12 +95,12 @@ class _ActionButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 16, color: Colors.white),
+            icon,
             const SizedBox(width: 10),
             Text(
               label,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: FontWeight.normal,
                 color: Colors.white,
               ),

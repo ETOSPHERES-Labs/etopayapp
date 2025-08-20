@@ -57,13 +57,13 @@ class _HomeShellScreenState extends State<HomeShellScreen> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: isSelected ? Colors.blue : Colors.grey),
+          Icon(icon, color: isSelected ? Color(0xFF005CA9) : Colors.grey),
           const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
               fontSize: 12,
-              color: isSelected ? Colors.blue : Colors.grey,
+              color: isSelected ? Color(0xFF005CA9) : Colors.grey,
             ),
           ),
         ],
@@ -83,8 +83,8 @@ class _HomeShellScreenState extends State<HomeShellScreen> {
           height: 64,
           child: FloatingActionButton(
             onPressed: _onFabPressed,
-            backgroundColor: const Color(0xFF005CA9), //#005CA9
-            foregroundColor: Colors.white,
+            backgroundColor: const Color(0xFF005CA9), 
+            foregroundColor: Colors.transparent,
             elevation: 4,
             shape: const CircleBorder(),
             child: SvgPicture.asset(
@@ -138,7 +138,7 @@ class _HomeShellScreenState extends State<HomeShellScreen> {
                     label: 'Swap',
                     index: 1,
                   ),
-                  const SizedBox(width: 48), // miejsce na FAB
+                  const SizedBox(width: 48),
                   _buildNavItem(
                     icon: Icons.history,
                     label: 'History',

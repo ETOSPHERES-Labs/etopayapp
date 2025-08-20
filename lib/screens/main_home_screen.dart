@@ -3,7 +3,6 @@ import '../widgets/navbar.dart';
 import 'package:provider/provider.dart';
 import '../view_models/main_home_header_view_model.dart';
 import '../core/colors.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../view_models/main_home_balance_view_model.dart';
 
 class MainHomeScreen extends StatefulWidget {
@@ -41,7 +40,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                     return Container(
                       width: double.infinity,
                       height: 170,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 18),
                       decoration: BoxDecoration(
                         color: AppColors.primary,
                         borderRadius: const BorderRadius.only(
@@ -85,10 +85,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                             ],
                           ),
                           const SizedBox(width: 16),
-                          // Network dropdown
                           Expanded(
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 4),
                               decoration: BoxDecoration(
                                 color: AppColors.secondary,
                                 borderRadius: BorderRadius.circular(12),
@@ -97,7 +97,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                 child: DropdownButton<String>(
                                   value: model.selectedNetwork,
                                   isDense: true,
-                                  icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                                  icon: const Icon(Icons.keyboard_arrow_down,
+                                      color: Colors.white),
                                   dropdownColor: AppColors.secondary,
                                   items: model.networks.map((network) {
                                     return DropdownMenuItem<String>(
@@ -121,23 +122,25 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                             ),
                           ),
                           const SizedBox(width: 16),
-                          // Notification bell with red dot
                           Stack(
                             children: [
                               Container(
                                 decoration: BoxDecoration(
                                   color: AppColors.primary,
                                   shape: BoxShape.circle,
-                                  border: Border.all(color: AppColors.primary, width: 2),
+                                  border: Border.all(
+                                      color: AppColors.primary, width: 2),
                                 ),
                                 child: IconButton(
-                                  icon: const Icon(Icons.notifications_outlined, color: Colors.white, size: 28),
+                                  icon: const Icon(Icons.notifications_outlined,
+                                      color: Colors.white, size: 28),
                                   onPressed: () {
                                     model.markNotificationsViewed();
                                   },
                                 ),
                               ),
-                              if (model.hasUnviewedNotifications && model.notificationCount > 0)
+                              if (model.hasUnviewedNotifications &&
+                                  model.notificationCount > 0)
                                 Positioned(
                                   top: 8,
                                   right: 8,
@@ -147,7 +150,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                                     decoration: BoxDecoration(
                                       color: Colors.red,
                                       shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.white, width: 1.5),
+                                      border: Border.all(
+                                          color: Colors.white, width: 1.5),
                                     ),
                                     child: Center(
                                       child: Text(
@@ -168,13 +172,11 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                     );
                   },
                 ),
-                // Placeholder for main content
                 const Expanded(
                   child: SizedBox.shrink(),
                 ),
               ],
             ),
-            // Overlay balance container
             Positioned(
               top: 115,
               left: 0,
@@ -185,7 +187,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                     child: Container(
                       width: 390,
                       height: 125,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 16),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           colors: [AppColors.tertiary, Colors.white],
@@ -278,7 +281,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                 },
               ),
             ),
-            // Main content placeholder
             Positioned.fill(
               top: 170,
               child: Center(
@@ -300,4 +302,4 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       ),
     );
   }
-} 
+}
