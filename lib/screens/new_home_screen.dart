@@ -30,7 +30,7 @@ class _HomeShellScreenState extends State<HomeShellScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        content: const Text('Kliknięto FAB!'),
+        content: const Text('FAB!'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -77,7 +77,7 @@ class _HomeShellScreenState extends State<HomeShellScreen> {
       body: _pages[_selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Transform.translate(
-        offset: const Offset(0, 18),
+        offset: const Offset(0, 22),
         child: SizedBox(
           width: 64,
           height: 64,
