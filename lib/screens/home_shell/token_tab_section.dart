@@ -63,8 +63,7 @@ class _TokenTabSectionState extends State<TokenTabSection>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          const EdgeInsets.only(top: 24, left: 20, right: 20, bottom: 32),
+      padding: const EdgeInsets.only(top: 24, left: 20, right: 20, bottom: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -89,7 +88,8 @@ class _TokenTabSectionState extends State<TokenTabSection>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                _buildTokenListWithBackground(),
+                if(_tokens.isNotEmpty) _buildTokenListWithBackground()
+                else const Center(child: Text('Tokens (empty)')),
                 const Center(child: Text('NFTs (empty)')),
                 const Center(child: Text('ERC20 (empty)')),
               ],
@@ -112,20 +112,17 @@ class _TokenTabSectionState extends State<TokenTabSection>
   }
 
   Widget _buildTokenListInner() {
-    return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      itemCount: _tokens.length,
-      separatorBuilder: (_, __) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6),
-        child: Container(
-          height: 1,
-          color: Colors.grey[300],
-        ),
-      ),
-      itemBuilder: (context, index) {
-        final token = _tokens[index];
+    return Column(
+      children: List.generate(_tokens.length * 2 - 1, (index) {
+        if (index.isOdd) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Container(height: 1, color: Colors.grey[300]),
+          );
+        }
+        final tokenIndex = index ~/ 2;
+        final token = _tokens[tokenIndex];
         final isPositive = token['change'] >= 0;
-
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: Row(
@@ -188,7 +185,7 @@ class _TokenTabSectionState extends State<TokenTabSection>
             ],
           ),
         );
-      },
+      }),
     );
   }
 }
