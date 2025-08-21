@@ -27,14 +27,14 @@ class RoundedNotchedShape extends NotchedShape {
     path.lineTo(startX , maximum);
 
     double point1 = startX + radius;
-      path.arcToPoint(Offset(point1, middle),
+      path.arcToPoint(Offset(point1, middle + 4),
       radius: Radius.circular(qradius),
         clockwise: true,
     );
 
     double point2 = point1 - 2 + 2 * radius;
     path.arcToPoint(
-      Offset(point2, middle),
+      Offset(point2, middle + 4),
       radius: Radius.circular(radius),
       clockwise: false,
     );
