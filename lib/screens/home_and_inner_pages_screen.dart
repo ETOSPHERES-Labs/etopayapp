@@ -7,7 +7,8 @@ class HomeAndInnerPagesScreen extends StatefulWidget {
   const HomeAndInnerPagesScreen({super.key});
 
   @override
-  State<HomeAndInnerPagesScreen> createState() => _HomeAndInnerPagesScreenState();
+  State<HomeAndInnerPagesScreen> createState() =>
+      _HomeAndInnerPagesScreenState();
 }
 
 class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
@@ -42,7 +43,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
   }
 
   Widget _buildNavItem({
-    required IconData icon,
+    required String assetPath,
     required String label,
     required int index,
   }) {
@@ -57,13 +58,31 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: isSelected ? Color(0xFF005CA9) : Colors.grey),
-          const SizedBox(height: 4),
+          Container(
+            width: 40,
+            height: 28,
+            decoration: BoxDecoration(
+              color: isSelected ? const Color(0xFF005CA9) : Colors.transparent,
+              borderRadius: BorderRadius.circular(16), // <- zaokrąglenie rogów
+            ),
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              assetPath,
+              width: 24,
+              height: 24,
+              colorFilter: ColorFilter.mode(
+                isSelected ? Colors.white : const Color(0xFF747474),
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+          SizedBox(height: 5,),
           Text(
             label,
             style: TextStyle(
               fontSize: 12,
-              color: isSelected ? Color(0xFF005CA9) : Colors.grey,
+              color: isSelected ? const Color(0xFF005CA9) : Colors.grey,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
         ],
@@ -83,7 +102,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
           height: 64,
           child: FloatingActionButton(
             onPressed: _onFabPressed,
-            backgroundColor: const Color(0xFF005CA9), 
+            backgroundColor: const Color(0xFF005CA9),
             foregroundColor: Colors.transparent,
             elevation: 4,
             shape: const CircleBorder(),
@@ -129,23 +148,23 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildNavItem(
-                    icon: Icons.home_outlined,
+                    assetPath: 'assets/icons/icon_home.svg',
                     label: 'Home',
                     index: 0,
                   ),
                   _buildNavItem(
-                    icon: Icons.swap_vert,
+                    assetPath: 'assets/icons/icon_swap.svg',
                     label: 'Swap',
                     index: 1,
                   ),
                   const SizedBox(width: 48),
                   _buildNavItem(
-                    icon: Icons.history,
+                    assetPath: 'assets/icons/icon_history.svg',
                     label: 'History',
                     index: 2,
                   ),
                   _buildNavItem(
-                    icon: Icons.gavel_outlined,
+                    assetPath: 'assets/icons/icon_govt.svg',
                     label: 'Govt',
                     index: 3,
                   ),
