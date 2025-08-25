@@ -60,9 +60,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 16),
-
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6),
                   child: Container(
@@ -78,9 +76,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
@@ -97,9 +93,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
                     softWrap: true,
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
