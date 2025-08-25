@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TokenTabSection extends StatefulWidget {
-  const TokenTabSection({super.key});
+class TokensNfcsErc20TabSection extends StatefulWidget {
+  const TokensNfcsErc20TabSection({super.key});
 
   @override
-  State<TokenTabSection> createState() => _TokenTabSectionState();
+  State<TokensNfcsErc20TabSection> createState() => _TokensNfcsErc20TabSectionState();
 }
 
-class _TokenTabSectionState extends State<TokenTabSection>
+class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 

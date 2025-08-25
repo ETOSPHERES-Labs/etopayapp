@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CryptoAddressSection extends StatelessWidget {
-  const CryptoAddressSection({super.key});
+class ReceiveSendFundsSection extends StatelessWidget {
+  const ReceiveSendFundsSection({super.key});
 
   final String address = 'fr5579u2jtgboi290-1jkf90eidcfdhbskdjowle456kfdj';
 

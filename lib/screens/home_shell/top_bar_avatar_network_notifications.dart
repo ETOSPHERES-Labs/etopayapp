@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TopBar extends StatelessWidget {
+class TopBarAvatarNetworkNotifications extends StatelessWidget {
   final String selectedNetwork;
   final Map<String, String> networkIcons;
   final int notificationsCount;
   final VoidCallback onNetworkTap;
 
-  const TopBar({
+  const TopBarAvatarNetworkNotifications({
     super.key,
     required this.selectedNetwork,
     required this.networkIcons,

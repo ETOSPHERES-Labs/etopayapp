@@ -1,19 +1,19 @@
-import 'package:eto_pay/screens/home_shell/topbar.dart';
+import 'package:eto_pay/screens/home_shell/top_bar_avatar_network_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/screens/home_shell/action_button_row.dart';
-import 'package:eto_pay/screens/home_shell/crypto_address_section.dart';
-import 'package:eto_pay/screens/home_shell/info_card.dart';
-import 'package:eto_pay/screens/home_shell/token_tab_section.dart';
+import 'package:eto_pay/screens/home_shell/buy_sell_bridge_buttons_row.dart';
+import 'package:eto_pay/screens/home_shell/receive_send_funds_section.dart';
+import 'package:eto_pay/screens/home_shell/balance_info_card.dart';
+import 'package:eto_pay/screens/home_shell/tokens_nfts_erc20_tab_section.dart';
 import 'blue_background.dart';
 
-class HomePageShellScreen extends StatefulWidget {
-  const HomePageShellScreen({super.key});
+class HomeShellScreen extends StatefulWidget {
+  const HomeShellScreen({super.key});
 
   @override
-  State<HomePageShellScreen> createState() => _HomePageState();
+  State<HomeShellScreen> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePageShellScreen> {
+class _HomePageState extends State<HomeShellScreen> {
   String _selectedNetwork = 'Shimmer Network';
   int _notificationsCount = 3;
 
@@ -62,24 +62,24 @@ class _HomePageState extends State<HomePageShellScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TopBar(
+              TopBarAvatarNetworkNotifications(
                 selectedNetwork: _selectedNetwork,
                 networkIcons: _networkIcons,
                 notificationsCount: _notificationsCount,
                 onNetworkTap: _openCityPicker,
               ),
               const SizedBox(height: 8),
-              const InfoCard(),
+              const BalanceInfoCard(),
               const SizedBox(height: 18),
-              const ActionButtonsRow(),
-              const CryptoAddressSection(),
+              const BuySellBridgeButtonsRow(),
+              const ReceiveSendFundsSection(),
               const SizedBox(height: 16),
               ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: 116,
                   maxHeight: 116 + 64 * 3,
                 ),
-                child: const TokenTabSection(),
+                child: const TokensNfcsErc20TabSection(),
               ),
             ],
           ),

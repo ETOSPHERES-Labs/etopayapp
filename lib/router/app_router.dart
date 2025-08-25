@@ -1,4 +1,4 @@
-import 'package:eto_pay/screens/new_home_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../screens/choose_network_screen.dart';
@@ -29,9 +29,9 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const MainHomeScreen(),
     ),
     GoRoute(
-      path: '/home-shell',
-      name: 'home-shell',
-      builder: (context, state) => const HomeShellScreen(),
+      path: '/home-and-inner-pages',
+      name: 'home-and-inner-pages',
+      builder: (context, state) => const HomeAndInnerPagesScreen(),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(

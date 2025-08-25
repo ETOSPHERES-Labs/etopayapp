@@ -1,20 +1,20 @@
-import 'package:eto_pay/screens/home_shell/homepage_shell_screen.dart';
+import 'package:eto_pay/screens/home_shell/home_shell_screen.dart';
 import 'package:eto_pay/widgets/home_shell/rounded_notched_shape_with_shadow_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeShellScreen extends StatefulWidget {
-  const HomeShellScreen({super.key});
+class HomeAndInnerPagesScreen extends StatefulWidget {
+  const HomeAndInnerPagesScreen({super.key});
 
   @override
-  State<HomeShellScreen> createState() => _HomeShellScreenState();
+  State<HomeAndInnerPagesScreen> createState() => _HomeAndInnerPagesScreenState();
 }
 
-class _HomeShellScreenState extends State<HomeShellScreen> {
+class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
-    HomePageShellScreen(),
+    HomeShellScreen(),
     Center(child: Text('Ekran 2')),
     Center(child: Text('Ekran 3')),
     Center(child: Text('Ekran 4')),
