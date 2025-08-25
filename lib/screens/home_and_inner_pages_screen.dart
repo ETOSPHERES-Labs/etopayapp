@@ -30,14 +30,121 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
   void _onFabPressed() {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        content: const Text('FAB!'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          )
-        ],
+      barrierDismissible: true,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(44, 24, 44, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'QR Code',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close_outlined),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Container(
+                    width: double.infinity,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Image.asset(
+                      'assets/images/qr_code.png',
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF0F0F0),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Text(
+                    'fr5579u2jtgboi290-1jkf90eidcfdhbskdjowle456kfdj',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                    softWrap: true,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildActionButton(
+                      icon: Icons.share,
+                      label: 'Share',
+                      onPressed: () {
+                        // TODO: Share logic
+                      },
+                    ),
+                    _buildActionButton(
+                      icon: Icons.copy,
+                      label: 'Copy',
+                      onPressed: () {
+                        // TODO: Copy logic
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, color: Colors.white, size: 20),
+      label: Text(
+        label,
+        style: const TextStyle(color: Colors.white),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF005CA9),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
     );
   }
@@ -63,7 +170,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
             height: 28,
             decoration: BoxDecoration(
               color: isSelected ? const Color(0xFF005CA9) : Colors.transparent,
-              borderRadius: BorderRadius.circular(16), // <- zaokrąglenie rogów
+              borderRadius: BorderRadius.circular(16),
             ),
             alignment: Alignment.center,
             child: SvgPicture.asset(
@@ -76,7 +183,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
               ),
             ),
           ),
-          SizedBox(height: 5,),
+          const SizedBox(height: 5),
           Text(
             label,
             style: TextStyle(
@@ -118,7 +225,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
         alignment: Alignment.bottomCenter,
         children: [
           Transform.translate(
-            offset: Offset(0, -0),
+            offset: Offset.zero,
             child: CustomPaint(
               size: Size(MediaQuery.of(context).size.width, 77),
               painter: RoundedNotchedShapeWithShadowPainter(
@@ -139,7 +246,6 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
             ),
           ),
           BottomAppBar(
-            shape: null,
             elevation: 0,
             color: Colors.transparent,
             child: SizedBox(
