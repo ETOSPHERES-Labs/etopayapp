@@ -101,14 +101,12 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
                       icon: Icons.share,
                       label: 'Share',
                       onPressed: () {
-                        // TODO: Share logic
                       },
                     ),
                     _buildActionButton(
                       icon: Icons.copy,
                       label: 'Copy',
                       onPressed: () {
-                        // TODO: Copy logic
                       },
                     ),
                   ],
