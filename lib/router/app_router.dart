@@ -1,3 +1,4 @@
+import 'package:eto_pay/screens/buy_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +33,11 @@ final GoRouter appRouter = GoRouter(
       path: '/home-and-inner-pages',
       name: 'home-and-inner-pages',
       builder: (context, state) => const HomeAndInnerPagesScreen(),
+    ),
+    GoRoute(
+      path: '/buy-screen',
+      name: 'buy-screen',
+      builder: (context, state) => const BuyScreen(),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(

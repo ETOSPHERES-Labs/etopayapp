@@ -1,3 +1,4 @@
+import 'package:eto_pay/screens/buy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -35,6 +36,14 @@ class BuySellBridgeButtonsRow extends StatelessWidget {
                   ),
                   label: 'Buy',
                   color: const Color(0xFF028032),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BuyScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(width: 16),
                 _ActionButton(
@@ -45,6 +54,8 @@ class BuySellBridgeButtonsRow extends StatelessWidget {
                   ),
                   label: 'Sell',
                   color: const Color(0xFFB20F00),
+                  onPressed: () {
+                  },
                 ),
                 const SizedBox(width: 16),
                 _ActionButton(
@@ -55,6 +66,8 @@ class BuySellBridgeButtonsRow extends StatelessWidget {
                   ),
                   label: 'Bridge',
                   color: const Color(0xFF005CA9),
+                  onPressed: () {
+                  },
                 ),
               ],
             ),
@@ -69,11 +82,13 @@ class _ActionButton extends StatelessWidget {
   final SvgPicture icon;
   final String label;
   final Color color;
+  final VoidCallback onPressed;
 
   const _ActionButton({
     required this.icon,
     required this.label,
     required this.color,
+    required this.onPressed,
   });
 
   @override
@@ -82,7 +97,7 @@ class _ActionButton extends StatelessWidget {
       width: 130,
       height: 42,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           padding: const EdgeInsets.symmetric(horizontal: 16),
