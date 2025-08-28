@@ -1,3 +1,4 @@
+import 'package:eto_pay/screens/home_and_inner_pages/history_shell/history_shell_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_shell/home_shell_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_shell/rounded_notched_shape_with_shadow_painter.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
   static const List<Widget> _pages = <Widget>[
     HomeShellScreen(),
     Center(child: Text('Ekran 2')),
-    Center(child: Text('Ekran 3')),
+    HistoryShellScreen(),
     Center(child: Text('Ekran 4')),
   ];
 
