@@ -1,7 +1,7 @@
-import 'package:eto_pay/screens/home_and_inner_pages_screen.dart';
-import 'package:eto_pay/screens/kyc_verification_step_0.dart';
-import 'package:eto_pay/screens/terms_and_conditions_screen.dart';
-import 'package:eto_pay/screens/unlock_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_and_inner_pages_screen.dart';
+import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step_0.dart';
+import 'package:eto_pay/screens/profile_creation_pages/terms_and_conditions_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/unlock_screen.dart';
 import 'package:flutter/material.dart';
 
 class DeveloperPanelScreen extends StatelessWidget {

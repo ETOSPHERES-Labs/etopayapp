@@ -6,11 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
-import '../core/colors.dart';
-import '../services/auth_service.dart';
-import '../view_models/lock_screen_view_model.dart';
-import '../widgets/pin_input_display.dart';
-import '../widgets/biometric_section.dart';
+import '../../core/colors.dart';
+import '../../services/auth_service.dart';
+import '../../view_models/lock_screen_view_model.dart';
+import '../../widgets/pin_input_display.dart';
+import '../../widgets/biometric_section.dart';
 
 class UnlockScreen extends StatefulWidget {
   const UnlockScreen({super.key});

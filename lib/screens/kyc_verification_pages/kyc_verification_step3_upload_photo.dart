@@ -1,5 +1,5 @@
 import 'package:eto_pay/providers/kyc_form_provider.dart';
-import 'package:eto_pay/screens/kyc_verification_step4.dart';
+import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step4.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
 import 'package:eto_pay/widgets/image_upload_card.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';

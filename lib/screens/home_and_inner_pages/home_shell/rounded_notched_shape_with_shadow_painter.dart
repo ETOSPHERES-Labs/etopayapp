@@ -1,4 +1,4 @@
-import 'package:eto_pay/screens/home_shell/rounded_notched_shape.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_shell/rounded_notched_shape.dart';
 import 'package:flutter/material.dart';
 
 class RoundedNotchedShapeWithShadowPainter extends CustomPainter {

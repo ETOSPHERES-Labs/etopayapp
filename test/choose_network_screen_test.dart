@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/screens/choose_network_screen.dart';
+import 'package:eto_pay/screens/profile_creation_pages/choose_network_screen.dart';
 
 void main() {
   testWidgets('ChooseNetworkScreen renders and shows network cards',

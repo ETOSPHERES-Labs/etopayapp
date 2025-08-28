@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:eto_pay/core/eu_countries.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
-import 'package:eto_pay/screens/kyc_verification_step2.dart';
+import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step2.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
 import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/image_upload_card.dart';
@@ -12,8 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
-  const KycVerificationStep2DrivingLicenseScreen({super.key});
+class KycVerificationStep2IdCardScreen extends ConsumerWidget {
+  const KycVerificationStep2IdCardScreen({super.key});
 
   void _updateIssuer(WidgetRef ref, String countryName) {
     final notifier = ref.read(kycFormProvider.notifier);
@@ -27,7 +27,8 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
     required File? phoneFile,
   }) {
     final notifier = ref.read(kycFormProvider.notifier);
-    notifier.updateDrivingLicenseImage(isFront: isFront, webBytes: webBytes, phoneFile: phoneFile);
+    notifier.updateIdCardImage(
+        isFront: isFront, webBytes: webBytes, phoneFile: phoneFile);
   }
 
   @override
@@ -46,7 +47,8 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      style: TextButton.styleFrom(foregroundColor: Colors.black),
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.black),
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
@@ -62,16 +64,19 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     const Text(
                       "Step 2/4",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        SvgPicture.asset('assets/icons/icon_face_id.svg', width: 20, height: 20),
+                        SvgPicture.asset('assets/icons/icon_face_id.svg',
+                            width: 20, height: 20),
                         const SizedBox(width: 8),
                         const Text(
                           "2. ID Verification",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ],
                     ),
@@ -83,13 +88,15 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
                     const SizedBox(height: 42),
                     const Text(
                       "Select document issuer country",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     CountryDropdown(
                       countries: euCountries,
                       selectedCountry: form.idVerificationDocumentIssuer != null
-                          ? findCountryByName(form.idVerificationDocumentIssuer!)
+                          ? findCountryByName(
+                              form.idVerificationDocumentIssuer!)
                           : null,
                       onChanged: (value) {
                         if (value != null) {
@@ -99,19 +106,20 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 24),
                     const Text(
-                      "Driving License",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      "ID Card",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      "Please upload clear images of both sides of your driving license",
+                      "Please upload clear images of both sides of your ID card.",
                       style: TextStyle(color: Color(0xFF747474), fontSize: 16),
                     ),
                     const SizedBox(height: 16),
                     ImageUploadCard(
                       label: "Front side",
-                      initialWebImage: form.drivingLicense?.front?.web,
-                      initialLocalImage: form.drivingLicense?.front?.phone,
+                      initialWebImage: form.idCard?.front?.web,
+                      initialLocalImage: form.idCard?.front?.phone,
                       onImageSelected: (bytes, file) => _updateDocumentImage(
                         ref: ref,
                         isFront: true,
@@ -122,8 +130,8 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
                     const SizedBox(height: 24),
                     ImageUploadCard(
                       label: "Back side",
-                      initialWebImage: form.drivingLicense?.back?.web,
-                      initialLocalImage: form.drivingLicense?.back?.phone,
+                      initialWebImage: form.idCard?.back?.web,
+                      initialLocalImage: form.idCard?.back?.phone,
                       onImageSelected: (bytes, file) => _updateDocumentImage(
                         ref: ref,
                         isFront: false,
@@ -137,12 +145,13 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
               ),
             ),
             ContinueButtonWidget(
-              isEnabled: form.isStep2DrivingLicenseValid,
+              isEnabled: form.isStep2IdCardValid,
               text: 'Submit',
-              onPressed: form.isStep2DrivingLicenseValid
+              onPressed: form.isStep2IdCardValid
                   ? () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const KycVerificationStep2Screen()),
+                        MaterialPageRoute(
+                            builder: (_) => const KycVerificationStep2Screen()),
                       );
                     }
                   : () {},

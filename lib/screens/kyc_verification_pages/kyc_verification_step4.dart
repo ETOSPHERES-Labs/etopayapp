@@ -1,4 +1,4 @@
-import 'package:eto_pay/screens/kyc_verification_step5.dart';
+import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step5.dart';
 import 'package:eto_pay/widgets/conditional_button.double.dart';
 import 'package:eto_pay/widgets/custom_wide_input_field.dart';
 import 'package:eto_pay/widgets/document_preview_row.dart';

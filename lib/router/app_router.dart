@@ -1,12 +1,12 @@
-import 'package:eto_pay/screens/buy_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_screen.dart';
 import 'package:eto_pay/screens/developer_panel_screen.dart';
-import 'package:eto_pay/screens/home_and_inner_pages_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_and_inner_pages_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../screens/choose_network_screen.dart';
-import '../screens/terms_and_conditions_screen.dart';
-import '../screens/unlock_screen.dart';
-import '../screens/main_home_screen.dart';
+import '../screens/profile_creation_pages/choose_network_screen.dart';
+import '../screens/profile_creation_pages/terms_and_conditions_screen.dart';
+import '../screens/home_and_inner_pages/unlock_screen.dart';
+import '../screens/trash/main_home_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   routes: [

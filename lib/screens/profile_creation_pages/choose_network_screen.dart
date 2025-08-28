@@ -1,6 +1,6 @@
-import 'package:eto_pay/screens/choose_custom_network_screen.dart';
-import 'package:eto_pay/screens/kyc_verification_step_0.dart';
-import 'package:eto_pay/screens/wallet_options_screen.dart';
+import 'package:eto_pay/screens/profile_creation_pages/choose_custom_network_screen.dart';
+import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step_0.dart';
+import 'package:eto_pay/screens/profile_creation_pages/wallet_options_screen.dart';
 import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';

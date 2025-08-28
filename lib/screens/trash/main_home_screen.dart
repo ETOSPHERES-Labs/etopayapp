@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../widgets/navbar.dart';
+import '../../widgets/navbar.dart';
 import 'package:provider/provider.dart';
-import '../view_models/main_home_header_view_model.dart';
-import '../core/colors.dart';
-import '../view_models/main_home_balance_view_model.dart';
+import '../../view_models/main_home_header_view_model.dart';
+import '../../core/colors.dart';
+import '../../view_models/main_home_balance_view_model.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});

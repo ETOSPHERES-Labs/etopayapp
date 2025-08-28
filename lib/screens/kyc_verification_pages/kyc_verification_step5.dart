@@ -1,4 +1,4 @@
-import 'package:eto_pay/screens/kyc_verification_step1.dart';
+import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step1.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';

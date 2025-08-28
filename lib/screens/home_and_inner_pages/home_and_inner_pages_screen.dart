@@ -1,5 +1,5 @@
-import 'package:eto_pay/screens/home_shell/home_shell_screen.dart';
-import 'package:eto_pay/screens/home_shell/rounded_notched_shape_with_shadow_painter.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_shell/home_shell_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_shell/rounded_notched_shape_with_shadow_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

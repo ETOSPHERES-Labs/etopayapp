@@ -1,5 +1,5 @@
-import 'package:eto_pay/screens/enter_recovery_phrase_screen.dart';
-import 'package:eto_pay/screens/upload_recovery_file_screen.dart';
+import 'package:eto_pay/screens/profile_creation_pages/enter_recovery_phrase_screen.dart';
+import 'package:eto_pay/screens/profile_creation_pages/upload_recovery_file_screen.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
 

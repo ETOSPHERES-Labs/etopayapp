@@ -1,4 +1,4 @@
-import 'package:eto_pay/screens/buy_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

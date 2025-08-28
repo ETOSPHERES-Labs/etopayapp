@@ -1,9 +1,9 @@
-import 'package:eto_pay/screens/home_shell/top_bar_avatar_network_notifications.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_shell/top_bar_avatar_network_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/screens/home_shell/buy_sell_bridge_buttons_row.dart';
-import 'package:eto_pay/screens/home_shell/receive_send_funds_section.dart';
-import 'package:eto_pay/screens/home_shell/balance_info_card.dart';
-import 'package:eto_pay/screens/home_shell/tokens_nfts_erc20_tab_section.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_shell/buy_sell_bridge_buttons_row.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_shell/receive_send_funds_section.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_shell/balance_info_card.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/home_shell/tokens_nfts_erc20_tab_section.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'blue_background.dart';

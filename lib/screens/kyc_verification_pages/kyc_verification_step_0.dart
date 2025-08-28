@@ -1,5 +1,5 @@
 import 'package:eto_pay/core/eu_countries.dart';
-import 'package:eto_pay/screens/kyc_verification_step1.dart';
+import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step1.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
 import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
