@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/top_bar_avatar_network_notifications.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_shell/buy_sell_bridge_buttons_row.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_shell/receive_send_funds_section.dart';

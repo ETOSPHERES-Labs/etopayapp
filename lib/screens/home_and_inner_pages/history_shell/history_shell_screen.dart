@@ -1,4 +1,5 @@
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/blue_background.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/history_shell/transaction_details_dialog.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/top_bar_avatar_network_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -131,7 +132,7 @@ class _HistoryShellScreenState extends State<HistoryShellScreen> {
                                 width: 20,
                                 height: 20,
                               ),
-                              label: 'BTC',
+                              label: 'ETH',
                               subtitle: 'Receive 12:32',
                               amount: '+ € 430.00',
                             ),
@@ -272,7 +273,18 @@ class TransactionTile extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(6),
           onTap: () {
-            // TODO: Navigate to transaction details
+            showDialog(
+              context: context,
+              builder: (context) => TransactionDetailsDialog(
+                type: 'Sent ${data.label}',
+                isConfirmed: true,
+                amountBTC: '0.623${data.label}',
+                amountFiat: '€ 35.23',
+                from: 'Dashgvkas',
+                to: 'JHbklmsjn',
+                date: 'Jul 31 at 12:32',
+              ),
+            );
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
