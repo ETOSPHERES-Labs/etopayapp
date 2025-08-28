@@ -303,7 +303,7 @@ class TransactionTile extends StatelessWidget {
                       ),
                       Text(
                         data.subtitle,
-                        style: const TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                     ],
                   ),
