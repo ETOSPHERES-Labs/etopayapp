@@ -1,5 +1,6 @@
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/blue_background.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/transaction_details_dialog.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/history_shell/transaction_filter_modal.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/top_bar_avatar_network_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,6 +26,17 @@ class _HistoryShellScreenState extends State<HistoryShellScreen> {
     setState(() {
       _selectedNetwork = newNetwork;
     });
+  }
+
+  void _showFilterModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      isScrollControlled: true,
+      builder: (context) => const TransactionFilterModal(),
+    );
   }
 
   @override
@@ -103,7 +115,7 @@ class _HistoryShellScreenState extends State<HistoryShellScreen> {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () => _showFilterModal(context),
                             child: Row(
                               children: const [
                                 Text('Filters',
@@ -303,7 +315,8 @@ class TransactionTile extends StatelessWidget {
                       ),
                       Text(
                         data.subtitle,
-                        style: const TextStyle(color: Colors.grey, fontSize: 12),
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                     ],
                   ),

@@ -36,7 +36,8 @@ class _HomePageState extends State<HomeShellScreen> {
       child: SingleChildScrollView(
         child: CustomPaint(
           painter: BlueBackgroundPainter(),
-          child: Column(
+          child:Column(
+            
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TopBarAvatarNetworkNotifications(
