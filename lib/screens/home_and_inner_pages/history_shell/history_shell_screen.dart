@@ -1,7 +1,7 @@
-import 'package:eto_pay/screens/home_and_inner_pages/history_shell/blue_background.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/transaction_details_dialog.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/transaction_filter_modal.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/top_bar_avatar_network_notifications.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar_blue_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,21 +13,6 @@ class HistoryShellScreen extends StatefulWidget {
 }
 
 class _HistoryShellScreenState extends State<HistoryShellScreen> {
-  String _selectedNetwork = 'Shimmer Network';
-  int _notificationsCount = 3;
-
-  final Map<String, String> _networkIcons = {
-    'Shimmer Network': 'assets/icons/icon_shimmer.svg',
-    'ETH Network': 'assets/icons/icon_eth.svg',
-    'Binance Network': 'assets/icons/icon_binance.svg',
-  };
-
-  void _handleNetworkChange(String newNetwork) {
-    setState(() {
-      _selectedNetwork = newNetwork;
-    });
-  }
-
   void _showFilterModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -44,16 +29,11 @@ class _HistoryShellScreenState extends State<HistoryShellScreen> {
     return SafeArea(
       child: SingleChildScrollView(
         child: CustomPaint(
-          painter: BlueBackgroundPainter(),
+          painter: TopBarBlueBackgroundPainter(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TopBarAvatarNetworkNotifications(
-                selectedNetwork: _selectedNetwork,
-                networkIcons: _networkIcons,
-                notificationsCount: _notificationsCount,
-                onNetworkChanged: _handleNetworkChange,
-              ),
+              TopBar(),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
