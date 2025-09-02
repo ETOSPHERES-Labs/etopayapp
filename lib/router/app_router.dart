@@ -1,4 +1,4 @@
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/buy_screen.dart';
 import 'package:eto_pay/screens/developer_panel_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_and_inner_pages_screen.dart';
 import 'package:flutter/material.dart';
