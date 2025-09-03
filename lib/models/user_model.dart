@@ -7,6 +7,7 @@ class UserModel {
   final String avatar;
   final String? preferredNetwork;
   final int unreadNotifications;
+  final String pin;
 
   UserModel({
     required this.id,
@@ -15,6 +16,7 @@ class UserModel {
     String? avatar,
     this.preferredNetwork,
     this.unreadNotifications = 0,
+    this.pin = "444444", // temporary
   })  : networks = networks ?? NetworksModel(),
         avatar = avatar ?? 'assets/images/avatar.png';
 
@@ -25,6 +27,7 @@ class UserModel {
     String? avatar,
     String? preferredNetwork,
     int? unreadNotifications,
+    String? pin,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -33,6 +36,7 @@ class UserModel {
       avatar: avatar ?? this.avatar,
       preferredNetwork: preferredNetwork ?? this.preferredNetwork,
       unreadNotifications: unreadNotifications ?? this.unreadNotifications,
+      pin: pin ?? this.pin,
     );
   }
 }

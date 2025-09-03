@@ -5,10 +5,9 @@ import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/payment_
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/preset_amount_buttons.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/section_title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BuyScreen extends StatefulWidget {
-  const BuyScreen({Key? key}) : super(key: key);
+  const BuyScreen({super.key});
 
   @override
   State<BuyScreen> createState() => _BuyScreenState();

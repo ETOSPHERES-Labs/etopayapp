@@ -1,25 +1,21 @@
 import 'dart:async';
+import 'package:eto_pay/providers/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:provider/provider.dart';
-
-import '../../core/colors.dart';
 import '../../services/auth_service.dart';
-import '../../view_models/lock_screen_view_model.dart';
 import '../../widgets/pin_input_display.dart';
 import '../../widgets/biometric_section.dart';
 
-class UnlockScreen extends StatefulWidget {
+class UnlockScreen extends ConsumerStatefulWidget {
   const UnlockScreen({super.key});
 
   @override
-  State<UnlockScreen> createState() => _UnlockScreenState();
+  ConsumerState<UnlockScreen> createState() => _UnlockScreenState();
 }
 
-class _UnlockScreenState extends State<UnlockScreen> {
+class _UnlockScreenState extends ConsumerState<UnlockScreen> {
   final TextEditingController _pinController = TextEditingController();
   final FocusNode _pinFocusNode = FocusNode();
   final LocalAuthentication _auth = LocalAuthentication();
@@ -85,8 +81,8 @@ class _UnlockScreenState extends State<UnlockScreen> {
     if (success) _onUnlockSuccess();
   }
 
-  void _onPinSubmit() {
-    if (_pinController.text == '444444') {
+  void _onPinSubmit(String pin) {
+    if (_pinController.text == pin) {
       _onUnlockSuccess();
     } else {
       setState(() {
@@ -105,134 +101,124 @@ class _UnlockScreenState extends State<UnlockScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => LockScreenViewModel(),
-      child: Consumer<LockScreenViewModel>(
-        builder: (context, model, _) {
-          return Scaffold(
-            body: SafeArea(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+    final user = ref.watch(userProvider);
+
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 100,
+                  backgroundColor: Colors.grey.shade200,
+                  child: Image.asset(
+                    user.avatar,
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                Text(
+                  user.name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 40),
+                GestureDetector(
+                  onTap: () =>
+                      FocusScope.of(context).requestFocus(_pinFocusNode),
+                  child: PinInputDisplay(
+                    pin: _pinController.text,
+                    isFocused: _pinFieldFocused,
+                    isAuthenticating: _isAuthenticating,
+                    showCursor: _showCursor,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: 0,
+                  height: 0,
+                  child: TextField(
+                    focusNode: _pinFocusNode,
+                    controller: _pinController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 6,
+                    autofocus: true,
+                    obscureText: true,
+                    enableInteractiveSelection: false,
+                    showCursor: false,
+                    style: const TextStyle(color: Colors.transparent),
+                    cursorColor: Colors.transparent,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      counterText: '',
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    onChanged: (_) {
+                      setState(() {
+                        if (_error != null) _error = null;
+                      });
+                    },
+                    onSubmitted: (_) => _onPinSubmit(user.pin),
+                    enabled: !_isAuthenticating,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed:
+                      _isAuthenticating ? null : () => _onPinSubmit(user.pin),
+                  style: ButtonStyle(
+                    minimumSize: WidgetStateProperty.all(const Size(108, 39)),
+                    maximumSize: WidgetStateProperty.all(const Size(108, 39)),
+                    padding: WidgetStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    backgroundColor:
+                        WidgetStateProperty.resolveWith<Color>((states) {
+                      if (states.contains(WidgetState.hovered)) {
+                        return const Color(0x26005CA9);
+                      }
+                      return const Color(0x1A005CA9);
+                    }),
+                    overlayColor: WidgetStateProperty.all(Colors.transparent),
+                    elevation: WidgetStateProperty.all(0),
+                    shadowColor: WidgetStateProperty.all(Colors.transparent),
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    animationDuration: Duration.zero,
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      CircleAvatar(
-                        radius: 100,
-                        backgroundColor: Colors.grey.shade200,
-                        child: Image.asset(
-                          model.profileImage,
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      Text(
-                        model.username,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 40),
-                      GestureDetector(
-                        onTap: () =>
-                            FocusScope.of(context).requestFocus(_pinFocusNode),
-                        child: PinInputDisplay(
-                          pin: _pinController.text,
-                          isFocused: _pinFieldFocused,
-                          isAuthenticating: _isAuthenticating,
-                          showCursor: _showCursor,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        width: 0,
-                        height: 0,
-                        child: TextField(
-                          focusNode: _pinFocusNode,
-                          controller: _pinController,
-                          keyboardType: TextInputType.number,
-                          maxLength: 6,
-                          autofocus: true,
-                          obscureText: true,
-                          enableInteractiveSelection: false,
-                          showCursor: false,
-                          style: const TextStyle(color: Colors.transparent),
-                          cursorColor: Colors.transparent,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            counterText: '',
-                            contentPadding: EdgeInsets.zero,
-                          ),
-                          onChanged: (_) {
-                            setState(() {
-                              if (_error != null) _error = null;
-                            });
-                          },
-                          onSubmitted: (_) => _onPinSubmit(),
-                          enabled: !_isAuthenticating,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: _isAuthenticating ? null : _onPinSubmit,
-                        style: ButtonStyle(
-                          minimumSize:
-                              MaterialStateProperty.all(const Size(108, 39)),
-                          maximumSize:
-                              MaterialStateProperty.all(const Size(108, 39)),
-                          padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10)),
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                                  (states) {
-                            if (states.contains(MaterialState.hovered)) {
-                              return const Color(
-                                  0x26005CA9); // 15% opacity — JAŚNIEJSZY
-                            }
-                            return const Color(
-                                0x1A005CA9); // 10% opacity — domyślny
-                          }),
-                          overlayColor: MaterialStateProperty.all(
-                              Colors.transparent), // wyłącza ripple / błysk
-                          elevation:
-                              MaterialStateProperty.all(0), // brak cienia
-                          shadowColor: MaterialStateProperty.all(
-                              Colors.transparent), // dodatkowo zabezpiecza
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                          animationDuration: Duration.zero, // brak mrugnięć
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text('Enter'),
-                            SizedBox(width: 10),
-                            Icon(Icons.arrow_right_alt),
-                          ],
-                        ),
-                      ),
-                      if (_error != null) ...[
-                        const SizedBox(height: 16),
-                        Text(_error!,
-                            style: const TextStyle(color: Colors.red)),
-                      ],
-                      const SizedBox(height: 40),
-                      if (_biometricAvailable)
-                        BiometricSection(
-                          isAuthenticating: _isAuthenticating,
-                          onAuthenticate: _authenticateWithBiometrics,
-                        ),
+                      Text('Enter'),
+                      SizedBox(width: 10),
+                      Icon(Icons.arrow_right_alt),
                     ],
                   ),
                 ),
-              ),
+                if (_error != null) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    _error!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ],
+                const SizedBox(height: 40),
+                if (_biometricAvailable)
+                  BiometricSection(
+                    isAuthenticating: _isAuthenticating,
+                    onAuthenticate: _authenticateWithBiometrics,
+                  ),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
