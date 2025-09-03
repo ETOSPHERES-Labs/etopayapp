@@ -1,3 +1,5 @@
+import 'package:eto_pay/providers/coin_provider.dart';
+import 'package:eto_pay/providers/payment_method_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/amount_input.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/coin_dropdown.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/payment_method_bottom_sheet.dart';
@@ -5,54 +7,25 @@ import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/payment_
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/preset_amount_buttons.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/section_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BuyScreen extends StatefulWidget {
+class BuyScreen extends ConsumerStatefulWidget {
   const BuyScreen({super.key});
 
   @override
-  State<BuyScreen> createState() => _BuyScreenState();
+  ConsumerState<BuyScreen> createState() => _BuyScreenState();
 }
 
-class _BuyScreenState extends State<BuyScreen> {
+class _BuyScreenState extends ConsumerState<BuyScreen> {
   final TextEditingController _amountController = TextEditingController();
 
   String _selectedCoin = 'SMR';
   String _selectedCurrency = 'EURO';
   String _selectedPaymentMethod = 'Sepa';
 
-  final List<Map<String, String>> _coins = [
-    {
-      'name': 'Shimmer',
-      'symbol': 'SMR',
-      'icon': 'assets/icons/icon_shimmer.svg'
-    },
-    {
-      'name': 'Ethereum',
-      'symbol': 'ETH',
-      'icon': 'assets/icons/icon_eth.svg',
-      'paint_in_gray': 'true'
-    },
-    {'name': 'Duno', 'symbol': 'DUNO', 'icon': 'assets/icons/icon_duno.svg'},
-  ];
-
-  final List<Map<String, String>> _paymentMethods = [
-    {
-      'label': 'Sepa',
-      'icon': 'assets/icons/icon_sepa.svg',
-    },
-    {
-      'label': 'CC',
-      'icon': 'assets/icons/icon_cc.svg',
-    },
-    {
-      'label': 'Paypal',
-      'icon': 'assets/icons/icon_paypal.svg',
-    },
-  ];
-
   final List<String> _presetAmounts = ['25', '50', '100', '250'];
 
-  void _showPaymentMethodSheet() {
+  void _showPaymentMethodSheet(List<Map<String, String>> methods) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -60,7 +33,7 @@ class _BuyScreenState extends State<BuyScreen> {
       ),
       builder: (_) {
         return PaymentMethodBottomSheet(
-          paymentMethods: _paymentMethods,
+          paymentMethods: methods,
           onSelect: (method) {
             setState(() {
               _selectedPaymentMethod = method;
@@ -85,6 +58,9 @@ class _BuyScreenState extends State<BuyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final coinsAsync = ref.watch(coinsProvider);
+    final paymentMethodsAsync = ref.watch(paymentMethodsProvider);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF005CA9),
@@ -110,29 +86,34 @@ class _BuyScreenState extends State<BuyScreen> {
           children: [
             const SectionTitle(text: "You want to buy"),
             const SizedBox(height: 8),
-            CoinDropdown(
-              items: _coins,
-              selectedSymbol: _selectedCoin,
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedCoin = value;
-                  });
-                }
-              },
+            coinsAsync.when(
+              data: (coins) => CoinDropdown(
+                items: coins,
+                selectedSymbol: _selectedCoin,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedCoin = value;
+                    });
+                  }
+                },
+              ),
+              loading: () => const CircularProgressIndicator(),
+              error: (e, _) => Text('Error loading coins: $e'),
             ),
             const SizedBox(height: 4),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                  "Current balance: 0 $_selectedCoin = 0 $_selectedCurrency",
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: Color(0xFF747474),
-                    height: 1.0,
-                  )),
+                "Current balance: 0 $_selectedCoin = 0 $_selectedCurrency",
+                style: const TextStyle(
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: Color(0xFF747474),
+                  height: 1.0,
+                ),
+              ),
             ),
             const SizedBox(height: 24),
             const SectionTitle(text: "Amount"),
@@ -157,10 +138,14 @@ class _BuyScreenState extends State<BuyScreen> {
             const SizedBox(height: 24),
             const SectionTitle(text: "Payment method"),
             const SizedBox(height: 8),
-            PaymentMethodSelector(
-              selectedPaymentMethod: _selectedPaymentMethod,
-              paymentMethods: _paymentMethods,
-              onTap: _showPaymentMethodSheet,
+            paymentMethodsAsync.when(
+              data: (methods) => PaymentMethodSelector(
+                selectedPaymentMethod: _selectedPaymentMethod,
+                paymentMethods: methods,
+                onTap: () => _showPaymentMethodSheet(methods),
+              ),
+              loading: () => const CircularProgressIndicator(),
+              error: (e, _) => Text('Error loading payment methods: $e'),
             ),
           ],
         ),
@@ -175,7 +160,7 @@ class _BuyScreenState extends State<BuyScreen> {
               final amount = _amountController.text;
               final coin = _selectedCoin;
               final paymentMethod = _selectedPaymentMethod;
-              // kekw
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Buying $amount $coin using $paymentMethod'),
