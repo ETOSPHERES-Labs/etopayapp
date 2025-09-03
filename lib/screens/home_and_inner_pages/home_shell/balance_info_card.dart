@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 
 class BalanceInfoCard extends StatelessWidget {
-  const BalanceInfoCard({super.key});
+  final String networkName;
+  final String networkSymbol;
+  final double amount;
+  final double fiatConversionRate;
+  final String fiatSymbol;
+
+  const BalanceInfoCard(
+      {super.key,
+      required this.networkName,
+      required this.networkSymbol,
+      required this.amount,
+      required this.fiatConversionRate,
+      required this.fiatSymbol});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity, 
+      width: double.infinity,
       height: 125,
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(16),
@@ -15,14 +27,14 @@ class BalanceInfoCard extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(0xFFC1E3FF), 
+            Color(0xFFC1E3FF),
             Colors.white,
           ],
         ),
         borderRadius: BorderRadius.circular(6),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x66000000), 
+            color: Color(0x66000000),
             blurRadius: 6,
             offset: Offset(0, 0),
           ),
@@ -32,9 +44,9 @@ class BalanceInfoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'Shimmer Balance',
-            style: TextStyle(
+          Text(
+            '$networkName Balance',
+            style: const TextStyle(
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w600,
               fontSize: 16,
@@ -46,8 +58,8 @@ class BalanceInfoCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text(
-                '12.325.00,99 SMR',
+              Text(
+                '$amount $networkSymbol',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
@@ -69,8 +81,8 @@ class BalanceInfoCard extends StatelessWidget {
             children: [
               const Icon(Icons.euro, size: 18, color: Color(0xFF747474)),
               const SizedBox(width: 6),
-              const Text(
-                '10,88 EURO',
+              Text(
+                '${amount * fiatConversionRate} $fiatSymbol',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.w400,

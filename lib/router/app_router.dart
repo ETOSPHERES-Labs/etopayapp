@@ -44,7 +44,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HomeAndInnerPagesScreen(),
         redirect: (context, state) {
           final user = ref.read(userProvider);
-          if (user == null) return '/home';
+          if (user == null) return '/developer-panel';
           // if (!user.acceptedTerms) return '/terms';
           return null;
         },
@@ -55,7 +55,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const BuyScreen(),
         redirect: (context, state) {
           final user = ref.read(userProvider);
-          if (user == null) return '/home';
+          if (user == null) return '/developer-panel';
           return null;
         },
       ),

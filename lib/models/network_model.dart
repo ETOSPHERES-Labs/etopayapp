@@ -1,18 +1,21 @@
 class NetworkModel {
   final String id;
   final String name;
+  final String symbol;
   final String icon;
+  final String address; // @user tmp
+  final double amount; // @user tmp
 
-  const NetworkModel(this.id, this.name, this.icon);
+  const NetworkModel(this.id, this.name, this.symbol, this.icon, this.address, this.amount);
 }
 
 class NetworksModel {
   final Map<String, NetworkModel> networks;
 
   static const Map<String, NetworkModel> defaultNetworks = {
-    "1": NetworkModel("1", 'Shimmer Network', 'assets/icons/icon_shimmer.svg'),
-    "2": NetworkModel("2", 'ETH Network', 'assets/icons/icon_eth.svg'),
-    "3": NetworkModel("3", 'Binance Network', 'assets/icons/icon_binance.svg'),
+    "1": NetworkModel("1", 'Shimmer Network', 'SMR', 'assets/icons/icon_shimmer.svg', '0x000000B0B', 1232500.99),
+    "2": NetworkModel("2", 'ETH Network', 'ETH', 'assets/icons/icon_eth.svg', 'AbCdEfGh55', 551236.00),
+    "3": NetworkModel("3", 'Binance Network', 'BNC', 'assets/icons/icon_binance.svg', 'BNCx0134567', 555.45),
   };
 
   NetworksModel([Map<String, NetworkModel>? networks])
@@ -45,6 +48,17 @@ class NetworksModel {
     final network = networks[networkId];
     if (network != null) {
       return network.name;
+    }
+
+    return null;
+  }
+
+  NetworkModel? networkFor(String? networkId) {
+    if (networkId == null) return null;
+
+    final network = networks[networkId];
+    if (network != null) {
+      return network;
     }
 
     return null;

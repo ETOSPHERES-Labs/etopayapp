@@ -10,16 +10,16 @@ class HomeAndInnerPagesScreen extends StatefulWidget {
   @override
   State<HomeAndInnerPagesScreen> createState() =>
       _HomeAndInnerPagesScreenState();
-}
+} 
 
 class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
     HomeShellScreen(),
-    Center(child: Text('Ekran 2')),
+    Center(child: Text('Screen 2')),
     HistoryShellScreen(),
-    Center(child: Text('Ekran 4')),
+    Center(child: Text('Screen 4')),
   ];
 
   void _onItemTapped(int index) {
@@ -101,14 +101,12 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
                     _buildActionButton(
                       icon: Icons.share,
                       label: 'Share',
-                      onPressed: () {
-                      },
+                      onPressed: () {},
                     ),
                     _buildActionButton(
                       icon: Icons.copy,
                       label: 'Copy',
-                      onPressed: () {
-                      },
+                      onPressed: () {},
                     ),
                   ],
                 ),
