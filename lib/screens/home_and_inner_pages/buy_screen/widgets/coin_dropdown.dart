@@ -1,8 +1,9 @@
+import 'package:eto_pay/models/coin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CoinDropdown extends StatelessWidget {
-  final List<Map<String, String>> items;
+  final List<Coin> items;
   final String selectedSymbol;
   final ValueChanged<String?> onChanged;
 
@@ -27,22 +28,22 @@ class CoinDropdown extends StatelessWidget {
       onChanged: onChanged,
       items: items.map((item) {
         return DropdownMenuItem<String>(
-          value: item['symbol'],
+          value: item.symbol,
           child: Row(
             children: [
               SvgPicture.asset(
-                item['icon']!,
+                item.icon,
                 width: 24,
                 height: 24,
-                colorFilter: item['paint_in_gray'] != null
+                colorFilter: item.paintInGray == true
                     ? const ColorFilter.mode(Color(0xFF747474), BlendMode.srcIn)
                     : null,
               ),
               const SizedBox(width: 12),
-              Text(item['name']!),
+              Text(item.name),
               const Spacer(),
               Text(
-                item['symbol']!,
+                item.symbol,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],

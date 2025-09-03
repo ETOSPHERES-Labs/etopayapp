@@ -1,3 +1,4 @@
+import 'package:eto_pay/models/payment_method_model.dart';
 import 'package:eto_pay/providers/coin_provider.dart';
 import 'package:eto_pay/providers/payment_method_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/amount_input.dart';
@@ -25,7 +26,7 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
 
   final List<String> _presetAmounts = ['25', '50', '100', '250'];
 
-  void _showPaymentMethodSheet(List<Map<String, String>> methods) {
+  void _showPaymentMethodSheet(List<PaymentMethod> methods) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(

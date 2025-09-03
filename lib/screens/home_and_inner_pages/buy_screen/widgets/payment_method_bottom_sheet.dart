@@ -1,8 +1,9 @@
+import 'package:eto_pay/models/payment_method_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PaymentMethodBottomSheet extends StatelessWidget {
-  final List<Map<String, String>> paymentMethods;
+  final List<PaymentMethod> paymentMethods;
   final ValueChanged<String> onSelect;
 
   const PaymentMethodBottomSheet({
@@ -26,7 +27,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
           ...paymentMethods.map((method) {
             return GestureDetector(
               onTap: () {
-                onSelect(method['label']!);
+                onSelect(method.label);
                 Navigator.pop(context);
               },
               child: Container(
@@ -45,7 +46,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                           width: 38,
                           height: 38,
                           child: SvgPicture.asset(
-                            method['icon']!,
+                            method.icon,
                             width: 38,
                             height: 38,
                             fit: BoxFit.contain,
@@ -53,7 +54,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          method['label']!,
+                          method.label,
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),

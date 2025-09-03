@@ -1,8 +1,9 @@
+import 'package:eto_pay/models/coin_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final coinsProvider = FutureProvider<List<Map<String, String>>>((ref) async {
+final coinsProvider = FutureProvider<List<Coin>>((ref) async {
   await Future.delayed(const Duration(milliseconds: 300)); // "api call"
-  return [
+  final rawData = [
     {
       'name': 'Shimmer',
       'symbol': 'SMR',
@@ -20,4 +21,6 @@ final coinsProvider = FutureProvider<List<Map<String, String>>>((ref) async {
       'icon': 'assets/icons/icon_duno.svg',
     },
   ];
+
+  return rawData.map((json) => Coin.fromJson(json)).toList();
 });

@@ -1,9 +1,10 @@
+import 'package:eto_pay/models/payment_method_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PaymentMethodSelector extends StatelessWidget {
   final String selectedPaymentMethod;
-  final List<Map<String, String>> paymentMethods;
+  final List<PaymentMethod> paymentMethods;
   final VoidCallback onTap;
 
   const PaymentMethodSelector({
@@ -15,7 +16,7 @@ class PaymentMethodSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final method = paymentMethods.firstWhere((m) => m['label'] == selectedPaymentMethod);
+    final method = paymentMethods.firstWhere((m) => m.label == selectedPaymentMethod);
 
     return InkWell(
       onTap: onTap,
@@ -31,7 +32,7 @@ class PaymentMethodSelector extends StatelessWidget {
             Row(
               children: [
                 SvgPicture.asset(
-                  method['icon']!,
+                  method.icon,
                   width: 24,
                   height: 24,
                 ),
