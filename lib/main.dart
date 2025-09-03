@@ -1,3 +1,4 @@
+import 'package:eto_pay/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'router/app_router.dart';
@@ -8,11 +9,18 @@ void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    // load fake user
+    Future.microtask(() {
+      ref.read(userProvider.notifier).fetchUser();
+    });
+
     return MaterialApp.router(
       title: 'ETOPay App',
       theme: ThemeData(
@@ -20,7 +28,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Poppins',
       ),
-      routerConfig: appRouter,
+      routerConfig: router,
     );
   }
 }

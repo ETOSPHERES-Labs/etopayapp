@@ -101,7 +101,7 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
+    final user = ref.watch(requireUserProvider);
 
     return Scaffold(
       body: SafeArea(

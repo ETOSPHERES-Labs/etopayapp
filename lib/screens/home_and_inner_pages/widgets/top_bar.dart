@@ -17,7 +17,8 @@ class TopBar extends ConsumerWidget {
       context: context,
       builder: (context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           clipBehavior: Clip.antiAlias,
           child: Material(
             color: Colors.white,
@@ -25,7 +26,8 @@ class TopBar extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -49,19 +51,22 @@ class TopBar extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: networks.networks.entries.map((entry) {
                       final isSelected = entry.key == selectedNetwork;
-
                       return InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: () {
-                          ref.read(userProvider.notifier).update((user) =>
-                              user.copyWith(preferredNetwork: entry.key));
+                          ref
+                              .read(userProvider.notifier)
+                              .updatePreferredNetwork(entry.key);
                           Navigator.pop(context);
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                           margin: const EdgeInsets.symmetric(vertical: 6),
                           decoration: BoxDecoration(
-                            color: isSelected ? const Color(0xFFE6F0FF) : Colors.transparent,
+                            color: isSelected
+                                ? const Color(0xFFE6F0FF)
+                                : Colors.transparent,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
@@ -136,7 +141,7 @@ class TopBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
+    final user = ref.watch(requireUserProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -175,7 +180,8 @@ class TopBar extends ConsumerWidget {
                     ),
                   const SizedBox(width: 4),
                   Text(
-                    user.networks.nameFor(user.preferredNetwork) ?? 'Select Network',
+                    user.networks.nameFor(user.preferredNetwork) ??
+                        'Select Network',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.white,
