@@ -1,18 +1,20 @@
+import 'package:eto_pay/providers/user_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/history_shell_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_shell/home_shell_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_shell/rounded_notched_shape_with_shadow_painter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class HomeAndInnerPagesScreen extends StatefulWidget {
+class HomeAndInnerPagesScreen extends ConsumerStatefulWidget {
   const HomeAndInnerPagesScreen({super.key});
 
   @override
-  State<HomeAndInnerPagesScreen> createState() =>
+  ConsumerState<HomeAndInnerPagesScreen> createState() =>
       _HomeAndInnerPagesScreenState();
 } 
 
-class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
+class _HomeAndInnerPagesScreenState extends ConsumerState<HomeAndInnerPagesScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
@@ -28,7 +30,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
     });
   }
 
-  void _onFabPressed() {
+  void _onFabPressed(String address) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -85,8 +87,8 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
                     color: const Color(0xFFF0F0F0),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
-                    'fr5579u2jtgboi290-1jkf90eidcfdhbskdjowle456kfdj',
+                  child: Text(
+                    address,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
@@ -190,6 +192,9 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(requireUserProvider);
+    final preferredNetwork = user.networks.networkFor(user.preferredNetwork);
+    
     return Scaffold(
       body: _pages[_selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -199,7 +204,7 @@ class _HomeAndInnerPagesScreenState extends State<HomeAndInnerPagesScreen> {
           width: 64,
           height: 64,
           child: FloatingActionButton(
-            onPressed: _onFabPressed,
+            onPressed: () => _onFabPressed(preferredNetwork?.address ?? ""),
             backgroundColor: const Color(0xFF005CA9),
             foregroundColor: Colors.transparent,
             elevation: 4,
