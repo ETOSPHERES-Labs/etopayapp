@@ -12,9 +12,10 @@ class HomeAndInnerPagesScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<HomeAndInnerPagesScreen> createState() =>
       _HomeAndInnerPagesScreenState();
-} 
+}
 
-class _HomeAndInnerPagesScreenState extends ConsumerState<HomeAndInnerPagesScreen> {
+class _HomeAndInnerPagesScreenState
+    extends ConsumerState<HomeAndInnerPagesScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
@@ -194,7 +195,7 @@ class _HomeAndInnerPagesScreenState extends ConsumerState<HomeAndInnerPagesScree
   Widget build(BuildContext context) {
     final user = ref.watch(requireUserProvider);
     final preferredNetwork = user.networks.networkFor(user.preferredNetwork);
-    
+
     return Scaffold(
       body: _pages[_selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
