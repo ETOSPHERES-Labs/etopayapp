@@ -15,7 +15,7 @@ class HomeShellScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(requireUserProvider);
     final preferredNetwork = user.networks.networkFor(user.preferredNetwork);
-    
+
     return SafeArea(
       child: SingleChildScrollView(
         child: CustomPaint(
@@ -34,14 +34,18 @@ class HomeShellScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 18),
               const BuySellBridgeButtonsRow(),
-              const ReceiveSendFundsSection(),
+              ReceiveSendFundsSection(
+                  networkAddress: preferredNetwork?.address ?? ""),
               const SizedBox(height: 16),
               ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: 116,
                   maxHeight: 116 + 64 * 3,
                 ),
-                child: const TokensNfcsErc20TabSection(),
+                child: TokensNfcsErc20TabSection(
+                    assetsErc20: preferredNetwork?.assetsErc20 ?? [],
+                    assetsNfts: preferredNetwork?.assetsNfts ?? [],
+                    assetsTokens: preferredNetwork?.assetsTokens ?? []),
               ),
             ],
           ),

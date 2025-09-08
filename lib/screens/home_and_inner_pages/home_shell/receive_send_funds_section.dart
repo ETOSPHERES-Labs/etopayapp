@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ReceiveSendFundsSection extends StatelessWidget {
-  const ReceiveSendFundsSection({super.key});
+  final String networkAddress;
 
-  final String address = 'fr5579u2jtgboi290-1jkf90eidcfdhbskdjowle456kfdj';
+  const ReceiveSendFundsSection({super.key, required this.networkAddress});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class ReceiveSendFundsSection extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    address,
+                    networkAddress,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: const TextStyle(
@@ -54,7 +54,7 @@ class ReceiveSendFundsSection extends StatelessWidget {
                   icon: const Icon(Icons.copy,
                       size: 24, color: Color.fromARGB(255, 49, 49, 49)),
                   onPressed: () {
-                    Clipboard.setData(ClipboardData(text: address));
+                    Clipboard.setData(ClipboardData(text: networkAddress));
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Skopiowano adres')),
                     );
