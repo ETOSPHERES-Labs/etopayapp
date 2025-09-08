@@ -1,18 +1,17 @@
+import 'package:eto_pay/models/network_model.dart';
+import 'package:eto_pay/providers/user_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/transaction_details_dialog.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/transaction_filter_modal.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar_blue_background.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart'; // DateFormat dependency
 
-class HistoryShellScreen extends StatefulWidget {
+class HistoryShellScreen extends ConsumerWidget {
   const HistoryShellScreen({super.key});
 
-  @override
-  State<HistoryShellScreen> createState() => _HistoryShellScreenState();
-}
-
-class _HistoryShellScreenState extends State<HistoryShellScreen> {
   void _showFilterModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -24,8 +23,83 @@ class _HistoryShellScreenState extends State<HistoryShellScreen> {
     );
   }
 
+  Widget _buildTransactionList(
+      List<NetworkTransaction> transactions, String currentDateStr) {
+    final currentDate = DateFormat("yyyy/MM/dd HH:mm").parse(currentDateStr);
+    final today =
+        DateTime(currentDate.year, currentDate.month, currentDate.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+
+    final List<NetworkTransaction> todayTxs = [];
+    final List<NetworkTransaction> yesterdayTxs = [];
+    final List<NetworkTransaction> earlierTxs = [];
+
+    for (final tx in transactions) {
+      final txDate = DateFormat("yyyy/MM/dd HH:mm").parse(tx.date);
+      final txDay = DateTime(txDate.year, txDate.month, txDate.day);
+
+      if (txDay == today) {
+        todayTxs.add(tx);
+      } else if (txDay == yesterday) {
+        yesterdayTxs.add(tx);
+      } else {
+        earlierTxs.add(tx);
+      }
+    }
+
+    List<TransactionSection> buildSections() {
+      final List<TransactionSection> sections = [];
+
+      void addSection(String title, List<NetworkTransaction> list) {
+        if (list.isEmpty) return;
+
+        sections.add(
+          TransactionSection(
+            title: title,
+            transactions: list.map((tx) {
+              final txDate = DateFormat("yyyy/MM/dd HH:mm").parse(tx.date);
+              final time = DateFormat("HH:mm").format(txDate);
+              final subtitle =
+                  "${tx.direction == TransactionsDirection.incoming ? 'Receive' : 'Sent'} $time";
+
+              final prefix =
+                  tx.direction == TransactionsDirection.incoming ? '+' : '-';
+
+              return TransactionData(
+                icon: SvgPicture.asset(
+                  tx.icon,
+                  width: 20,
+                  height: 20,
+                ),
+                label: tx.symbol,
+                subtitle: subtitle,
+                amount: '$prefix${tx.amount}',
+              );
+            }).toList(),
+          ),
+        );
+      }
+
+      addSection("Today", todayTxs);
+      addSection("Yesterday", yesterdayTxs);
+      addSection("Earlier", earlierTxs);
+
+      return sections;
+    }
+
+    return ListView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: buildSections(),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(requireUserProvider);
+    final preferredNetwork = user.networks.networkFor(user.preferredNetwork);
+    final currentDate = "2024/05/20 12:32";
+
     return SafeArea(
       child: SingleChildScrollView(
         child: CustomPaint(
@@ -111,77 +185,8 @@ class _HistoryShellScreenState extends State<HistoryShellScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    ListView(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        TransactionSection(
-                          title: 'Today',
-                          transactions: [
-                            TransactionData(
-                              icon: SvgPicture.asset(
-                                "assets/icons/icon_eth.svg",
-                                width: 20,
-                                height: 20,
-                              ),
-                              label: 'ETH',
-                              subtitle: 'Receive 12:32',
-                              amount: '+ € 430.00',
-                            ),
-                            TransactionData(
-                              icon: SvgPicture.asset(
-                                "assets/icons/icon_btc.svg",
-                                width: 20,
-                                height: 20,
-                              ),
-                              label: 'BTC',
-                              subtitle: 'Sent 10:10',
-                              amount: '-€ 20.00',
-                            ),
-                          ],
-                        ),
-                        TransactionSection(
-                          title: 'Yesterday',
-                          transactions: [
-                            TransactionData(
-                              icon: SvgPicture.asset(
-                                "assets/icons/icon_btc.svg",
-                                width: 20,
-                                height: 20,
-                              ),
-                              label: 'BTC',
-                              subtitle: 'Sent 16:45',
-                              amount: '-€ 12.50',
-                            ),
-                          ],
-                        ),
-                        TransactionSection(
-                          title: '30-07-2024, Tue',
-                          transactions: [
-                            TransactionData(
-                              icon: SvgPicture.asset(
-                                "assets/icons/icon_btc.svg",
-                                width: 20,
-                                height: 20,
-                              ),
-                              label: 'BTC',
-                              subtitle: 'Sent 08:15',
-                              amount: '-€ 45.00',
-                            ),
-                            TransactionData(
-                              icon: SvgPicture.asset(
-                                "assets/icons/icon_eth.svg",
-                                width: 20,
-                                height: 20,
-                              ),
-                              label: 'ETH',
-                              subtitle: 'Receive 18:30',
-                              amount: '+€ 430.00',
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    _buildTransactionList(
+                        preferredNetwork?.transactions ?? [], currentDate),
                   ],
                 ),
               ),
