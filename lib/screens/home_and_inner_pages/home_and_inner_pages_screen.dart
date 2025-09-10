@@ -2,6 +2,7 @@ import 'package:eto_pay/providers/user_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/history_shell_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_shell/home_shell_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/home_shell/rounded_notched_shape_with_shadow_painter.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/swap_shell/swap_shell_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,7 +21,7 @@ class _HomeAndInnerPagesScreenState
 
   static const List<Widget> _pages = <Widget>[
     HomeShellScreen(),
-    Center(child: Text('Screen 2')),
+    SwapShellScreen(),
     HistoryShellScreen(),
     Center(child: Text('Screen 4')),
   ];

@@ -1,13 +1,37 @@
 import 'package:flutter/material.dart';
 
-class TopBarBlueBackgroundPainter extends CustomPainter {
-  final bool overflow;
+enum TopBarBlueBackgroundOverflowLevel {
+  small,
+  overflow,
+  overflowLarge
+}
 
-  TopBarBlueBackgroundPainter({this.overflow = false});
+double overflowLevelToHeight(TopBarBlueBackgroundOverflowLevel overflow) {
+  switch (overflow) {
+    case TopBarBlueBackgroundOverflowLevel.small:
+      return 75.0;
+    case TopBarBlueBackgroundOverflowLevel.overflow:
+      return 150.0;
+    case TopBarBlueBackgroundOverflowLevel.overflowLarge:
+      return 350.0;
+  }
+}
+
+bool overflowLevelToRoundedCorners(TopBarBlueBackgroundOverflowLevel overflow) {
+  if(overflow == TopBarBlueBackgroundOverflowLevel.small) {
+      return false;
+  }
+  return true;
+}
+
+class TopBarBlueBackgroundPainter extends CustomPainter {
+  final TopBarBlueBackgroundOverflowLevel overflow;
+
+  TopBarBlueBackgroundPainter({this.overflow = TopBarBlueBackgroundOverflowLevel.small});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final height = overflow ? 150.0 : 75.0;
+    final height = overflowLevelToHeight(overflow);
     final width = size.width;
 
     Paint paint = Paint();
@@ -17,8 +41,8 @@ class TopBarBlueBackgroundPainter extends CustomPainter {
       Rect.fromLTRB(0, 0, width, height),
       topLeft: Radius.zero,
       topRight: Radius.zero,
-      bottomLeft: overflow ? Radius.circular(20) : Radius.zero,
-      bottomRight: overflow ? Radius.circular(20) : Radius.zero,
+      bottomLeft: overflowLevelToRoundedCorners(overflow) ? Radius.circular(20) : Radius.zero,
+      bottomRight: overflowLevelToRoundedCorners(overflow) ? Radius.circular(20) : Radius.zero,
     ));
 
     paint.color = Color(0xFF005CA9);

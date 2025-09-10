@@ -19,7 +19,7 @@ class HomeShellScreen extends ConsumerWidget {
     return SafeArea(
       child: SingleChildScrollView(
         child: CustomPaint(
-          painter: TopBarBlueBackgroundPainter(overflow: true),
+          painter: TopBarBlueBackgroundPainter(overflow: TopBarBlueBackgroundOverflowLevel.overflow),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
