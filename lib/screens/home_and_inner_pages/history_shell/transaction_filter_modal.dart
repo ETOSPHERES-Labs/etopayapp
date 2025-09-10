@@ -1,17 +1,26 @@
+import 'package:eto_pay/models/network_model.dart';
 import 'package:flutter/material.dart';
 
 class TransactionFilterModal extends StatefulWidget {
-  const TransactionFilterModal({super.key});
+  final TransactionStatus? selectedStatus;
+  final String? selectedDateRange;
+  final void Function(String? status, String? dateRange) onApply;
+
+  const TransactionFilterModal({
+    super.key,
+    this.selectedStatus,
+    this.selectedDateRange,
+    required this.onApply,
+  });
 
   @override
   State<TransactionFilterModal> createState() => _TransactionFilterModalState();
 }
 
 class _TransactionFilterModalState extends State<TransactionFilterModal> {
-  String? selectedStatus;
-  String? selectedDateRange;
+  late TransactionStatus? selectedStatus;
+  late String? selectedDateRange;
 
-  final List<String> statuses = ['Completed', 'Failed', 'Processing'];
   final List<String> dateRanges = [
     'Last 1 Month',
     'Last 3 Months',
@@ -19,6 +28,13 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
     'Last 1 Year',
     'Choose date'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    selectedStatus = widget.selectedStatus;
+    selectedDateRange = widget.selectedDateRange;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +50,7 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Header with title and close button
+              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -50,30 +66,28 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
               ),
               const SizedBox(height: 16),
 
-              // Status Section
+              // STATUS
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  'Status',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                child: Text('Status',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 8),
               Column(
-                children: statuses.map((status) {
+                children: TransactionStatus.values.map((status) {
                   IconData icon;
                   Color iconColor;
 
                   switch (status) {
-                    case 'Completed':
+                    case TransactionStatus.completed:
                       icon = Icons.check_circle;
                       iconColor = Colors.green;
                       break;
-                    case 'Failed':
+                    case TransactionStatus.failed:
                       icon = Icons.cancel;
                       iconColor = Colors.red;
                       break;
-                    default:
+                    default: // processing
                       icon = Icons.access_time;
                       iconColor = Colors.orange;
                   }
@@ -86,29 +100,14 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                     ),
                     child: ListTile(
                       leading: Icon(icon, color: iconColor),
-                      title: Text(status),
-                      trailing: Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF5F5F5),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Radio<String>(
-                          value: status,
-                          groupValue: selectedStatus,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedStatus = value;
-                            });
-                          },
-                          activeColor: Colors.black,
-                          visualDensity: VisualDensity.compact,
-                        ),
+                      title: Text(status.toString()),
+                      trailing: Radio<TransactionStatus>(
+                        value: status,
+                        groupValue: selectedStatus,
+                        onChanged: (value) =>
+                            setState(() => selectedStatus = value),
                       ),
-                      onTap: () {
-                        setState(() {
-                          selectedStatus = status;
-                        });
-                      },
+                      onTap: () => setState(() => selectedStatus = status),
                     ),
                   );
                 }).toList(),
@@ -116,13 +115,11 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
 
               const Divider(height: 32),
 
-              // Date Range Section
+              // DATE RANGE
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  'Date Range',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                child: Text('Date Range',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 12),
               Align(
@@ -132,42 +129,33 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                   runSpacing: 10,
                   children: dateRanges.map((range) {
                     final isSelected = selectedDateRange == range;
-                    return MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedDateRange = range;
-                          });
-                        },
-                        child: Container(
-                          width: 134,
-                          height: 39,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 20,
+
+                    return GestureDetector(
+                      onTap: () => setState(() => selectedDateRange = range),
+                      child: Container(
+                        width: 134,
+                        height: 39,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF5F5F5),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color:
+                                isSelected ? Colors.black : Colors.transparent,
+                            width: 1.5,
                           ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF5F5F5),
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: isSelected
-                                  ? Colors.black
-                                  : Colors.transparent,
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              range,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                                height: 1.0,
-                                letterSpacing: 0,
-                              ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            range,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                              height: 1.0,
+                              letterSpacing: 0,
                             ),
                           ),
                         ),
@@ -179,7 +167,7 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
 
               const SizedBox(height: 32),
 
-              // Buttons Row
+              // BUTTONS
               Row(
                 children: [
                   // Clear all
@@ -191,16 +179,14 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                           selectedStatus = null;
                           selectedDateRange = null;
                         });
+                        widget.onApply(null, null);
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: const Color(0x1A005CA9),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
+                            borderRadius: BorderRadius.circular(6)),
                         padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 20,
-                        ),
+                            vertical: 20, horizontal: 20),
                       ),
                       child: const Text(
                         "Clear all",
@@ -219,18 +205,14 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                     flex: 1,
                     child: ElevatedButton(
                       onPressed: () {
-                        // TODO: Pass filters to parent
-                        Navigator.pop(context);
+                        widget.onApply(selectedStatus?.name, selectedDateRange);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0x80005CA9),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
+                            borderRadius: BorderRadius.circular(6)),
                         padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                          horizontal: 20,
-                        ),
+                            vertical: 20, horizontal: 20),
                       ),
                       child: const Text(
                         "Apply",

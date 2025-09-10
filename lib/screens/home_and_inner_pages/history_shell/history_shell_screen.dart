@@ -7,10 +7,19 @@ import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar_blue_backgr
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart'; // DateFormat dependency
+import 'package:intl/intl.dart';
 
-class HistoryShellScreen extends ConsumerWidget {
+class HistoryShellScreen extends ConsumerStatefulWidget {
   const HistoryShellScreen({super.key});
+
+  @override
+  ConsumerState<HistoryShellScreen> createState() => _HistoryShellScreenState();
+}
+
+class _HistoryShellScreenState extends ConsumerState<HistoryShellScreen> {
+  TransactionStatus? _selectedStatus;
+  String? _selectedDateRange;
+  DateTimeRange? _chosenRange;
 
   void _showFilterModal(BuildContext context) {
     showModalBottomSheet(
@@ -19,8 +28,91 @@ class HistoryShellScreen extends ConsumerWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       isScrollControlled: true,
-      builder: (context) => const TransactionFilterModal(),
+      builder: (context) => TransactionFilterModal(
+        selectedStatus: _selectedStatus,
+        selectedDateRange: _selectedDateRange,
+        onApply: (status, dateRange) async {
+          if (dateRange == 'Choose date') {
+            final now = DateTime.now();
+            final result = await showDateRangePicker(
+              context: context,
+              firstDate: DateTime(2000),
+              lastDate: now,
+              initialDateRange: _chosenRange ??
+                  DateTimeRange(
+                    start: now.subtract(const Duration(days: 7)),
+                    end: now,
+                  ),
+            );
+
+            if (result != null) {
+              setState(() {
+                _selectedStatus = status != null
+                    ? TransactionStatus.values.byName(status)
+                    : null;
+                _selectedDateRange = dateRange;
+                _chosenRange = result;
+              });
+            }
+          } else {
+            setState(() {
+              _selectedStatus = status != null
+                  ? TransactionStatus.values.byName(status)
+                  : null;
+              _selectedDateRange = dateRange;
+              _chosenRange = null;
+            });
+          }
+
+          Navigator.pop(context);
+        },
+      ),
     );
+  }
+
+  bool _isWithinRange(String dateStr, String? range, String currentDateStr) {
+    if (range == null) return true;
+
+    final txDate = DateFormat("yyyy/MM/dd HH:mm").parse(dateStr);
+    final now = DateFormat("yyyy/MM/dd HH:mm").parse(currentDateStr);
+    final diff = now.difference(txDate);
+
+    switch (range) {
+      case 'Last 1 Month':
+        return diff.inDays <= 30;
+      case 'Last 3 Months':
+        return diff.inDays <= 90;
+      case 'Last 6 Months':
+        return diff.inDays <= 180;
+      case 'Last 1 Year':
+        return diff.inDays <= 365;
+      case 'Choose date':
+        if (_chosenRange == null) return true;
+        final start = DateTime(_chosenRange!.start.year,
+            _chosenRange!.start.month, _chosenRange!.start.day);
+        final end = DateTime(_chosenRange!.end.year, _chosenRange!.end.month,
+            _chosenRange!.end.day, 23, 59, 59);
+        return txDate
+                .isAfter(start.subtract(const Duration(milliseconds: 1))) &&
+            txDate.isBefore(end.add(const Duration(milliseconds: 1)));
+      default:
+        return true;
+    }
+  }
+
+  bool _matchesStatus(
+      NetworkTransaction tx, TransactionStatus? selectedStatus) {
+    if (selectedStatus == null) return true;
+
+    return tx.status == selectedStatus;
+  }
+
+  List<NetworkTransaction> _applyFilters(
+      List<NetworkTransaction> all, String currentDateStr) {
+    return all.where((tx) {
+      return _matchesStatus(tx, _selectedStatus) &&
+          _isWithinRange(tx.date, _selectedDateRange, currentDateStr);
+    }).toList();
   }
 
   Widget _buildTransactionList(
@@ -61,16 +153,11 @@ class HistoryShellScreen extends ConsumerWidget {
               final time = DateFormat("HH:mm").format(txDate);
               final subtitle =
                   "${tx.direction == TransactionsDirection.incoming ? 'Receive' : 'Sent'} $time";
-
               final prefix =
                   tx.direction == TransactionsDirection.incoming ? '+' : '-';
 
               return TransactionData(
-                icon: SvgPicture.asset(
-                  tx.icon,
-                  width: 20,
-                  height: 20,
-                ),
+                icon: SvgPicture.asset(tx.icon, width: 20, height: 20),
                 label: tx.symbol,
                 subtitle: subtitle,
                 amount: '$prefix${tx.amount}',
@@ -95,10 +182,13 @@ class HistoryShellScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final user = ref.watch(requireUserProvider);
     final preferredNetwork = user.networks.networkFor(user.preferredNetwork);
     final currentDate = "2024/05/20 12:32";
+
+    final filteredTransactions =
+        _applyFilters(preferredNetwork?.transactions ?? [], currentDate);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -136,12 +226,9 @@ class HistoryShellScreen extends ConsumerWidget {
                             style: TextButton.styleFrom(
                               backgroundColor: const Color(0xFFF5F5F5),
                               padding: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 10,
-                              ),
+                                  vertical: 8, horizontal: 10),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
+                                  borderRadius: BorderRadius.circular(6)),
                             ),
                             onPressed: () {},
                             child: Row(
@@ -162,12 +249,9 @@ class HistoryShellScreen extends ConsumerWidget {
                             style: TextButton.styleFrom(
                               backgroundColor: const Color(0xFFF5F5F5),
                               padding: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 10,
-                              ),
+                                  vertical: 8, horizontal: 10),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
+                                  borderRadius: BorderRadius.circular(6)),
                             ),
                             onPressed: () => _showFilterModal(context),
                             child: Row(
@@ -185,8 +269,7 @@ class HistoryShellScreen extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    _buildTransactionList(
-                        preferredNetwork?.transactions ?? [], currentDate),
+                    _buildTransactionList(filteredTransactions, currentDate),
                   ],
                 ),
               ),
@@ -214,15 +297,12 @@ class TransactionSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-        Text(
-          title,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
+        Text(title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Column(
-          children:
-              transactions.map((tx) => TransactionTile(data: tx)).toList(),
-        ),
+            children:
+                transactions.map((tx) => TransactionTile(data: tx)).toList()),
       ],
     );
   }
@@ -294,15 +374,11 @@ class TransactionTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        data.label,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        data.subtitle,
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 12),
-                      ),
+                      Text(data.label,
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      Text(data.subtitle,
+                          style: const TextStyle(
+                              color: Colors.grey, fontSize: 12)),
                     ],
                   ),
                 ),

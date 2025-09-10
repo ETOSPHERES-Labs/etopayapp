@@ -1,10 +1,12 @@
 enum TransactionsDirection { incoming, outgoing }
+enum TransactionStatus { completed, failed, processing }
 
 class NetworkTransaction {
   final String icon;
   final String symbol;
   final String date;
   final TransactionsDirection direction;
+  final TransactionStatus status;
   final String amount;
 
   const NetworkTransaction({
@@ -12,6 +14,7 @@ class NetworkTransaction {
     required this.symbol,
     required this.date,
     required this.direction,
+    required this.status,
     required this.amount,
   });
 }
@@ -69,6 +72,7 @@ class NetworksModel {
         icon: "assets/icons/icon_eth.svg",
         symbol: 'ETH',
         direction: TransactionsDirection.incoming,
+        status: TransactionStatus.completed,
         date: '2024/05/20 12:32',
         amount: '€ 430.00',
       ),
@@ -76,6 +80,7 @@ class NetworksModel {
         icon: "assets/icons/icon_btc.svg",
         symbol: 'BTC',
         direction: TransactionsDirection.outgoing,
+        status: TransactionStatus.completed,
         date: '2024/05/20 13:32',
         amount: '€ 20.00',
       ),
@@ -83,6 +88,7 @@ class NetworksModel {
         icon: "assets/icons/icon_btc.svg",
         symbol: 'BTC',
         direction: TransactionsDirection.outgoing,
+        status: TransactionStatus.processing,
         date: '2024/05/19 14:32',
         amount: '€ 12.50',
       ),
@@ -90,6 +96,7 @@ class NetworksModel {
         icon: "assets/icons/icon_btc.svg",
         symbol: 'BTC',
         direction: TransactionsDirection.outgoing,
+        status: TransactionStatus.failed,
         date: '2024/05/19 15:32',
         amount: '€ 45.00',
       ),
@@ -97,7 +104,8 @@ class NetworksModel {
         icon: "assets/icons/icon_eth.svg",
         symbol: 'ETH',
         direction: TransactionsDirection.incoming,
-        date: '2024/05/16 16:32',
+        status: TransactionStatus.completed,
+        date: '2024/03/16 16:32',
         amount: '€ 430.00',
       ),
     ]),
