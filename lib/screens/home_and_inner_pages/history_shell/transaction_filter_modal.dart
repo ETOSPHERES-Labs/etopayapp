@@ -22,7 +22,7 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
   late String? selectedDateRange;
 
   final List<String> dateRanges = [
-    'Last 1 Month',
+    'Last Month',
     'Last 3 Months',
     'Last 6 Months',
     'Last 1 Year',
@@ -100,7 +100,7 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                     ),
                     child: ListTile(
                       leading: Icon(icon, color: iconColor),
-                      title: Text(status.toString()),
+                      title: Text(status.name),
                       trailing: Radio<TransactionStatus>(
                         value: status,
                         groupValue: selectedStatus,
@@ -133,7 +133,7 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                     return GestureDetector(
                       onTap: () => setState(() => selectedDateRange = range),
                       child: Container(
-                        width: 134,
+                        width: 140,
                         height: 39,
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 20),
@@ -150,7 +150,7 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                           child: Text(
                             range,
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontFamily: 'Roboto',
                               fontWeight: FontWeight.w400,
                               color: Colors.black,
