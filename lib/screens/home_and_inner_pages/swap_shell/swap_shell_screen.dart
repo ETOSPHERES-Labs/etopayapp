@@ -3,9 +3,9 @@ import 'package:eto_pay/providers/user_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/swap_shell/crypto_swap_widget.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar_blue_background.dart';
-import 'package:eto_pay/widgets/continue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SwapShellScreen extends ConsumerStatefulWidget {
   const SwapShellScreen({super.key});
@@ -112,7 +112,9 @@ class _SwapShellScreenState extends ConsumerState<SwapShellScreen> {
                   width: double.infinity,
                   height: 44,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showSwapRestrictedDialog(context);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF005CA9),
                       shape: RoundedRectangleBorder(
@@ -146,6 +148,57 @@ class _SwapShellScreenState extends ConsumerState<SwapShellScreen> {
           style: Theme.of(context).textTheme.bodyMedium?.black(),
         ),
       ],
+    );
+  }
+
+  void showSwapRestrictedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          insetPadding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/404.svg', 
+                  width: 120,
+                  height: 120,
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'This Swap future works only viviswap users',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.black(),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: 90,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      'Close',
+                      style: Theme.of(context).textTheme.bodyMedium?.white(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
