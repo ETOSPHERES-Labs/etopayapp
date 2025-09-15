@@ -1,22 +1,27 @@
+import 'package:eto_pay/main.dart';
+import 'package:eto_pay/models/network_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CryptoSwapWidget extends StatefulWidget {
-  const CryptoSwapWidget({super.key});
+  final NetworksModel networks;
+  final void Function(String fromId) onFromChanged;
+  final void Function(String toId) onToChanged;
+
+  const CryptoSwapWidget({
+    super.key,
+    required this.networks,
+    required this.onFromChanged,
+    required this.onToChanged,
+  });
 
   @override
   State<CryptoSwapWidget> createState() => _CryptoSwapWidgetState();
 }
 
 class _CryptoSwapWidgetState extends State<CryptoSwapWidget> {
-  String fromSymbol = 'ETH';
-  String fromName = 'Ethereum';
-  double fromAmount = 0.4;
-  double fromBalance = 0;
-
-  String toSymbol = 'BNB';
-  String toName = 'Binance Coin';
-  double toAmount = 0.0;
-  double toBalance = 0.12;
+  String fromId = "";
+  String toId = "";
 
   void _showCurrencyPicker(bool isFrom) async {
     final result = await showModalBottomSheet<Map<String, String>>(
@@ -26,29 +31,28 @@ class _CryptoSwapWidgetState extends State<CryptoSwapWidget> {
       ),
       builder: (context) {
         return ListView(
-          children: [
-            ListTile(
-              leading: const CircleAvatar(child: Text('₿')),
-              title: const Text('Bitcoin'),
-              subtitle: const Text('BTC'),
-              onTap: () =>
-                  Navigator.pop(context, {'symbol': 'BTC', 'name': 'Bitcoin'}),
-            ),
-            ListTile(
-              leading: const CircleAvatar(child: Text('Ξ')),
-              title: const Text('Ethereum'),
-              subtitle: const Text('ETH'),
-              onTap: () =>
-                  Navigator.pop(context, {'symbol': 'ETH', 'name': 'Ethereum'}),
-            ),
-            ListTile(
-              leading: const CircleAvatar(child: Text('🟡')),
-              title: const Text('Binance Coin'),
-              subtitle: const Text('BNB'),
-              onTap: () => Navigator.pop(
-                  context, {'symbol': 'BNB', 'name': 'Binance Coin'}),
-            ),
-          ],
+          children: widget.networks.networks.entries.map((entry) {
+            final network = entry.value;
+
+            return ListTile(
+              leading: SvgPicture.asset(
+                network.icon,
+                width: 24,
+                height: 24,
+              ),
+              title: Text(
+                network.name,
+                style: Theme.of(context).textTheme.displayMedium?.bold(),
+              ),
+              subtitle: Text(
+                network.symbol,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              onTap: () => Navigator.pop(context, {
+                'id': network.id,
+              }),
+            );
+          }).toList(),
         );
       },
     );
@@ -56,11 +60,11 @@ class _CryptoSwapWidgetState extends State<CryptoSwapWidget> {
     if (result != null) {
       setState(() {
         if (isFrom) {
-          fromSymbol = result['symbol']!;
-          fromName = result['name']!;
+          fromId = result["id"]!;
+          widget.onFromChanged(fromId);
         } else {
-          toSymbol = result['symbol']!;
-          toName = result['name']!;
+          toId = result["id"]!;
+          widget.onToChanged(toId);
         }
       });
     }
@@ -68,26 +72,28 @@ class _CryptoSwapWidgetState extends State<CryptoSwapWidget> {
 
   Widget _buildCryptoSection({
     required String label,
-    required String symbol,
-    required String name,
-    required double amount,
-    required double balance,
+    required String id,
     required VoidCallback onSelect,
   }) {
+    final network = widget.networks.networkFor(id);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: Colors.grey)),
-        const SizedBox(height: 8),
+        Text(label, style: Theme.of(context).textTheme.titleSmall?.bold().black()),
+        const SizedBox(height: 6),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(6),
           ),
           child: Row(
             children: [
-              const CircleAvatar(radius: 14, child: Text('🪙')),
+              SvgPicture.asset(
+                network?.icon ?? "assets/icons/no_network.svg",
+                width: 32,
+                height: 32,
+              ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -100,9 +106,12 @@ class _CryptoSwapWidgetState extends State<CryptoSwapWidget> {
                           child: Row(
                             children: [
                               Text(
-                                symbol,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
+                                network?.symbol ?? "",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.black()
+                                    .bold(),
                               ),
                               const Icon(Icons.keyboard_arrow_down),
                             ],
@@ -114,9 +123,8 @@ class _CryptoSwapWidgetState extends State<CryptoSwapWidget> {
                       children: [
                         const SizedBox(height: 8),
                         Text(
-                          name,
-                          style:
-                              const TextStyle(color: Colors.grey, fontSize: 14),
+                          network?.name ?? "",
+                          style: Theme.of(context).textTheme.labelMedium?.gray(),
                         ),
                       ],
                     )
@@ -127,16 +135,18 @@ class _CryptoSwapWidgetState extends State<CryptoSwapWidget> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'Balance : $balance',
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    'Balance : \$0',
+                    style: Theme.of(context).textTheme.labelMedium?.gray(),
                   ),
                   const SizedBox(height: 4),
-                  const Text('€ 0.00',
-                      style: TextStyle(fontSize: 12, color: Colors.grey)),
                   Text(
-                    '$amount $symbol',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
+                    '€ 0.00',
+                    style: Theme.of(context).textTheme.labelSmall?.gray(),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    '\$0 ${network?.symbol ?? ""}',
+                    style: Theme.of(context).textTheme.bodyMedium?.black(),
                   ),
                 ],
               )
@@ -149,25 +159,56 @@ class _CryptoSwapWidgetState extends State<CryptoSwapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    fromId = fromId.isNotEmpty ? fromId : "1";
+    toId = toId.isNotEmpty ? toId : "2";
     return Column(
       children: [
         _buildCryptoSection(
           label: 'From',
-          symbol: fromSymbol,
-          name: fromName,
-          amount: fromAmount,
-          balance: fromBalance,
+          id: fromId,
           onSelect: () => _showCurrencyPicker(true),
         ),
         const SizedBox(height: 12),
-        const Icon(Icons.swap_vert, size: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Color(0xFFE4E4E4),
+              ),
+            ),
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Color(0xFFE4E4E4),
+                  width: 1,
+                ),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/icons/icon_swap2.svg',
+                  width: 16,
+                  height: 16,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Color(0xFFE4E4E4),
+              ),
+            ),
+          ],
+        ),
         const SizedBox(height: 12),
         _buildCryptoSection(
           label: 'To',
-          symbol: toSymbol,
-          name: toName,
-          amount: toAmount,
-          balance: toBalance,
+          id: toId,
           onSelect: () => _showCurrencyPicker(false),
         ),
       ],

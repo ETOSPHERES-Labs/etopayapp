@@ -13,7 +13,7 @@ double overflowLevelToHeight(TopBarBlueBackgroundOverflowLevel overflow) {
     case TopBarBlueBackgroundOverflowLevel.overflow:
       return 150.0;
     case TopBarBlueBackgroundOverflowLevel.overflowLarge:
-      return 350.0;
+      return 435.0;
   }
 }
 

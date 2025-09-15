@@ -20,9 +20,58 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
-        fontFamily: 'Poppins',
+        fontFamily: "Roboto",// 'Poppins',
+        textTheme: TextTheme(
+          labelMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            fontFamily: "Roboto"
+          ),
+          labelSmall: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            fontFamily: "Roboto"
+          ),
+          titleLarge: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            fontFamily: "Roboto"
+          ), 
+          titleMedium: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            fontFamily: "Roboto"
+          ), 
+          titleSmall: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            fontFamily: "Roboto"
+          ), 
+          bodyLarge: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w400,
+            fontFamily: "Roboto"
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            fontFamily: "Roboto"
+          ), 
+          displayMedium: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            fontFamily: "Roboto"
+          ), 
+        ),
       ),
       routerConfig: router,
     );
   }
+}
+
+extension TextStyleHelpers on TextStyle {
+  TextStyle bold() => copyWith(fontWeight: FontWeight.bold);
+  TextStyle gray() => copyWith(color: Color(0xFF747474));
+  TextStyle black() => copyWith(color: Color(0xFF000000));
+  TextStyle white() => copyWith(color: Color(0xFFFFFFFF));
 }
