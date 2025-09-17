@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
 import 'package:flutter/material.dart';
 
@@ -54,9 +55,9 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Transaction Filters',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                   IconButton(
                     icon: const Icon(Icons.close),
@@ -67,10 +68,10 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
               const SizedBox(height: 16),
 
               // STATUS
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Status',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.bodyMedium),
               ),
               const SizedBox(height: 8),
               Column(
@@ -100,7 +101,8 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                     ),
                     child: ListTile(
                       leading: Icon(icon, color: iconColor),
-                      title: Text(status.name),
+                      title: Text(status.name,
+                          style: Theme.of(context).textTheme.bodyMedium),
                       trailing: Radio<TransactionStatus>(
                         value: status,
                         groupValue: selectedStatus,
@@ -116,10 +118,10 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
               const Divider(height: 32),
 
               // DATE RANGE
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Date Range',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.bodyMedium),
               ),
               const SizedBox(height: 12),
               Align(
@@ -134,7 +136,7 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                       onTap: () => setState(() => selectedDateRange = range),
                       child: Container(
                         width: 140,
-                        height: 39,
+                        height: 45,
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 20),
                         decoration: BoxDecoration(
@@ -149,14 +151,8 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                         child: Center(
                           child: Text(
                             range,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                              height: 1.0,
-                              letterSpacing: 0,
-                            ),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                       ),
@@ -188,13 +184,13 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 20),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Clear all",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Color(0xFF005CA9)),
                       ),
                     ),
                   ),
@@ -208,19 +204,16 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
                         widget.onApply(selectedStatus?.name, selectedDateRange);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0x80005CA9),
+                        backgroundColor: const Color(0xFF005CA9),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6)),
                         padding: const EdgeInsets.symmetric(
                             vertical: 20, horizontal: 20),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Apply",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium?.white(),
                       ),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,15 +15,10 @@ class ReceiveSendFundsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Receive Funds',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-              height: 1.0,
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
               letterSpacing: -0.24,
-              color: Colors.black,
             ),
           ),
           const SizedBox(height: 12),
@@ -41,11 +37,7 @@ class ReceiveSendFundsSection extends StatelessWidget {
                     networkAddress,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF747474),
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w400,
+                    style: Theme.of(context).textTheme.bodyMedium?.gray().copyWith(
                       letterSpacing: -0.24,
                     ),
                   ),
@@ -83,16 +75,10 @@ class ReceiveSendFundsSection extends StatelessWidget {
                     height: 32,
                   ),
                   const SizedBox(width: 12),
-                  const Expanded(
+                  Expanded(
                     child: Text(
                       "Send Crypto",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: -0.24,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                   Container(

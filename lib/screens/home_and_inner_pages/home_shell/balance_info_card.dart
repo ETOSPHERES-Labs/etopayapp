@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 
 class BalanceInfoCard extends StatelessWidget {
@@ -46,28 +47,19 @@ class BalanceInfoCard extends StatelessWidget {
         children: [
           Text(
             '$networkName Balance',
-            style: const TextStyle(
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-              height: 1.0,
-              letterSpacing: -0.24,
-              color: Color(0xFF005CA9),
-            ),
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  letterSpacing: -0.24,
+                  color: Color(0xFF005CA9),
+                ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 '$amount $networkSymbol',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                  height: 1.0,
-                  letterSpacing: -0.24,
-                  color: Colors.black,
-                ),
+                style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      letterSpacing: -0.24,
+                    ),
               ),
               const SizedBox(width: 13),
               Icon(
@@ -83,14 +75,9 @@ class BalanceInfoCard extends StatelessWidget {
               const SizedBox(width: 6),
               Text(
                 '${amount * fiatConversionRate} $fiatSymbol',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  height: 1.0,
-                  letterSpacing: -0.24,
-                  color: Color(0xFF747474),
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.gray().copyWith(
+                      letterSpacing: -0.24,
+                    ),
               ),
             ],
           ),

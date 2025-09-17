@@ -20,48 +20,28 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
-        fontFamily: "Roboto",// 'Poppins',
+        fontFamily: "Roboto", // 'Poppins',
         textTheme: TextTheme(
+          labelLarge: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.w400, fontFamily: "Roboto"),
           labelMedium: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            fontFamily: "Roboto"
-          ),
+              fontSize: 14, fontWeight: FontWeight.w400, fontFamily: "Roboto"),
           labelSmall: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            fontFamily: "Roboto"
-          ),
+              fontSize: 12, fontWeight: FontWeight.w400, fontFamily: "Roboto"),
           titleLarge: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            fontFamily: "Roboto"
-          ), 
+              fontSize: 20, fontWeight: FontWeight.w600, fontFamily: "Roboto"),
           titleMedium: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            fontFamily: "Roboto"
-          ), 
+              fontSize: 18, fontWeight: FontWeight.w600, fontFamily: "Poppins"),
           titleSmall: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-            fontFamily: "Roboto"
-          ), 
+              fontSize: 18, fontWeight: FontWeight.w500, fontFamily: "Roboto"),
           bodyLarge: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w400,
-            fontFamily: "Roboto"
-          ),
+              fontSize: 24, fontWeight: FontWeight.w400, fontFamily: "Roboto"),
           bodyMedium: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            fontFamily: "Roboto"
-          ), 
+              fontSize: 16, fontWeight: FontWeight.w400, fontFamily: "Roboto"),
           displayMedium: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            fontFamily: "Roboto"
-          ), 
+              fontSize: 16, fontWeight: FontWeight.w600, fontFamily: "Roboto"),
+          displayLarge: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.w600, fontFamily: "Roboto"),
         ),
       ),
       routerConfig: router,
@@ -74,4 +54,6 @@ extension TextStyleHelpers on TextStyle {
   TextStyle gray() => copyWith(color: Color(0xFF747474));
   TextStyle black() => copyWith(color: Color(0xFF000000));
   TextStyle white() => copyWith(color: Color(0xFFFFFFFF));
+  TextStyle red() => copyWith(color: Color(0xFFFF0000));
+  TextStyle green() => copyWith(color: Color(0xFF00FF00));
 }

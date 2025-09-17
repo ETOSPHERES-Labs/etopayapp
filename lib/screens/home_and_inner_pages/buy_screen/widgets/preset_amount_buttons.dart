@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 
 class PresetAmountButtons extends StatelessWidget {
@@ -30,7 +31,7 @@ class PresetAmountButtons extends StatelessWidget {
               onPressed: () => onAmountSelected(amount.replaceAll(',', '')),
               child: Text(
                 amount,
-                style: const TextStyle(color: Colors.black),
+                style: Theme.of(context).textTheme.labelMedium?.black(),
               ),
             ),
           ),

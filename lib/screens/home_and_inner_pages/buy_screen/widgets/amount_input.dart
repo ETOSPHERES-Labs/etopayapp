@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,6 +23,7 @@ class AmountInput extends StatelessWidget {
         Expanded(
           flex: 2,
           child: TextField(
+            style: Theme.of(context).textTheme.displayMedium?.black(),
             controller: controller,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
@@ -31,6 +33,7 @@ class AmountInput extends StatelessWidget {
             ],
             decoration: InputDecoration(
               hintText: 'Enter amount',
+              hintStyle: Theme.of(context).textTheme.displayMedium?.black(),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               border: OutlineInputBorder(
@@ -65,7 +68,7 @@ class AmountInput extends StatelessWidget {
             items: ['EURO', 'USD'].map((currency) {
               return DropdownMenuItem<String>(
                 value: currency,
-                child: Text(currency),
+                child: Text(currency, style: Theme.of(context).textTheme.displayMedium?.black(),),
               );
             }).toList(),
           ),

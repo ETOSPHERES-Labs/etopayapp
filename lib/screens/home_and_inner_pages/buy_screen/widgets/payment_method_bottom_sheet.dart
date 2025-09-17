@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/payment_method_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,9 +20,9 @@ class PaymentMethodBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
+          Text(
             'Select payment method',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            style: Theme.of(context).textTheme.titleSmall?.black(),
           ),
           const SizedBox(height: 16),
           ...paymentMethods.map((method) {
@@ -43,21 +44,21 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          width: 38,
-                          height: 38,
+                          width: 40,
+                          height: 40,
                           child: SvgPicture.asset(
                             method.icon,
-                            width: 38,
-                            height: 38,
+                            width: 40,
+                            height: 40,
                             fit: BoxFit.contain,
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Text(
-                          method.label,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
+                        Text(method.label,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium
+                                ?.black()),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -71,14 +72,10 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                               Color(0xFF747474), BlendMode.srcIn),
                         ),
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           'Instant.',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 11,
-                            color: Color(0xFF747474),
-                          ),
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.gray(),
                         ),
                         const SizedBox(width: 3),
                         SvgPicture.asset(
@@ -89,14 +86,10 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                               Color(0xFF747474), BlendMode.srcIn),
                         ),
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           'Highest buy limit',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 11,
-                            color: Color(0xFF747474),
-                          ),
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.gray(),
                         ),
                       ],
                     ),
@@ -104,7 +97,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                 ),
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

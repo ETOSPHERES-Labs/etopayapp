@@ -1,8 +1,10 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/payment_method_model.dart';
 import 'package:eto_pay/providers/coin_provider.dart';
 import 'package:eto_pay/providers/payment_method_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/amount_input.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/coin_dropdown.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/kyc_modal.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/payment_method_bottom_sheet.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/payment_method_selector.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/preset_amount_buttons.dart';
@@ -24,7 +26,7 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
   String _selectedCurrency = 'EURO';
   String _selectedPaymentMethod = 'Sepa';
 
-  final List<String> _presetAmounts = ['25', '50', '100', '250'];
+  final List<String> _presetAmounts = ['1,000', '2,500', '5,000', '10,000'];
 
   void _showPaymentMethodSheet(List<PaymentMethod> methods) {
     showModalBottomSheet(
@@ -107,13 +109,7 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
               alignment: Alignment.centerLeft,
               child: Text(
                 "Current balance: 0 $_selectedCoin = 0 $_selectedCurrency",
-                style: const TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                  color: Color(0xFF747474),
-                  height: 1.0,
-                ),
+                style: Theme.of(context).textTheme.labelSmall?.gray(),
               ),
             ),
             const SizedBox(height: 24),
@@ -137,7 +133,7 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
               onAmountSelected: _onPresetAmountSelected,
             ),
             const SizedBox(height: 24),
-            const SectionTitle(text: "Payment method"),
+            const SectionTitle(text: "Update payment method"),
             const SizedBox(height: 8),
             paymentMethodsAsync.when(
               data: (methods) => PaymentMethodSelector(
@@ -161,6 +157,8 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
               final amount = _amountController.text;
               final coin = _selectedCoin;
               final paymentMethod = _selectedPaymentMethod;
+
+              KycModal.show(context);
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -187,4 +185,6 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
       ),
     );
   }
+
+
 }

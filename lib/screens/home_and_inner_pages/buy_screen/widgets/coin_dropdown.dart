@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/coin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,11 +41,11 @@ class CoinDropdown extends StatelessWidget {
                     : null,
               ),
               const SizedBox(width: 12),
-              Text(item.name),
+              Text(item.name, style: Theme.of(context).textTheme.bodyMedium),
               const Spacer(),
               Text(
                 item.symbol,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.bodyMedium?.bold(),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/buy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,16 +13,11 @@ class BuySellBridgeButtonsRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Buying & Selling Funds',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-              height: 1.0,
-              letterSpacing: -0.24,
-              color: Colors.black,
-            ),
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  letterSpacing: -0.24,
+                ),
           ),
           const SizedBox(height: 12),
           SingleChildScrollView(
@@ -54,8 +50,7 @@ class BuySellBridgeButtonsRow extends StatelessWidget {
                   ),
                   label: 'Sell',
                   color: const Color(0xFFB20F00),
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                 ),
                 const SizedBox(width: 16),
                 _ActionButton(
@@ -66,8 +61,7 @@ class BuySellBridgeButtonsRow extends StatelessWidget {
                   ),
                   label: 'Bridge',
                   color: const Color(0xFF005CA9),
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -114,11 +108,7 @@ class _ActionButton extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               label,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium?.white(),
             ),
           ],
         ),

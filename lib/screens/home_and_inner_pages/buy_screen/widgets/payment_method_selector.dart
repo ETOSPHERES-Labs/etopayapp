@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/payment_method_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,7 +40,7 @@ class PaymentMethodSelector extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   selectedPaymentMethod,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.displayMedium?.bold().black(),
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -36,10 +37,7 @@ class TransactionDetailsDialog extends StatelessWidget {
               children: [
                 Text(
                   type,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
@@ -59,11 +57,7 @@ class TransactionDetailsDialog extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               isConfirmed ? 'Confirmed' : 'Pending',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 14,
-              ),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
             const SizedBox(height: 20),
             Container(
@@ -77,38 +71,38 @@ class TransactionDetailsDialog extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Amount',
                         textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
                             amountBTC,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyMedium?.black(),
                           ),
                           Text(
                             amountFiat,
-                            style: const TextStyle(color: Colors.grey),
+                            style:
+                                Theme.of(context).textTheme.bodyMedium?.gray(),
                           ),
                         ],
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const Divider(height: 1, thickness: 1, color: Color.fromARGB(237, 230, 230, 230),),
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Color.fromARGB(237, 230, 230, 230),
+                  ),
                   const SizedBox(height: 16),
-                  _buildRow('From', from),
-                  _buildRow('To', to),
-                  _buildRow('Date', date),
+                  _buildRow(context, 'From', from),
+                  _buildRow(context, 'To', to),
+                  _buildRow(context, 'Date', date),
                 ],
               ),
             ),
@@ -124,9 +118,9 @@ class TransactionDetailsDialog extends StatelessWidget {
                   ),
                 ),
                 icon: const Icon(Icons.download, color: Colors.white),
-                label: const Text(
+                label: Text(
                   'Download details',
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.bodyMedium?.white(),
                 ),
                 onPressed: () {
                   // TODO: implement download logic
@@ -140,7 +134,7 @@ class TransactionDetailsDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String label, String value) {
+  Widget _buildRow(BuildContext context, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
@@ -148,13 +142,10 @@ class TransactionDetailsDialog extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+              style: Theme.of(context).textTheme.labelMedium?.gray(),
             ),
           ),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
+          Text(value, style: Theme.of(context).textTheme.bodyMedium),
         ],
       ),
     );

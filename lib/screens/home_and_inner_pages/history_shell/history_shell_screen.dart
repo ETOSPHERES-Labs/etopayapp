@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
 import 'package:eto_pay/providers/user_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/history_shell/transaction_details_dialog.dart';
@@ -64,7 +65,7 @@ class _HistoryShellScreenState extends ConsumerState<HistoryShellScreen> {
             });
           }
 
-          Navigator.pop(context);
+          Navigator.of(context).pop();
         },
       ),
     );
@@ -208,12 +209,13 @@ class _HistoryShellScreenState extends ConsumerState<HistoryShellScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const TextField(
+                      child: TextField(
                         decoration: InputDecoration(
                           icon: Icon(Icons.search),
                           hintText: 'Search transactions',
                           border: InputBorder.none,
                         ),
+                        style: Theme.of(context).textTheme.bodyMedium?.gray(),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -232,11 +234,10 @@ class _HistoryShellScreenState extends ConsumerState<HistoryShellScreen> {
                             ),
                             onPressed: () {},
                             child: Row(
-                              children: const [
+                              children: [
                                 Text('Download transactions',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium),
                                 SizedBox(width: 6),
                                 Icon(Icons.download, size: 16),
                               ],
@@ -255,11 +256,10 @@ class _HistoryShellScreenState extends ConsumerState<HistoryShellScreen> {
                             ),
                             onPressed: () => _showFilterModal(context),
                             child: Row(
-                              children: const [
+                              children: [
                                 Text('Filters',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold)),
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium),
                                 SizedBox(width: 6),
                                 Icon(Icons.filter_list, size: 16),
                               ],
@@ -298,7 +298,7 @@ class TransactionSection extends StatelessWidget {
       children: [
         const SizedBox(height: 16),
         Text(title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            style: Theme.of(context).textTheme.labelLarge?.black().bold()),
         const SizedBox(height: 8),
         Column(
             children:
@@ -375,10 +375,14 @@ class TransactionTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(data.label,
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.black()
+                              .bold()),
                       Text(data.subtitle,
-                          style: const TextStyle(
-                              color: Colors.grey, fontSize: 12)),
+                          style:
+                              Theme.of(context).textTheme.labelSmall?.gray()),
                     ],
                   ),
                 ),
@@ -388,10 +392,9 @@ class TransactionTile extends StatelessWidget {
                   children: [
                     Text(
                       data.amount,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: isNegative ? Colors.red : Colors.green,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: isNegative ? Colors.red : Colors.green,
+                          ),
                     ),
                   ],
                 ),

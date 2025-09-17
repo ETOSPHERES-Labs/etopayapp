@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
 import 'package:eto_pay/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,9 @@ class TopBar extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Select Network',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium?.bold(),
                       ),
                       IconButton(
                         icon: const Icon(Icons.close),
@@ -80,7 +78,7 @@ class TopBar extends ConsumerWidget {
                               Expanded(
                                 child: Text(
                                   entry.value.name,
-                                  style: const TextStyle(fontSize: 16),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
                               if (isSelected)
@@ -121,12 +119,9 @@ class TopBar extends ConsumerWidget {
                         Navigator.pop(context);
                         // Tu można dodać logikę do dodawania sieci
                       },
-                      child: const Text(
+                      child: Text(
                         'Add Network',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium?.white(),
                       ),
                     ),
                   ),
@@ -182,10 +177,7 @@ class TopBar extends ConsumerWidget {
                   Text(
                     user.networks.nameFor(user.preferredNetwork) ??
                         'Select Network',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.white(),
                   ),
                   const SizedBox(width: 4),
                   const Icon(Icons.keyboard_arrow_down_rounded,
@@ -221,11 +213,11 @@ class TopBar extends ConsumerWidget {
                     ),
                     child: Text(
                       '${user.unreadNotifications}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.white()
+                          .bold(),
                       textAlign: TextAlign.center,
                     ),
                   ),

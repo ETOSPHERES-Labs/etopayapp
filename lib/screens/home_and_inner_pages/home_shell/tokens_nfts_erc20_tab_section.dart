@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -85,8 +86,8 @@ class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
 
   Widget _buildTokenListInner(List<NetworkAsset> tokens) {
     if (tokens.isEmpty) {
-      return const Center(
-        child: Text('Tokens (empty)'),
+      return Center(
+        child: Text('Tokens (empty)', style: Theme.of(context).textTheme.bodyMedium,),
       );
     }
 
@@ -117,18 +118,12 @@ class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
                   children: [
                     Text(
                       token.name,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.bold(),
                     ),
-                    const SizedBox(height: 2),
+                    // const SizedBox(height: 2),
                     Text(
                       token.price,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF747474),
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall?.gray(),
                     ),
                   ],
                 ),
@@ -138,12 +133,9 @@ class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
                 children: [
                   Text(
                     token.amount,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  const SizedBox(height: 2),
+                  // const SizedBox(height: 2),
                   Row(
                     children: [
                       Icon(
@@ -154,10 +146,8 @@ class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
                       const SizedBox(width: 2),
                       Text(
                         '${token.change.abs().toStringAsFixed(2)}%',
-                        style: TextStyle(
-                          fontSize: 12,
+                        style:  Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: isPositive ? Colors.green : Colors.red,
-                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
