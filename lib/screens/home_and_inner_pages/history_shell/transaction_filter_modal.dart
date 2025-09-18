@@ -1,4 +1,3 @@
-import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
 import 'package:eto_pay/widgets/blue_double_button.dart';
 import 'package:flutter/material.dart';
