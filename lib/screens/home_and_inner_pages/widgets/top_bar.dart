@@ -1,6 +1,7 @@
 import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
 import 'package:eto_pay/providers/user_provider.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -102,30 +103,16 @@ class TopBar extends ConsumerWidget {
                     }).toList(),
                   ),
                 ),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF005CA9),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        // Tu można dodać logikę do dodawania sieci
-                      },
-                      child: Text(
-                        'Add Network',
-                        style: Theme.of(context).textTheme.bodyMedium?.white(),
-                      ),
-                    ),
-                  ),
+                const SizedBox(height: 20),
+                BlueButton(
+                  text: 'Add Network',
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),

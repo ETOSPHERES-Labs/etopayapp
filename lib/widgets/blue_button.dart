@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class BlueButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final Widget? icon;
+  final Widget? leftIcon;
+  final Widget? rightIcon;
   final bool isActive;
   final Color activeColor;
   final Color inactiveColor;
@@ -18,7 +19,8 @@ class BlueButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
-    this.icon,
+    this.leftIcon,
+    this.rightIcon,
     this.isActive = true,
     this.activeColor = const Color(0xFF005CA9),
     this.inactiveColor = const Color(0x80005CA9),
@@ -57,10 +59,14 @@ class BlueButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(text, style: effectiveTextStyle),
-              if (icon != null) ...[
+              if (leftIcon != null) ...[
+                leftIcon!,
                 const SizedBox(width: 8),
-                icon!,
+              ],
+              Text(text, style: effectiveTextStyle),
+              if (rightIcon != null) ...[
+                const SizedBox(width: 8),
+                rightIcon!,
               ],
             ],
           ),

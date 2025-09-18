@@ -21,14 +21,16 @@ class BlueButtonData {
   final String text;
   final VoidCallback onPressed;
   final bool isActive;
-  final Widget? icon;
+  final Widget? leftIcon;
+  final Widget? rightIcon;
   final BlueButtonStyle? style;
 
   const BlueButtonData({
     required this.text,
     required this.onPressed,
     this.isActive = true,
-    this.icon,
+    this.leftIcon,
+    this.rightIcon,
     this.style,
   });
 }
@@ -52,7 +54,8 @@ class BlueDoubleButton extends StatelessWidget {
             text: leftButton.text,
             onPressed: leftButton.onPressed,
             isActive: leftButton.isActive,
-            icon: leftButton.icon,
+            leftIcon: leftButton.leftIcon,
+            rightIcon: leftButton.rightIcon,
             padding: EdgeInsets.zero,
             activeColor:
                 leftButton.style?.activeColor ?? const Color(0xFF005CA9),
@@ -70,7 +73,8 @@ class BlueDoubleButton extends StatelessWidget {
             text: rightButton.text,
             onPressed: rightButton.onPressed,
             isActive: rightButton.isActive,
-            icon: rightButton.icon,
+            leftIcon: rightButton.leftIcon,
+            rightIcon: rightButton.rightIcon,
             padding: EdgeInsets.zero,
             activeColor:
                 rightButton.style?.activeColor ?? const Color(0xFF005CA9),

@@ -1,4 +1,5 @@
 import 'package:eto_pay/main.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -52,28 +53,15 @@ class KycModal {
                   style: Theme.of(context).textTheme.bodyMedium?.gray(),
                 ),
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF005CA9),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "Verify your KYC",
-                        style: Theme.of(context).textTheme.bodyMedium?.white(),
-                      ),
-                    ),
-                  ),
+                BlueButton(
+                  text: 'Verify your KYC',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),

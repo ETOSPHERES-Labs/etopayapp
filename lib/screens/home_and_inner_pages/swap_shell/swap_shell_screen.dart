@@ -3,6 +3,7 @@ import 'package:eto_pay/providers/user_provider.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/swap_shell/crypto_swap_widget.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar_blue_background.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -106,27 +107,14 @@ class _SwapShellScreenState extends ConsumerState<SwapShellScreen> {
               SizedBox(
                 height: 60,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 44,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showSwapRestrictedDialog(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF005CA9),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    child: Text(
-                      'Swap',
-                      style: Theme.of(context).textTheme.bodyMedium?.white(),
-                    ),
-                  ),
-                ),
+              BlueButton(
+                text: 'Swap',
+                onPressed: () {
+                  showSwapRestrictedDialog(context);
+                },
+              ),
+              SizedBox(
+                height: 20,
               )
             ],
           ),
@@ -167,7 +155,7 @@ class _SwapShellScreenState extends ConsumerState<SwapShellScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SvgPicture.asset(
-                  'assets/images/404.svg', 
+                  'assets/images/404.svg',
                   width: 120,
                   height: 120,
                 ),

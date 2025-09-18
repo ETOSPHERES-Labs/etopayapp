@@ -1,5 +1,6 @@
 import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
+import 'package:eto_pay/widgets/blue_double_button.dart';
 import 'package:flutter/material.dart';
 
 class TransactionFilterModal extends StatefulWidget {
@@ -163,60 +164,43 @@ class _TransactionFilterModalState extends State<TransactionFilterModal> {
 
               const SizedBox(height: 32),
 
-              // BUTTONS
               Row(
                 children: [
-                  // Clear all
                   Expanded(
                     flex: 1,
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedStatus = null;
-                          selectedDateRange = null;
-                        });
-                        widget.onApply(null, null);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0x1A005CA9),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 20),
-                      ),
-                      child: Text(
-                        "Clear all",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Color(0xFF005CA9)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-
-                  // Apply
-                  Expanded(
-                    flex: 1,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        widget.onApply(selectedStatus?.name, selectedDateRange);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF005CA9),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 20),
-                      ),
-                      child: Text(
-                        "Apply",
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium?.white(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: BlueDoubleButton(
+                        leftButton: BlueButtonData(
+                          text: 'Clear all',
+                          onPressed: () {
+                            setState(() {
+                              selectedStatus = null;
+                              selectedDateRange = null;
+                            });
+                            widget.onApply(null, null);
+                          },
+                          isActive: true,
+                          style: BlueButtonStyle(
+                              activeColor: Color.fromARGB(255, 206, 222, 239),
+                              textStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: Color(0xFF005CA9),
+                                  )),
+                        ),
+                        rightButton: BlueButtonData(
+                          text: 'Apply',
+                          isActive: true,
+                          onPressed: () {
+                            widget.onApply(
+                                selectedStatus?.name, selectedDateRange);
+                          },
+                        ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ],
