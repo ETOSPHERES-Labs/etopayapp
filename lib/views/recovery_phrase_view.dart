@@ -100,7 +100,12 @@ class RecoveryPhraseView extends StatelessWidget {
             // TODO: Implement PDF download
           },
           text: 'Save Recovery kit template',
+          leftIcon: const Icon(Icons.download, color: Color(0xFF005CA9)),
           padding: EdgeInsetsGeometry.zero,
+          activeColor: Color.fromARGB(255, 206, 222, 239),
+          textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Color(0xFF005CA9),
+              ),
         ),
         const SizedBox(height: 16),
         BlueButton(

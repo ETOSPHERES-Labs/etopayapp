@@ -1,8 +1,6 @@
-import 'package:eto_pay/core/text_styles.dart';
 import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:eto_pay/core/colors.dart';
 
 class CardData {
   final String title;
