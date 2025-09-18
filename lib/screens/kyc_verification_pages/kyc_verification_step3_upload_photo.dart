@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step4.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
@@ -27,7 +28,8 @@ class KycVerificationStep3UploadPhotoScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      style: TextButton.styleFrom(foregroundColor: Colors.black),
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.black),
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
@@ -41,27 +43,29 @@ class KycVerificationStep3UploadPhotoScreen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     StepProgressBar(currentStep: 3),
                     const SizedBox(height: 20),
-                    const Text("Step 3/4", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text(
+                      "Step 3/4",
+                      style: Theme.of(context).textTheme.displayMedium,
+                    ),
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        SvgPicture.asset('assets/icons/icon_selfie.svg', width: 20, height: 20),
+                        SvgPicture.asset('assets/icons/icon_selfie.svg',
+                            width: 20, height: 20),
                         const SizedBox(width: 8),
-                        const Text("3. Selfie or photo verification", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        Text("3. Selfie or photo verification",
+                            style:
+                                Theme.of(context).textTheme.titleSmall?.bold()),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16,
-                        color: Color(0xFF747474),
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 24),
                     Row(
-                      children: const [
+                      children: [
                         Icon(
                           Icons.photo_outlined,
                           size: 20,
@@ -69,20 +73,18 @@ class KycVerificationStep3UploadPhotoScreen extends ConsumerWidget {
                         SizedBox(width: 8),
                         Text(
                           "Upload your valid photo",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                          style: Theme.of(context).textTheme.displayMedium,
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
                     ImageUploadCard(
-                      label: "Please select and upload a photo from your gallery.",
+                      label:
+                          "Please select and upload a photo from your gallery.",
                       initialWebImage: form.selfie?.web,
                       initialLocalImage: form.selfie?.phone,
-                      onImageSelected: (bytes, file) =>
-                          notifier.updateSelfie(webBytes: bytes, phoneFile: file),
+                      onImageSelected: (bytes, file) => notifier.updateSelfie(
+                          webBytes: bytes, phoneFile: file),
                     ),
                     const SizedBox(height: 100),
                   ],
@@ -95,7 +97,8 @@ class KycVerificationStep3UploadPhotoScreen extends ConsumerWidget {
               onPressed: form.isSelfieValid
                   ? () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const KycVerificationStep4Screen()),
+                        MaterialPageRoute(
+                            builder: (_) => const KycVerificationStep4Screen()),
                       );
                     }
                   : () {},

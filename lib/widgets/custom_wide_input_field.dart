@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 
 class CustomInputField extends StatefulWidget {
@@ -45,9 +46,10 @@ class _CustomInputFieldState extends State<CustomInputField> {
       initialValue: widget.value,
       focusNode: _focusNode,
       keyboardType: widget.keyboardType,
-      style: const TextStyle(color: Colors.black),
+      style: Theme.of(context).textTheme.bodyMedium?.black(),
       decoration: InputDecoration(
         hintText: widget.label,
+        hintStyle: Theme.of(context).textTheme.bodyMedium?.gray(),
         filled: true,
         fillColor: _isFocused ? Colors.white : const Color(0xFFF5F5F5),
         enabledBorder: OutlineInputBorder(

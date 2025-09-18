@@ -73,13 +73,8 @@ class KycVerificationStep0Screen extends ConsumerWidget {
                       contentBeforeFooter: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Nationality",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
+                          Text("Nationality",
+                              style: Theme.of(context).textTheme.displayMedium),
                           const SizedBox(height: 8),
                           CountryDropdown(
                             countries: euCountries,
@@ -91,13 +86,8 @@ class KycVerificationStep0Screen extends ConsumerWidget {
                             },
                           ),
                           const SizedBox(height: 16),
-                          const Text(
-                            "Verification method",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
+                          Text("Verification method",
+                              style: Theme.of(context).textTheme.displayMedium),
                           const SizedBox(height: 8),
                           Column(
                             children: _verificationMethods.map((method) {
@@ -134,7 +124,9 @@ class KycVerificationStep0Screen extends ConsumerWidget {
                                       Expanded(
                                         child: Text(
                                           method['name']!,
-                                          style: const TextStyle(fontSize: 16),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
                                         ),
                                       ),
                                       if (isSelected)

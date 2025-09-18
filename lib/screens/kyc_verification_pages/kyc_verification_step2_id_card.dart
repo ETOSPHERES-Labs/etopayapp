@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:eto_pay/core/eu_countries.dart';
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step2.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
@@ -62,10 +62,9 @@ class KycVerificationStep2IdCardScreen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     StepProgressBar(currentStep: 2),
                     const SizedBox(height: 20),
-                    const Text(
+                    Text(
                       "Step 2/4",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -73,23 +72,21 @@ class KycVerificationStep2IdCardScreen extends ConsumerWidget {
                         SvgPicture.asset('assets/icons/icon_face_id.svg',
                             width: 20, height: 20),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           "2. ID Verification",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: Theme.of(context).textTheme.titleSmall?.bold(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
-                      style: TextStyle(color: Color(0xFF747474), fontSize: 16),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 42),
-                    const Text(
+                    Text(
                       "Select document issuer country",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                     const SizedBox(height: 8),
                     CountryDropdown(
@@ -105,15 +102,12 @@ class KycVerificationStep2IdCardScreen extends ConsumerWidget {
                       },
                     ),
                     const SizedBox(height: 24),
-                    const Text(
-                      "ID Card",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
+                    Text("ID Card",
+                        style: Theme.of(context).textTheme.displayMedium),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Please upload clear images of both sides of your ID card.",
-                      style: TextStyle(color: Color(0xFF747474), fontSize: 16),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 16),
                     ImageUploadCard(

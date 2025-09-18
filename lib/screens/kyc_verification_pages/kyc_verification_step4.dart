@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step5.dart';
 import 'package:eto_pay/widgets/conditional_button.double.dart';
 import 'package:eto_pay/widgets/custom_wide_input_field.dart';
@@ -45,9 +46,8 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     StepProgressBar(currentStep: 4),
                     const SizedBox(height: 20),
-                    const Text("Step 4/4",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text("Step 4/4",
+                        style: Theme.of(context).textTheme.displayMedium),
                     const SizedBox(height: 20),
                     Row(
                       children: [
@@ -57,17 +57,16 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                           height: 20,
                         ),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           "1. Personal information",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: Theme.of(context).textTheme.titleSmall?.bold(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
-                      style: TextStyle(fontSize: 16, color: Color(0xFF747474)),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 16),
                     CustomInputField(
@@ -97,17 +96,16 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                           height: 20,
                         ),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           "2. ID verification",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: Theme.of(context).textTheme.titleSmall?.bold(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
-                      style: TextStyle(fontSize: 16, color: Color(0xFF747474)),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 16),
                     if (form.idCard != null)
@@ -134,17 +132,16 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                           height: 20,
                         ),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           "3. Selfie or photo verification",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: Theme.of(context).textTheme.titleSmall?.bold(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
-                      style: TextStyle(fontSize: 16, color: Color(0xFF747474)),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 16),
                     if (form.selfie != null)
@@ -165,11 +162,11 @@ class KycVerificationStep4Screen extends ConsumerWidget {
               },
               onRightPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const KycVerificationStep5Screen()),
+                  MaterialPageRoute(
+                      builder: (_) => const KycVerificationStep5Screen()),
                 );
               },
             ),
-
           ],
         ),
       ),

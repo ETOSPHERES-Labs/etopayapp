@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step1.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
@@ -75,13 +76,11 @@ class KycVerificationStep5Screen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                'Go to home page',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              Text('Go to home page',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.white()),
                               const SizedBox(width: 8),
                               Container(
                                 width: 24,

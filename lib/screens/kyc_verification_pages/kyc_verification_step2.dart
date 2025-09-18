@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step1.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step3.dart';
 import 'package:flutter/material.dart';
@@ -54,10 +55,9 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     StepProgressBar(currentStep: 2),
                     const SizedBox(height: 20),
-                    const Text(
+                    Text(
                       "Step 2/4",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -68,20 +68,16 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                           height: 20,
                         ),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           "2. ID Verification",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: Theme.of(context).textTheme.titleSmall?.bold(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFF747474),
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 100),
                     Center(
@@ -91,10 +87,9 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 100),
-                    const Text(
+                    Text(
                       "Select document issuing country",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                     const SizedBox(height: 8),
                     CountryDropdown(
@@ -110,11 +105,8 @@ class KycVerificationStep2Screen extends ConsumerWidget {
                       },
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      "Select document type",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
+                    Text("Select document type",
+                        style: Theme.of(context).textTheme.displayMedium),
                     const SizedBox(height: 8),
                     WideButtonWithIconAndArrow(
                       label: 'ID card',

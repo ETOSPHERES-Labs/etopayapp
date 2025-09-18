@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step3_upload_photo.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step4.dart';
@@ -44,12 +45,9 @@ class KycVerificationStep3Screen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     StepProgressBar(currentStep: 3),
                     const SizedBox(height: 20),
-                    const Text(
+                    Text(
                       "Step 3/4",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -60,23 +58,16 @@ class KycVerificationStep3Screen extends ConsumerWidget {
                           height: 20,
                         ),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           "3.Selfie or photo verification",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall?.bold(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16,
-                        color: Color(0xFF747474),
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 100),
                     Center(

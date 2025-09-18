@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:eto_pay/core/eu_countries.dart';
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step2.dart';
 import 'package:eto_pay/widgets/continue_button.dart';
@@ -50,7 +50,8 @@ class KycVerificationStep2PassportScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextButton(
-                      style: TextButton.styleFrom(foregroundColor: Colors.black),
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.black),
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
@@ -64,36 +65,38 @@ class KycVerificationStep2PassportScreen extends ConsumerWidget {
                     const SizedBox(height: 20),
                     StepProgressBar(currentStep: 2),
                     const SizedBox(height: 20),
-                    const Text(
+                    Text(
                       "Step 2/4",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        SvgPicture.asset('assets/icons/icon_face_id.svg', width: 20, height: 20),
+                        SvgPicture.asset('assets/icons/icon_face_id.svg',
+                            width: 20, height: 20),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           "2. ID Verification",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          style: Theme.of(context).textTheme.titleSmall?.bold(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Lorem ipsum dolor sit amet consectetur. Urna egestas ac pellentesque metus.",
-                      style: TextStyle(color: Color(0xFF747474), fontSize: 16),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 42),
-                    const Text(
+                    Text(
                       "Select document issuer country",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                     const SizedBox(height: 8),
                     CountryDropdown(
                       countries: euCountries,
                       selectedCountry: form.idVerificationDocumentIssuer != null
-                          ? findCountryByName(form.idVerificationDocumentIssuer!)
+                          ? findCountryByName(
+                              form.idVerificationDocumentIssuer!)
                           : null,
                       onChanged: (value) {
                         if (value != null) {
@@ -102,14 +105,12 @@ class KycVerificationStep2PassportScreen extends ConsumerWidget {
                       },
                     ),
                     const SizedBox(height: 24),
-                    const Text(
-                      "Passport",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
+                    Text("Passport",
+                        style: Theme.of(context).textTheme.displayMedium),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       "Please upload clear images of both sides of your passport",
-                      style: TextStyle(color: Color(0xFF747474), fontSize: 16),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     const SizedBox(height: 16),
                     ImageUploadCard(
@@ -146,7 +147,8 @@ class KycVerificationStep2PassportScreen extends ConsumerWidget {
               onPressed: form.isStep2PassportValid
                   ? () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const KycVerificationStep2Screen()),
+                        MaterialPageRoute(
+                            builder: (_) => const KycVerificationStep2Screen()),
                       );
                     }
                   : () {},

@@ -1,3 +1,4 @@
+import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 
 class ConditionalSingleButton extends StatelessWidget {
@@ -25,7 +26,7 @@ class ConditionalSingleButton extends StatelessWidget {
         side: BorderSide(color: Colors.transparent),
       ),
       onPressed: isActive ? onPressed : null,
-      child: Text(text),
+      child: Text(text, style: Theme.of(context).textTheme.bodyMedium?.white()),
     );
   }
 }
