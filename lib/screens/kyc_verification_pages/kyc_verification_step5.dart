@@ -1,5 +1,5 @@
-import 'package:eto_pay/main.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step1.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -51,55 +51,21 @@ class KycVerificationStep5Screen extends StatelessWidget {
                         children: [],
                       ),
                     ),
-                    Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: 50,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: const Color(0xFF005CA9),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            foregroundColor: Colors.white,
-                            side: BorderSide.none,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                    BlueButton(
+                      text: 'Go to home page',
+                      isActive: true,
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const KycVerificationStep1Screen(),
                           ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const KycVerificationStep1Screen(),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Go to home page',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.white()),
-                              const SizedBox(width: 8),
-                              Container(
-                                width: 24,
-                                height: 24,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.arrow_forward,
-                                  color: Color(0xFF005CA9),
-                                  size: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
+                    SizedBox(
+                      height: 8,
+                    )
                   ],
                 ),
               ),

@@ -2,7 +2,7 @@ import 'package:eto_pay/main.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step3_upload_photo.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step4.dart';
-import 'package:eto_pay/widgets/continue_button.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
 import 'package:eto_pay/widgets/wide_button_with_icon_and_arrow.dart';
 import 'package:flutter/material.dart';
@@ -100,9 +100,9 @@ class KycVerificationStep3Screen extends ConsumerWidget {
                 ),
               ),
             ),
-            ContinueButtonWidget(
-              isEnabled: form.isStep3Valid,
+            BlueButton(
               text: 'Proceed',
+              isActive: form.isStep3Valid,
               onPressed: form.isStep3Valid
                   ? () {
                       Navigator.of(context).push(
@@ -112,6 +112,9 @@ class KycVerificationStep3Screen extends ConsumerWidget {
                     }
                   : () {},
             ),
+            SizedBox(
+              height: 8,
+            )
           ],
         ),
       ),

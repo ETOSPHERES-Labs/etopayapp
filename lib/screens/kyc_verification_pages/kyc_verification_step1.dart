@@ -1,7 +1,7 @@
 import 'package:eto_pay/main.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step2.dart';
-import 'package:eto_pay/widgets/continue_button.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/custom_wide_input_field.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -159,9 +159,9 @@ class KycVerificationStep1Screen extends ConsumerWidget {
                 ),
               ),
             ),
-            ContinueButtonWidget(
-              isEnabled: form.isStep1Valid,
+            BlueButton(
               text: 'Proceed',
+              isActive: form.isStep1Valid,
               onPressed: form.isStep1Valid
                   ? () {
                       Navigator.of(context).push(
@@ -173,6 +173,9 @@ class KycVerificationStep1Screen extends ConsumerWidget {
                     }
                   : () {},
             ),
+            SizedBox(
+              height: 8,
+            )
           ],
         ),
       ),

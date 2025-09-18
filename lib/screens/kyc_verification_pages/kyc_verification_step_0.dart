@@ -1,6 +1,6 @@
 import 'package:eto_pay/core/eu_countries.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step1.dart';
-import 'package:eto_pay/widgets/continue_button.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
@@ -156,10 +156,9 @@ class KycVerificationStep0Screen extends ConsumerWidget {
                 ),
               ),
             ),
-            ContinueButtonWidget(
-              isEnabled:
-                  form.nationality != null && form.nationality!.isNotEmpty,
+            BlueButton(
               text: 'Proceed',
+              isActive: form.nationality != null && form.nationality!.isNotEmpty,
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -168,6 +167,7 @@ class KycVerificationStep0Screen extends ConsumerWidget {
                 );
               },
             ),
+            SizedBox(height: 8,)
           ],
         ),
       ),

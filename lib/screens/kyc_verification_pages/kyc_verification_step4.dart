@@ -1,6 +1,6 @@
 import 'package:eto_pay/main.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step5.dart';
-import 'package:eto_pay/widgets/conditional_button.double.dart';
+import 'package:eto_pay/widgets/blue_double_button.dart';
 import 'package:eto_pay/widgets/custom_wide_input_field.dart';
 import 'package:eto_pay/widgets/document_preview_row.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
@@ -152,21 +152,35 @@ class KycVerificationStep4Screen extends ConsumerWidget {
                 ),
               ),
             ),
-            ContinueButtonDoubleWidget(
-              isLeftEnabled: true,
-              isRightEnabled: form.isStep4Valid,
-              leftText: 'Edit',
-              rightText: 'Submit',
-              onLeftPressed: () {
-                Navigator.of(context).pop();
-              },
-              onRightPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (_) => const KycVerificationStep5Screen()),
-                );
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: BlueDoubleButton(
+                leftButton: BlueButtonData(
+                  text: 'Edit',
+                  onPressed: () => Navigator.of(context).pop(),
+                  isActive: true,
+                  style: BlueButtonStyle(
+                      activeColor: Color.fromARGB(255, 206, 222, 239),
+                      textStyle:
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Color(0xFF005CA9),
+                              )),
+                ),
+                rightButton: BlueButtonData(
+                  text: 'Submit',
+                  isActive: form.isStep4Valid,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (_) => const KycVerificationStep5Screen()),
+                    );
+                  },
+                ),
+              ),
             ),
+            SizedBox(
+              height: 8,
+            )
           ],
         ),
       ),

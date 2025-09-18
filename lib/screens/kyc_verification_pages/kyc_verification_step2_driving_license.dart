@@ -3,7 +3,7 @@ import 'package:eto_pay/core/eu_countries.dart';
 import 'package:eto_pay/main.dart';
 import 'package:eto_pay/providers/kyc_form_provider.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step2.dart';
-import 'package:eto_pay/widgets/continue_button.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/country_dropdown.dart';
 import 'package:eto_pay/widgets/image_upload_card.dart';
 import 'package:eto_pay/widgets/progress_bar.dart';
@@ -138,9 +138,9 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            ContinueButtonWidget(
-              isEnabled: form.isStep2DrivingLicenseValid,
+            BlueButton(
               text: 'Submit',
+              isActive: form.isStep2DrivingLicenseValid,
               onPressed: form.isStep2DrivingLicenseValid
                   ? () {
                       Navigator.of(context).push(
@@ -150,6 +150,9 @@ class KycVerificationStep2DrivingLicenseScreen extends ConsumerWidget {
                     }
                   : () {},
             ),
+            SizedBox(
+              height: 8,
+            )
           ],
         ),
       ),
