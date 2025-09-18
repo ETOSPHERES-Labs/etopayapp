@@ -1,6 +1,7 @@
 import 'package:eto_pay/core/colors.dart';
+import 'package:eto_pay/main.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:eto_pay/core/theme.dart';
 import 'package:local_auth/local_auth.dart';
@@ -142,7 +143,9 @@ class _PasswordPinSetupWidgetState extends State<PasswordPinSetupWidget> {
               keyboardType:
                   widget.isPin ? TextInputType.number : TextInputType.text,
               maxLength: widget.isPin ? 6 : null,
+              style: Theme.of(context).textTheme.bodyMedium?.gray(),
               decoration: InputDecoration(
+                labelStyle: Theme.of(context).textTheme.bodyMedium?.gray(),
                 labelText: widget.isPin ? 'Enter PIN' : 'Enter password',
                 filled: true,
                 fillColor: AppTheme.inputFieldBackground,
@@ -169,7 +172,9 @@ class _PasswordPinSetupWidgetState extends State<PasswordPinSetupWidget> {
               keyboardType:
                   widget.isPin ? TextInputType.number : TextInputType.text,
               maxLength: widget.isPin ? 6 : null,
+              style: Theme.of(context).textTheme.bodyMedium?.gray(),
               decoration: InputDecoration(
+                labelStyle: Theme.of(context).textTheme.bodyMedium?.gray(),
                 labelText: widget.isPin ? 'Confirm PIN' : 'Confirm password',
                 filled: true,
                 fillColor: AppTheme.inputFieldBackground,
@@ -192,16 +197,16 @@ class _PasswordPinSetupWidgetState extends State<PasswordPinSetupWidget> {
             if (widget.isPin)
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Allow unlocking with biometrics'),
+                title: Text('Allow unlocking with biometrics', style: Theme.of(context).textTheme.titleSmall,),
                 value: _biometricsEnabled,
                 onChanged: _biometricsAvailable ? _toggleBiometrics : null,
               ),
             if (widget.isPin)
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 4.0),
                 child: Text(
                   'PIN must be 6 digits',
-                  style: TextStyle(color: AppColors.subtext, fontSize: 13),
+                  style: Theme.of(context).textTheme.labelSmall?.gray(),
                 ),
               ),
             if (!widget.isPin)
@@ -211,29 +216,32 @@ class _PasswordPinSetupWidgetState extends State<PasswordPinSetupWidget> {
                   children: [
                     Text(
                       'Password strength: ',
-                      style: const TextStyle(
-                          color: AppColors.subtext, fontSize: 13),
+                      style: Theme.of(context).textTheme.bodyMedium?.gray(),
                     ),
                     Text(
                       _strength,
-                      style: TextStyle(
-                        color: _strength == 'Strong'
-                            ? Colors.green
-                            : _strength == 'Medium'
-                                ? Colors.orange
-                                : Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.gray()
+                          .bold()
+                          .copyWith(
+                            color: _strength == 'Strong'
+                                ? Colors.green
+                                : _strength == 'Medium'
+                                    ? Colors.orange
+                                    : Colors.red,
+                          ),
                     ),
                   ],
                 ),
               ),
             const SizedBox(height: 24),
-            ConditionalSingleButton(
+            BlueButton(
               isActive: _valid,
               onPressed: _valid ? widget.onContinue : () {},
               text: 'Continue',
+              padding: EdgeInsetsGeometry.zero,
             ),
           ],
         ),

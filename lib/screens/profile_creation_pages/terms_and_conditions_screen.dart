@@ -1,3 +1,4 @@
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:go_router/go_router.dart';
@@ -35,9 +36,10 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
         checkboxLabel: 'I accept the Terms and Conditions',
         footer: Padding(
           padding: const EdgeInsets.only(top: 24.0),
-          child: ElevatedButton(
-            onPressed: _accepted ? _onContinue : null,
-            child: const Text('Continue'),
+          child: BlueButton(
+            text: "Continue",
+            onPressed: () => _accepted ? _onContinue() : null,
+            padding: EdgeInsetsGeometry.zero,
           ),
         ),
       ),

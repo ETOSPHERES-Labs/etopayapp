@@ -1,6 +1,6 @@
 import 'package:eto_pay/core/bip39_word_list.dart';
 import 'package:eto_pay/core/text_styles.dart';
-import 'package:eto_pay/widgets/conditional_button.single.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/mnemonic_input.dart';
 import 'package:flutter/material.dart';
 import 'package:eto_pay/core/colors.dart';
@@ -80,8 +80,7 @@ class _EnterRecoveryPhraseScreen extends State<EnterRecoveryPhraseScreen> {
                       const Text(
                         'Enter your secret recovery phrase',
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+                            color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20),
                       MnemonicInput(
@@ -97,18 +96,18 @@ class _EnterRecoveryPhraseScreen extends State<EnterRecoveryPhraseScreen> {
               Container(
                 height: _continueButtonHeight,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                color: Colors.white, 
+                color: Colors.white,
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ConditionalSingleButton(
-                        isActive: _isContinueButtonEnabled,
-                        onPressed: () {},
-                        text: 'Continue',
-                      )
-                    ],
-                  ),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    BlueButton(
+                      isActive: _isContinueButtonEnabled,
+                      onPressed: () {},
+                      text: 'Continue',
+                    )
+                  ],
+                ),
               ),
             ],
           ),

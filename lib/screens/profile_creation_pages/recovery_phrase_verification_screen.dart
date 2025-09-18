@@ -1,9 +1,9 @@
 import 'dart:ui';
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/view_models/recovery_phrase_verification_view_model.dart';
-import 'package:eto_pay/widgets/conditional_button.single.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eto_pay/core/colors.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 
 class RecoveryPhraseVerificationScreen extends StatelessWidget {
@@ -54,14 +54,14 @@ class _VerificationView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'Verify recovery phrase',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             "Let's check if you have written down the recovery phrase correctly!",
-            style: TextStyle(color: AppColors.subtext),
+            style: Theme.of(context).textTheme.labelMedium?.gray(),
           ),
           const SizedBox(height: 24),
           Expanded(
@@ -130,7 +130,7 @@ class _VerificationView extends StatelessWidget {
           const SizedBox(height: 24),
           Text(
             '#word${model.currentIndex + 1}',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: Theme.of(context).textTheme.bodyMedium?.blue(),
           ),
           const SizedBox(height: 8),
           ...List.generate(
@@ -139,11 +139,15 @@ class _VerificationView extends StatelessWidget {
                     value: i,
                     groupValue: selected,
                     onChanged: (v) => model.selectAnswer(v!),
-                    title: Text(currentOptions[i]),
+                    title: Text(
+                      currentOptions[i],
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                   )),
           const SizedBox(height: 16),
-          ConditionalSingleButton(
+          BlueButton(
             isActive: model.canProceed,
+            padding: EdgeInsetsGeometry.zero,
             onPressed: () {
               if (!model.canProceed) return;
               if (model.isLast) {
@@ -202,11 +206,12 @@ class _VerificationSuccessScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 32),
-                ConditionalSingleButton(
+                BlueButton(
                   isActive: true,
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
                   text: 'Continue',
+                  padding: EdgeInsetsGeometry.zero,
                 ),
               ],
             ),

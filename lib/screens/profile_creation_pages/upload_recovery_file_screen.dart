@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 import 'package:eto_pay/screens/profile_creation_pages/upload_recovery_file_import_file_screen.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/dashed_container.dart';
 import 'package:flutter/material.dart';
 import 'package:eto_pay/core/colors.dart';
 import 'package:eto_pay/core/text_styles.dart';
-import 'package:eto_pay/widgets/conditional_button.single.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -118,7 +118,7 @@ class _UploadRecoveryFileScreen extends State<UploadRecoveryFileScreen> {
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 26),
-                            ConditionalSingleButton(
+                            BlueButton(
                               isActive: true,
                               onPressed: () async {
                                 FilePickerResult? result = await FilePicker
@@ -165,7 +165,7 @@ class _UploadRecoveryFileScreen extends State<UploadRecoveryFileScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ConditionalSingleButton(
+                BlueButton(
                   isActive: _isContinueButtonEnabled,
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(

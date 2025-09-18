@@ -56,4 +56,5 @@ extension TextStyleHelpers on TextStyle {
   TextStyle white() => copyWith(color: Color(0xFFFFFFFF));
   TextStyle red() => copyWith(color: Color(0xFFFF0000));
   TextStyle green() => copyWith(color: Color(0xFF00FF00));
+  TextStyle blue() => copyWith(color: Color(0xFF005CA9));
 }

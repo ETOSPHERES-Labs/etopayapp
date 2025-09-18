@@ -1,4 +1,4 @@
-import 'package:eto_pay/widgets/conditional_button.single.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
 
@@ -203,11 +203,10 @@ class _ChooseCustomNetworkScreen extends State<ChooseCustomNetworkScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ConditionalSingleButton(
-                    isActive: _isContinueButtonEnabled,
-                    onPressed: () {},
-                    text: 'Continue',
-                  )
+                  BlueButton(
+                      text: "Continue",
+                      isActive: _isContinueButtonEnabled,
+                      onPressed: () {})
                 ],
               ),
             ),

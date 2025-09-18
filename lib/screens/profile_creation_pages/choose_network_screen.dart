@@ -1,7 +1,7 @@
 import 'package:eto_pay/screens/profile_creation_pages/choose_custom_network_screen.dart';
 import 'package:eto_pay/screens/kyc_verification_pages/kyc_verification_step_0.dart';
 import 'package:eto_pay/screens/profile_creation_pages/wallet_options_screen.dart';
-import 'package:eto_pay/widgets/conditional_button.single.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:eto_pay/widgets/onboarding.dart';
 import 'package:flutter/material.dart';
 
@@ -66,7 +66,8 @@ class ChooseNetworkScreen extends StatelessWidget {
                         icon: Icons.account_balance_wallet_outlined,
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const ChooseCustomNetworkScreen(),
+                            builder: (context) =>
+                                const ChooseCustomNetworkScreen(),
                           ),
                         ),
                       ),
@@ -75,29 +76,28 @@ class ChooseNetworkScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const SizedBox(height: 24),
-                        const Row(
+                        Row(
                           children: [
                             Expanded(child: Divider()),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Text('or login with'),
+                              child: Text(
+                                'or login with',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                             ),
                             Expanded(child: Divider()),
                           ],
                         ),
                         const SizedBox(height: 24),
-                        ConditionalSingleButton(
-                          isActive: true,
+                        BlueButton(
+                          text: "Guest",
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                               builder: (context) => const KycVerificationStep0Screen(
-                                ),
-                              )
-                            );
-                            
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const KycVerificationStep0Screen(),
+                            ));
                           },
-                          text: 'Guest',
                         )
                       ],
                     ),
