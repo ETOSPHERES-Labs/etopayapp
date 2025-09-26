@@ -1,4 +1,5 @@
 import 'package:eto_pay/providers/user_provider.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/full_assets_tab_screen/full_assets_tab_screen.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar.dart';
 import 'package:eto_pay/screens/home_and_inner_pages/widgets/top_bar_blue_background.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,8 @@ class HomeShellScreen extends ConsumerWidget {
     return SafeArea(
       child: SingleChildScrollView(
         child: CustomPaint(
-          painter: TopBarBlueBackgroundPainter(overflow: TopBarBlueBackgroundOverflowLevel.overflow),
+          painter: TopBarBlueBackgroundPainter(
+              overflow: TopBarBlueBackgroundOverflowLevel.overflow),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,15 +40,25 @@ class HomeShellScreen extends ConsumerWidget {
                   networkAddress: preferredNetwork?.address ?? ""),
               const SizedBox(height: 16),
               ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: 116,
-                  maxHeight: 116 + 64 * 3,
-                ),
-                child: TokensNfcsErc20TabSection(
-                    assetsErc20: preferredNetwork?.assetsErc20 ?? [],
-                    assetsNfts: preferredNetwork?.assetsNfts ?? [],
-                    assetsTokens: preferredNetwork?.assetsTokens ?? []),
-              ),
+                  constraints: BoxConstraints(
+                    minHeight: 117,
+                    maxHeight: 117 + 59 * 3,
+                  ),
+                  child: TokensNfcsErc20TabSection(
+                      assetsErc20: preferredNetwork?.assetsErc20 ?? [],
+                      assetsNfts: preferredNetwork?.assetsNfts ?? [],
+                      assetsTokens: preferredNetwork?.assetsTokens ?? [],
+                      onAssetTap: (asset) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FullAssetsTabScreen(
+                                allTokens: preferredNetwork?.assetsTokens ?? [],
+                                allNfts: preferredNetwork?.assetsNfts ?? [],
+                                allErc20: preferredNetwork?.assetsErc20 ?? [],
+                              ),
+                            ));
+                      })),
             ],
           ),
         ),

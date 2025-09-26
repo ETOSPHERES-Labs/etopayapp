@@ -1,6 +1,7 @@
 import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
 import 'package:eto_pay/providers/user_provider.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/notifications_screen/notifications_screen.dart';
 import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -181,7 +182,11 @@ class TopBar extends ConsumerWidget {
                 icon: const Icon(Icons.notifications_none,
                     color: Colors.white, size: 32),
                 onPressed: () {
-                  // Notification logic
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotificationsScreen(),
+                      ));
                 },
               ),
               if (user.unreadNotifications > 0)

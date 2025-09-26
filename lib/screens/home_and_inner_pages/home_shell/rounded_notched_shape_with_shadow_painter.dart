@@ -12,8 +12,8 @@ class RoundedNotchedShapeWithShadowPainter extends CustomPainter {
     final notchedShape = RoundedNotchedShape();
     final path = notchedShape.getOuterPath(host, guest);
 
-    canvas.drawShadow(path, const Color.fromARGB(255, 44, 160, 255), 20.0, true);
-    canvas.drawShadow(path, const Color.fromARGB(255, 44, 160, 255), 30.0, true);
+    canvas.drawShadow(path, const Color.fromARGB(150, 44, 160, 255), 10.0, true);
+    canvas.drawShadow(path, const Color.fromARGB(150, 44, 160, 255), 15.0, true);
 
     final paint = Paint()
       ..color = Colors.white

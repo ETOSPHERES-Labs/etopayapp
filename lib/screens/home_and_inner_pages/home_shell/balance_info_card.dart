@@ -47,9 +47,8 @@ class BalanceInfoCard extends StatelessWidget {
         children: [
           Text(
             '$networkName Balance',
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+            style: Theme.of(context).textTheme.displayMedium?.blue().copyWith(
                   letterSpacing: -0.24,
-                  color: Color(0xFF005CA9),
                 ),
           ),
           Row(

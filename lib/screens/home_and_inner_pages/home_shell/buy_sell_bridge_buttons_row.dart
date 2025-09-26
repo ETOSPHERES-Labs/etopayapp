@@ -1,5 +1,6 @@
 import 'package:eto_pay/main.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/buy_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/buy_screen/buy_screen.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/sell_screen/sell_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -50,7 +51,14 @@ class BuySellBridgeButtonsRow extends StatelessWidget {
                   ),
                   label: 'Sell',
                   color: const Color(0xFFB20F00),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SellScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(width: 16),
                 _ActionButton(

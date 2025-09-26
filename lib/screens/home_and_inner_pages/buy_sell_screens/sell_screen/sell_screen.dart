@@ -1,46 +1,46 @@
 import 'package:eto_pay/main.dart';
-import 'package:eto_pay/models/payment_method_model.dart';
+import 'package:eto_pay/models/network_model.dart';
 import 'package:eto_pay/providers/coin_provider.dart';
-import 'package:eto_pay/providers/payment_method_provider.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/amount_input.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/coin_dropdown.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/kyc_modal.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/payment_method_bottom_sheet.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/payment_method_selector.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/preset_amount_buttons.dart';
-import 'package:eto_pay/screens/home_and_inner_pages/buy_screen/widgets/section_title.dart';
+import 'package:eto_pay/providers/user_provider.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/sell_screen/widgets/network_selector.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/sell_screen/widgets/select_network_bottom_sheet.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/widgets/amount_input.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/widgets/coin_dropdown.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/widgets/kyc_modal.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/widgets/preset_amount_buttons.dart';
+import 'package:eto_pay/screens/home_and_inner_pages/buy_sell_screens/widgets/section_title.dart';
 import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BuyScreen extends ConsumerStatefulWidget {
-  const BuyScreen({super.key});
+class SellScreen extends ConsumerStatefulWidget {
+  const SellScreen({super.key});
 
   @override
-  ConsumerState<BuyScreen> createState() => _BuyScreenState();
+  ConsumerState<SellScreen> createState() => _SellScreenState();
 }
 
-class _BuyScreenState extends ConsumerState<BuyScreen> {
+class _SellScreenState extends ConsumerState<SellScreen> {
   final TextEditingController _amountController = TextEditingController();
 
   String _selectedCoin = 'SMR';
   String _selectedCurrency = 'EURO';
-  String _selectedPaymentMethod = 'Sepa';
+  String _selectedNetwork = '1';
 
-  final List<String> _presetAmounts = ['1,000', '2,500', '5,000', '10,000'];
+  final List<String> _presetAmounts = ['10%', '25%', '50%', '100%'];
 
-  void _showPaymentMethodSheet(List<PaymentMethod> methods) {
+  void _showSelectNetworkSheet(Map<String, NetworkModel> networks) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (_) {
-        return PaymentMethodBottomSheet(
-          paymentMethods: methods,
-          onSelect: (method) {
+        return SelectNetworkBottomSheet(
+          networks: networks,
+          onSelect: (network) {
             setState(() {
-              _selectedPaymentMethod = method;
+              _selectedNetwork = network;
             });
           },
         );
@@ -63,7 +63,7 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
   @override
   Widget build(BuildContext context) {
     final coinsAsync = ref.watch(coinsProvider);
-    final paymentMethodsAsync = ref.watch(paymentMethodsProvider);
+    final user = ref.watch(requireUserProvider);
 
     return Scaffold(
         appBar: AppBar(
@@ -74,7 +74,7 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: const Text(
-            'Buy Cryptocurrency',
+            'Sell Cryptocurrency',
             style: TextStyle(
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w400,
@@ -88,7 +88,7 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
           child: ListView(
             children: [
-              const SectionTitle(text: "You want to buy"),
+              const SectionTitle(text: "You want to sell"),
               const SizedBox(height: 8),
               coinsAsync.when(
                 data: (coins) => CoinDropdown(
@@ -134,16 +134,12 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
                 onAmountSelected: _onPresetAmountSelected,
               ),
               const SizedBox(height: 24),
-              const SectionTitle(text: "Update payment method"),
+              const SectionTitle(text: "Select Network"),
               const SizedBox(height: 8),
-              paymentMethodsAsync.when(
-                data: (methods) => PaymentMethodSelector(
-                  selectedPaymentMethod: _selectedPaymentMethod,
-                  paymentMethods: methods,
-                  onTap: () => _showPaymentMethodSheet(methods),
-                ),
-                loading: () => const CircularProgressIndicator(),
-                error: (e, _) => Text('Error loading payment methods: $e'),
+              NetworkSelector(
+                selectedNetwork: _selectedNetwork,
+                networks: user.networks.networks,
+                onTap: () => _showSelectNetworkSheet(user.networks.networks),
               ),
             ],
           ),
@@ -151,19 +147,9 @@ class _BuyScreenState extends ConsumerState<BuyScreen> {
         bottomNavigationBar: Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
             child: BlueButton(
-              text: 'Buy',
+              text: 'Sell',
               onPressed: () {
-                final amount = _amountController.text;
-                final coin = _selectedCoin;
-                final paymentMethod = _selectedPaymentMethod;
-
                 KycModal.show(context);
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Buying $amount $coin using $paymentMethod'),
-                  ),
-                );
               },
             )));
   }

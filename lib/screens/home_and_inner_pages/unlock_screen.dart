@@ -171,8 +171,6 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
                   onPressed:
                       _isAuthenticating ? null : () => _onPinSubmit(user.pin),
                   style: ButtonStyle(
-                    minimumSize: WidgetStateProperty.all(const Size(108, 39)),
-                    maximumSize: WidgetStateProperty.all(const Size(108, 39)),
                     padding: WidgetStateProperty.all(
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     ),

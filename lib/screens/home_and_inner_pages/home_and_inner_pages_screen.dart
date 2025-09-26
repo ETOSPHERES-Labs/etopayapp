@@ -198,86 +198,112 @@ class _HomeAndInnerPagesScreenState
     final preferredNetwork = user.networks.networkFor(user.preferredNetwork);
 
     return Scaffold(
-      body: _pages[_selectedIndex],
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Transform.translate(
-        offset: const Offset(0, 22),
-        child: SizedBox(
-          width: 64,
-          height: 64,
-          child: FloatingActionButton(
-            onPressed: () => _onFabPressed(preferredNetwork?.address ?? ""),
-            backgroundColor: const Color(0xFF005CA9),
-            foregroundColor: Colors.transparent,
-            elevation: 4,
-            shape: const CircleBorder(),
-            child: SvgPicture.asset(
-              'assets/icons/icon_scan.svg',
-              width: 40,
-              height: 40,
+        backgroundColor: Colors.white,
+        body: _pages[_selectedIndex],
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Transform.translate(
+          offset: const Offset(0, 26),
+          child: Container(
+            width: 64 + 2 * 6,
+            height: 64 + 2 * 6,
+            padding: const EdgeInsets.all(6),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: SizedBox(
+              width: 64,
+              height: 64,
+              child: FloatingActionButton(
+                onPressed: () => _onFabPressed(preferredNetwork?.address ?? ""),
+                backgroundColor: const Color(0xFF005CA9),
+                foregroundColor: Colors.transparent,
+                elevation: 0,
+                highlightElevation: 0,
+                hoverElevation: 0,
+                focusElevation: 0,
+                disabledElevation: 0,
+                shape: const CircleBorder(
+                  side: BorderSide(
+                    color: Color(0xFFF4F4F4),
+                    width: 0,
+                  ),
+                ),
+                child: SvgPicture.asset(
+                  'assets/icons/icon_scan.svg',
+                  width: 40,
+                  height: 40,
+                ),
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Transform.translate(
-            offset: Offset.zero,
-            child: CustomPaint(
-              size: Size(MediaQuery.of(context).size.width, 77),
-              painter: RoundedNotchedShapeWithShadowPainter(
-                host: Rect.fromLTWH(
-                  0,
-                  0,
-                  MediaQuery.of(context).size.width,
-                  80,
-                ),
-                guest: Rect.fromCircle(
-                  center: Offset(
-                    MediaQuery.of(context).size.width / 2,
-                    0,
+        bottomNavigationBar: SizedBox(
+          height: 90,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.white,
+              ),
+              Transform.translate(
+                offset: Offset.zero,
+                child: CustomPaint(
+                  size: Size(MediaQuery.of(context).size.width, 77),
+                  painter: RoundedNotchedShapeWithShadowPainter(
+                    host: Rect.fromLTWH(
+                      0,
+                      0,
+                      MediaQuery.of(context).size.width,
+                      80,
+                    ),
+                    guest: Rect.fromCircle(
+                      center: Offset(
+                        MediaQuery.of(context).size.width / 2,
+                        0,
+                      ),
+                      radius: 53,
+                    ),
                   ),
-                  radius: 53,
                 ),
               ),
-            ),
-          ),
-          BottomAppBar(
-            elevation: 0,
-            color: Colors.transparent,
-            child: SizedBox(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildNavItem(
-                    assetPath: 'assets/icons/icon_home.svg',
-                    label: 'Home',
-                    index: 0,
+              BottomAppBar(
+                elevation: 0,
+                color: Colors.transparent,
+                child: SizedBox(
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildNavItem(
+                        assetPath: 'assets/icons/icon_home.svg',
+                        label: 'Home',
+                        index: 0,
+                      ),
+                      _buildNavItem(
+                        assetPath: 'assets/icons/icon_swap.svg',
+                        label: 'Swap',
+                        index: 1,
+                      ),
+                      const SizedBox(width: 48),
+                      _buildNavItem(
+                        assetPath: 'assets/icons/icon_history.svg',
+                        label: 'History',
+                        index: 2,
+                      ),
+                      _buildNavItem(
+                        assetPath: 'assets/icons/icon_govt.svg',
+                        label: 'Govt',
+                        index: 3,
+                      ),
+                    ],
                   ),
-                  _buildNavItem(
-                    assetPath: 'assets/icons/icon_swap.svg',
-                    label: 'Swap',
-                    index: 1,
-                  ),
-                  const SizedBox(width: 48),
-                  _buildNavItem(
-                    assetPath: 'assets/icons/icon_history.svg',
-                    label: 'History',
-                    index: 2,
-                  ),
-                  _buildNavItem(
-                    assetPath: 'assets/icons/icon_govt.svg',
-                    label: 'Govt',
-                    index: 3,
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

@@ -1,4 +1,3 @@
-import 'package:eto_pay/main.dart';
 import 'package:eto_pay/models/network_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,11 +6,19 @@ class TokensNfcsErc20TabSection extends StatefulWidget {
   final List<NetworkAsset> assetsTokens;
   final List<NetworkAsset> assetsNfts;
   final List<NetworkAsset> assetsErc20;
-  const TokensNfcsErc20TabSection(
-      {super.key,
-      required this.assetsTokens,
-      required this.assetsNfts,
-      required this.assetsErc20});
+  final Color? backgroundColor;
+  final Widget Function(String tabName)? emptyStateBuilder;
+  final void Function(NetworkAsset asset)? onAssetTap;
+
+  const TokensNfcsErc20TabSection({
+    super.key,
+    required this.assetsTokens,
+    required this.assetsNfts,
+    required this.assetsErc20,
+    this.backgroundColor,
+    this.emptyStateBuilder,
+    this.onAssetTap,
+  });
 
   @override
   State<TokensNfcsErc20TabSection> createState() =>
@@ -37,7 +44,7 @@ class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 24, left: 20, right: 20, bottom: 32),
+      padding: const EdgeInsets.only(top: 24, left: 20, right: 20, bottom: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,9 +69,9 @@ class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
               controller: _tabController,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                _buildTokenListWithBackground(widget.assetsTokens),
-                _buildTokenListWithBackground(widget.assetsNfts),
-                _buildTokenListWithBackground(widget.assetsErc20)
+                _buildTokenListWithBackground(widget.assetsTokens, 'Tokens'),
+                _buildTokenListWithBackground(widget.assetsNfts, 'NFTs'),
+                _buildTokenListWithBackground(widget.assetsErc20, 'ERC20'),
               ],
             ),
           ),
@@ -73,21 +80,26 @@ class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
     );
   }
 
-  Widget _buildTokenListWithBackground(List<NetworkAsset> tokens) {
+  Widget _buildTokenListWithBackground(
+      List<NetworkAsset> tokens, String tabName) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F0F0),
+        color: widget.backgroundColor ?? const Color(0xFFF0F0F0),
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-      child: _buildTokenListInner(tokens),
+      child: _buildTokenListInner(tokens, tabName),
     );
   }
 
-  Widget _buildTokenListInner(List<NetworkAsset> tokens) {
+  Widget _buildTokenListInner(List<NetworkAsset> tokens, String tabName) {
     if (tokens.isEmpty) {
       return Center(
-        child: Text('Tokens (empty)', style: Theme.of(context).textTheme.bodyMedium,),
+        child: widget.emptyStateBuilder?.call(tabName) ??
+            Text(
+              '$tabName (empty)',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
       );
     }
 
@@ -102,59 +114,78 @@ class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
         final tokenIndex = index ~/ 2;
         final token = tokens[tokenIndex];
         final isPositive = token.change >= 0;
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                token.icon,
-                width: 20,
-                height: 20,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      token.name,
-                      style: Theme.of(context).textTheme.bodyMedium?.bold(),
-                    ),
-                    // const SizedBox(height: 2),
-                    Text(
-                      token.price,
-                      style: Theme.of(context).textTheme.labelSmall?.gray(),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              widget.onAssetTap?.call(token);
+            },
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              child: Row(
                 children: [
-                  Text(
-                    token.amount,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  SvgPicture.asset(
+                    token.icon,
+                    width: 20,
+                    height: 20,
                   ),
-                  // const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      Icon(
-                        isPositive ? Icons.arrow_upward : Icons.arrow_downward,
-                        size: 12,
-                        color: isPositive ? Colors.green : Colors.red,
-                      ),
-                      const SizedBox(width: 2),
-                      Text(
-                        '${token.change.abs().toStringAsFixed(2)}%',
-                        style:  Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: isPositive ? Colors.green : Colors.red,
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          token.name,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
+                        Text(
+                          token.price,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        token.amount,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            isPositive
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward,
+                            size: 12,
+                            color: isPositive ? Colors.green : Colors.red,
+                          ),
+                          const SizedBox(width: 2),
+                          Text(
+                            '${token.change.abs().toStringAsFixed(2)}%',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                                  color: isPositive ? Colors.green : Colors.red,
+                                ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         );
       }),
