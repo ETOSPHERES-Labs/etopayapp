@@ -1,5 +1,5 @@
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/widgets/conditional_button.single.dart';
 
 class ContinueButtonWidget extends StatelessWidget {
   final bool isEnabled;
@@ -25,10 +25,11 @@ class ContinueButtonWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ConditionalSingleButton(
+          BlueButton(
             isActive: isEnabled,
             onPressed: onPressed,
             text: text,
+            padding: EdgeInsetsGeometry.zero,
           )
         ],
       ),

@@ -1,7 +1,6 @@
-import 'package:eto_pay/core/text_styles.dart';
+import 'package:eto_pay/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:eto_pay/core/colors.dart';
 
 class CardData {
   final String title;
@@ -56,17 +55,15 @@ class ImageCardListWidget extends StatelessWidget {
             fit: BoxFit.contain,
           ),
           const SizedBox(height: 24),
-          Text(textData, style: AppTextStyles.boldCentered),
+          Text(textData,
+              style: Theme.of(context).textTheme.displayLarge?.bold()),
           if (subtitle != null) ...[
             const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 subtitle!,
-                style: const TextStyle(
-                  color: AppColors.subtext,
-                  fontSize: 14,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.gray(),
                 textAlign: TextAlign.left,
               ),
             ),

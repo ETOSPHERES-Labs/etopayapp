@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/screens/wallet_options_screen.dart';
+import 'package:eto_pay/screens/profile_creation_pages/wallet_options_screen.dart';
 
 void main() {
   testWidgets('WalletOptionsScreen renders and shows wallet option cards',

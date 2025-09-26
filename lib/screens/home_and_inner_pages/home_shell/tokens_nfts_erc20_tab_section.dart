@@ -1,0 +1,194 @@
+import 'package:eto_pay/models/network_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+class TokensNfcsErc20TabSection extends StatefulWidget {
+  final List<NetworkAsset> assetsTokens;
+  final List<NetworkAsset> assetsNfts;
+  final List<NetworkAsset> assetsErc20;
+  final Color? backgroundColor;
+  final Widget Function(String tabName)? emptyStateBuilder;
+  final void Function(NetworkAsset asset)? onAssetTap;
+
+  const TokensNfcsErc20TabSection({
+    super.key,
+    required this.assetsTokens,
+    required this.assetsNfts,
+    required this.assetsErc20,
+    this.backgroundColor,
+    this.emptyStateBuilder,
+    this.onAssetTap,
+  });
+
+  @override
+  State<TokensNfcsErc20TabSection> createState() =>
+      _TokensNfcsErc20TabSectionState();
+}
+
+class _TokensNfcsErc20TabSectionState extends State<TokensNfcsErc20TabSection>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24, left: 20, right: 20, bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TabBar(
+            controller: _tabController,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            labelStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+            ),
+            indicatorColor: const Color(0xFF005CA9),
+            tabs: const [
+              Tab(text: 'Tokens'),
+              Tab(text: 'NFTs'),
+              Tab(text: 'ERC20'),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildTokenListWithBackground(widget.assetsTokens, 'Tokens'),
+                _buildTokenListWithBackground(widget.assetsNfts, 'NFTs'),
+                _buildTokenListWithBackground(widget.assetsErc20, 'ERC20'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTokenListWithBackground(
+      List<NetworkAsset> tokens, String tabName) {
+    return Container(
+      decoration: BoxDecoration(
+        color: widget.backgroundColor ?? const Color(0xFFF0F0F0),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      child: _buildTokenListInner(tokens, tabName),
+    );
+  }
+
+  Widget _buildTokenListInner(List<NetworkAsset> tokens, String tabName) {
+    if (tokens.isEmpty) {
+      return Center(
+        child: widget.emptyStateBuilder?.call(tabName) ??
+            Text(
+              '$tabName (empty)',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+      );
+    }
+
+    return Column(
+      children: List.generate(tokens.length * 2 - 1, (index) {
+        if (index.isOdd) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Container(height: 1, color: Colors.grey[300]),
+          );
+        }
+        final tokenIndex = index ~/ 2;
+        final token = tokens[tokenIndex];
+        final isPositive = token.change >= 0;
+
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              widget.onAssetTap?.call(token);
+            },
+            borderRadius: BorderRadius.circular(8),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    token.icon,
+                    width: 20,
+                    height: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          token.name,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        Text(
+                          token.price,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        token.amount,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            isPositive
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward,
+                            size: 12,
+                            color: isPositive ? Colors.green : Colors.red,
+                          ),
+                          const SizedBox(width: 2),
+                          Text(
+                            '${token.change.abs().toStringAsFixed(2)}%',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
+                                  color: isPositive ? Colors.green : Colors.red,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}

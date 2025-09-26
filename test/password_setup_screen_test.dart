@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/screens/password_setup_screen.dart';
+import 'package:eto_pay/screens/profile_creation_pages/password_setup_screen.dart';
 
 void main() {
   testWidgets('PasswordSetupScreen renders and shows password fields',

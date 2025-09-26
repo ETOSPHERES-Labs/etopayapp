@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:eto_pay/screens/recovery_phrase_screen.dart';
+import 'package:eto_pay/screens/profile_creation_pages/recovery_phrase_screen.dart';
 
 void main() {
   testWidgets('RecoveryPhraseScreen renders and shows reveal button',

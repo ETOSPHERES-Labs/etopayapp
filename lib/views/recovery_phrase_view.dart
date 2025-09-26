@@ -1,10 +1,10 @@
 import 'dart:ui';
+import 'package:eto_pay/main.dart';
 import 'package:eto_pay/view_models/recovery_phrase_view_model.dart';
-import 'package:eto_pay/widgets/conditional_button.single.dart';
+import 'package:eto_pay/widgets/blue_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eto_pay/screens/recovery_phrase_verification_screen.dart';
-import 'package:eto_pay/core/colors.dart';
+import 'package:eto_pay/screens/profile_creation_pages/recovery_phrase_verification_screen.dart';
 
 class RecoveryPhraseView extends StatelessWidget {
   const RecoveryPhraseView({super.key});
@@ -16,17 +16,11 @@ class RecoveryPhraseView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          'Recovery phrase',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        Text('Recovery phrase', style: Theme.of(context).textTheme.bodyLarge),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Please download the recovery kit and write down the words in the exact order shown below',
-          style: TextStyle(color: AppColors.subtext),
+          style: Theme.of(context).textTheme.labelMedium?.gray(),
         ),
         const SizedBox(height: 24),
         Expanded(
@@ -80,35 +74,41 @@ class RecoveryPhraseView extends StatelessWidget {
                   ),
                 ),
               if (!model.isRevealed)
-                ConditionalSingleButton(
+                BlueButton(
                   isActive: true,
                   onPressed: () => model.reveal(),
                   text: 'Reveal recovery phrase',
+                  padding: EdgeInsetsGeometry.zero,
                 ),
             ],
           ),
         ),
         const SizedBox(height: 24),
-        const Text(
+        Text(
           'Keep these words confidential, secure and never share it with anyone',
-          style:
-              TextStyle(fontWeight: FontWeight.bold, color: AppColors.subtext),
+          style: Theme.of(context).textTheme.bodyMedium?.blue(),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'A written backup is important because computer failures can cause data corruption',
-          style: TextStyle(color: AppColors.subtext),
+          style: Theme.of(context).textTheme.labelMedium?.gray(),
         ),
         const SizedBox(height: 24),
-        ConditionalSingleButton(
+        BlueButton(
           isActive: true,
           onPressed: () {
             // TODO: Implement PDF download
           },
           text: 'Save Recovery kit template',
+          leftIcon: const Icon(Icons.download, color: Color(0xFF005CA9)),
+          padding: EdgeInsetsGeometry.zero,
+          activeColor: Color.fromARGB(255, 206, 222, 239),
+          textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Color(0xFF005CA9),
+              ),
         ),
         const SizedBox(height: 16),
-        ConditionalSingleButton(
+        BlueButton(
           isActive: model.isRevealed,
           onPressed: () {
             if (model.isRevealed) {
@@ -122,6 +122,7 @@ class RecoveryPhraseView extends StatelessWidget {
             }
           },
           text: 'Continue',
+          padding: EdgeInsetsGeometry.zero,
         ),
       ],
     );
